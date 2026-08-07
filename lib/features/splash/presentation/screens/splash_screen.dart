@@ -25,11 +25,11 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
 
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 1400),
+      duration: const Duration(milliseconds: 2500),
       vsync: this,
     );
 
-    // Logo scales from 0 → 1 in first 600ms
+    // Logo scales from 0 → 1
     _logoScale = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    // Text fades in from 400ms → 900ms
+    // Text fades in
     _textFade = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    // Powered text fades in from 600ms → 1000ms
+    // Powered text fades in
     _poweredFade = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -55,8 +55,8 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // Navigate to home after 1.4 seconds
-    Future.delayed(const Duration(milliseconds: 1400), () {
+    // Navigate to home after 2.5 seconds
+    Future.delayed(const Duration(milliseconds: 2500), () {
       if (mounted) {
         Navigator.of(context).pushReplacementNamed('/home');
       }
@@ -80,8 +80,8 @@ class _SplashScreenState extends State<SplashScreen>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppColors.splashStart,
-              AppColors.splashEnd,
+              AppColors.surface,
+              AppColors.primarySurface,
             ],
           ),
         ),
@@ -102,7 +102,7 @@ class _SplashScreenState extends State<SplashScreen>
                       borderRadius: BorderRadius.circular(28),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.2),
+                          color: AppColors.primary.withValues(alpha: 0.2),
                           blurRadius: 30,
                           offset: const Offset(0, 10),
                         ),
@@ -125,7 +125,9 @@ class _SplashScreenState extends State<SplashScreen>
                   opacity: _textFade.value,
                   child: Text(
                     'Chemi Calc',
-                    style: AppTextStyles.splashTitle,
+                    style: AppTextStyles.splashTitle.copyWith(
+                      color: AppColors.primary,
+                    ),
                   ),
                 ),
 
@@ -135,7 +137,9 @@ class _SplashScreenState extends State<SplashScreen>
                   opacity: _textFade.value,
                   child: Text(
                     'All Chemical Formulas in One Place',
-                    style: AppTextStyles.splashSubtitle,
+                    style: AppTextStyles.splashSubtitle.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                 ),
 
@@ -149,6 +153,7 @@ class _SplashScreenState extends State<SplashScreen>
                     child: Text(
                       'Powered by Devriz',
                       style: AppTextStyles.splashSubtitle.copyWith(
+                        color: AppColors.textTertiary,
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 0.5,

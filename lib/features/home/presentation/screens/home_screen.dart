@@ -133,12 +133,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
 
         // SVG molecule image from assets
-        SizedBox(
-          width: 100,
-          height: 100,
-          child: SvgPicture.asset(
-            'assets/images/head-image.svg',
-            fit: BoxFit.contain,
+        Transform.translate(
+          offset: const Offset(-12, 0),
+          child: SizedBox(
+            width: 100,
+            height: 100,
+            child: SvgPicture.asset(
+              'assets/images/head-image.svg',
+              fit: BoxFit.contain,
+            ),
           ),
         ),
       ],

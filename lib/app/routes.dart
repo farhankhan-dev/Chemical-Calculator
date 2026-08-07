@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../features/splash/presentation/screens/splash_screen.dart';
-import '../features/home/presentation/screens/home_screen.dart';
+import '../app/main_screen.dart';
 
 /// Named route definitions and route generator.
 class AppRoutes {
@@ -17,7 +17,7 @@ class AppRoutes {
         );
       case home:
         return MaterialPageRoute(
-          builder: (_) => const HomeScreen(),
+          builder: (_) => const MainScreen(),
         );
       default:
         return MaterialPageRoute(
