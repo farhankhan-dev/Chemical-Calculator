@@ -1,0 +1,1 @@
+// Copy values button widget

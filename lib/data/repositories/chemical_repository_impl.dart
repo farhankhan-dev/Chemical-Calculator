@@ -1,0 +1,1 @@
+// Implements domain repository contract

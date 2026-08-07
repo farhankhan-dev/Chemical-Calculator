@@ -1,0 +1,1 @@
+// Chemical detail feature state
