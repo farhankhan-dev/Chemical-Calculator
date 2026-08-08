@@ -3,6 +3,9 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/utils/format_utils.dart';
+import '../../../../data/datasources/chemical_local_datasource.dart';
+import '../../../../data/models/chemical_model.dart';
+import '../../../home/presentation/widgets/chemical_search_bar.dart';
 
 class MolecularWeightCalculatorScreen extends StatefulWidget {
   const MolecularWeightCalculatorScreen({super.key});
@@ -16,10 +19,13 @@ class _MolecularWeightCalculatorScreenState
     extends State<MolecularWeightCalculatorScreen> {
   final TextEditingController _formulaController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final ChemicalLocalDatasource _datasource = ChemicalLocalDatasource();
 
   double? _totalMass;
   List<Map<String, dynamic>> _breakdown = [];
   String? _error;
+  List<ChemicalModel> _suggestions = [];
+  ChemicalModel? _selectedChemical;
 
   static const Map<String, double> atomicWeights = {
     'H': 1.008, 'He': 4.0026, 'Li': 6.94, 'Be': 9.0122, 'B': 10.81,
@@ -44,9 +50,41 @@ class _MolecularWeightCalculatorScreenState
     super.dispose();
   }
 
+  void _onSearchChanged(String query) async {
+    if (query.trim().isEmpty) {
+      if (mounted) {
+        setState(() {
+          _suggestions = [];
+          _selectedChemical = null;
+        });
+      }
+      return;
+    }
+    
+    // If they start typing something else, clear the selected chemical
+    if (_selectedChemical != null && _selectedChemical!.formula != query.trim()) {
+      setState(() => _selectedChemical = null);
+    }
+
+    final results = await _datasource.searchByFormula(query);
+    if (mounted) {
+      setState(() => _suggestions = results);
+    }
+  }
+
   void _calculate() {
     final formula = _formulaController.text.trim();
     if (formula.isEmpty) return;
+
+    if (_selectedChemical != null && formula == _selectedChemical!.formula) {
+      setState(() {
+        _totalMass = _selectedChemical!.molecularWeight;
+        _error = null;
+        _breakdown = []; // Database items bypass breakdown parsing
+      });
+      FocusScope.of(context).unfocus();
+      return;
+    }
 
     if (formula.contains('(') || formula.contains(')')) {
       setState(() {
@@ -216,31 +254,27 @@ class _MolecularWeightCalculatorScreenState
             ),
             const SizedBox(height: AppSpacing.lg),
 
-            Text('Chemical Formula', style: AppTextStyles.label),
-            const SizedBox(height: 8),
-            TextField(
+            ChemicalSearchBar(
               controller: _formulaController,
-              decoration: InputDecoration(
-                hintText: 'e.g. H2SO4, C6H12O6, NaCl',
-                filled: true,
-                fillColor: AppColors.surface,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.border),
-                ),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.clear, size: 18),
-                  onPressed: () {
-                    _formulaController.clear();
-                    setState(() {
-                      _totalMass = null;
-                      _breakdown = [];
-                      _error = null;
-                    });
-                  },
-                ),
-              ),
-              onSubmitted: (_) => _calculate(),
+              suggestions: _suggestions,
+              hintText: 'e.g. NaCl or H2O',
+              onChanged: _onSearchChanged,
+              onSelected: (chem) {
+                _formulaController.text = chem.formula;
+                setState(() {
+                  _suggestions = [];
+                  _selectedChemical = chem;
+                });
+                FocusManager.instance.primaryFocus?.unfocus();
+                _calculate();
+              },
+              onClear: () {
+                _formulaController.clear();
+                setState(() {
+                  _suggestions = [];
+                  _selectedChemical = null;
+                });
+              },
             ),
             const SizedBox(height: AppSpacing.lg),
 

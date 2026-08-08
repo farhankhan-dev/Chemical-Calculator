@@ -340,6 +340,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
           trailing: const Icon(Icons.chevron_right,
               color: AppColors.textTertiary, size: 20),
           onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
             Navigator.push(
               context,
               MaterialPageRoute(

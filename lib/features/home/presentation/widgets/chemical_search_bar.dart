@@ -14,6 +14,7 @@ class ChemicalSearchBar extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final ValueChanged<ChemicalModel> onSelected;
   final VoidCallback? onClear;
+  final String hintText;
 
   const ChemicalSearchBar({
     super.key,
@@ -22,6 +23,7 @@ class ChemicalSearchBar extends StatelessWidget {
     required this.onChanged,
     required this.onSelected,
     this.onClear,
+    this.hintText = 'Type chemical name...',
   });
 
   @override
@@ -31,14 +33,14 @@ class ChemicalSearchBar extends StatelessWidget {
       children: [
         // Label
         Text(
-          'Enter Chemical Name',
+          'Enter Chemical Name or Formula',
           style: AppTextStyles.label.copyWith(
             fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 4),
         Text(
-          'Type any chemical name to get results',
+          'Type any chemical to get results',
           style: AppTextStyles.bodySmall,
         ),
         const SizedBox(height: AppSpacing.sm),
@@ -49,7 +51,7 @@ class ChemicalSearchBar extends StatelessWidget {
           onChanged: onChanged,
           style: AppTextStyles.bodyLarge,
           decoration: InputDecoration(
-            hintText: 'Type chemical name...',
+            hintText: hintText,
             prefixIcon: const Icon(
               Icons.search_rounded,
               color: AppColors.textTertiary,

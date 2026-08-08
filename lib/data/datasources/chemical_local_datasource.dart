@@ -76,4 +76,28 @@ class ChemicalLocalDatasource {
 
     return [...prefixMatches, ...containsMatches, ...formulaMatches];
   }
+
+  /// Search chemicals exclusively by formula (case-insensitive).
+  /// Prefix matches on formula are ranked first.
+  Future<List<ChemicalModel>> searchByFormula(String query) async {
+    final all = await getAllChemicals();
+    if (query.trim().isEmpty) return [];
+
+    final q = query.trim().toLowerCase();
+
+    final prefixMatches = <ChemicalModel>[];
+    final containsMatches = <ChemicalModel>[];
+
+    for (final chem in all) {
+      final formulaLower = chem.formula.toLowerCase();
+
+      if (formulaLower.startsWith(q)) {
+        prefixMatches.add(chem);
+      } else if (formulaLower.contains(q)) {
+        containsMatches.add(chem);
+      }
+    }
+
+    return [...prefixMatches, ...containsMatches];
+  }
 }
