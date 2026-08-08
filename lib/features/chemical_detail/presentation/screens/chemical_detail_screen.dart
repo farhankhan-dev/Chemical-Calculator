@@ -90,10 +90,10 @@ class ChemicalDetailScreen extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             
             _buildDetailRow('Category', chemical.category, Icons.category_outlined),
-            if (chemical.atomicNumber != null)
-              _buildDetailRow('Atomic Number', '${chemical.atomicNumber}', Icons.numbers_outlined),
-            if (chemical.atomicMass != null)
-              _buildDetailRow('Atomic Mass', '${chemical.atomicMass!.toStringAsFixed(4)} u', Icons.science_outlined),
+            if (chemical.category == 'Element')
+              _buildDetailRow('Atomic Number', '${chemical.displayAtomicNumber}', Icons.numbers_outlined),
+            if (chemical.category == 'Element')
+              _buildDetailRow('Atomic Mass', '${(chemical.atomicMass ?? chemical.molecularWeight).toStringAsFixed(4)} u', Icons.science_outlined),
             _buildDetailRow('Molecular Weight', '${chemical.molecularWeight.toStringAsFixed(4)} g/mol', Icons.monitor_weight_outlined),
             if (chemical.equivalentWeight != null)
               _buildDetailRow('Equivalent Weight', '${chemical.equivalentWeight!.toStringAsFixed(4)} g/eq', Icons.balance_outlined),

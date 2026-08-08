@@ -142,15 +142,26 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.science_outlined, color: AppColors.primary),
-                        const SizedBox(width: 12),
-                        Text(
-                          _selectedChemical?.name ?? 'Choose a chemical',
-                          style: AppTextStyles.bodyLarge,
-                        ),
-                      ],
+                    Expanded(
+                      child: Row(
+                        children: [
+                          const Icon(Icons.science_outlined, color: AppColors.primary),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              _selectedChemical != null
+                                  ? '${_selectedChemical!.name} (${_selectedChemical!.formula})'
+                                  : 'Choose a chemical',
+                              style: AppTextStyles.bodyLarge.copyWith(
+                                fontWeight: _selectedChemical != null
+                                    ? FontWeight.w600
+                                    : FontWeight.normal,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const Icon(Icons.expand_more, color: AppColors.textSecondary),
                   ],
@@ -296,6 +307,35 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                       _calculationString ?? '',
                       style: AppTextStyles.mono.copyWith(color: AppColors.primaryDark, fontSize: 12),
                     ),
+                    if (_normality == null) ...[ 
+                      const SizedBox(height: 16),
+                      const Divider(color: Colors.white),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Icon(Icons.info_outline, color: Colors.orange.shade700, size: 18),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Normality is N/A — Why?',
+                            style: AppTextStyles.label.copyWith(
+                              color: Colors.orange.shade800,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Normality could not be calculated for "${_selectedChemical?.name ?? 'this chemical'}" because its Equivalent Weight is not stored in the database.\n\n'
+                        'Normality (N) = (Mass ÷ Eq. Weight) ÷ Volume (L)\n\n'
+                        'Equivalent Weight requires knowing the n-factor — the number of H⁺ or OH⁻ ions the compound can donate or accept. For some chemicals (elements, organic compounds, salts with complex reactions), this is not defined.\n\n'
+                        'Molarity is still valid and has been calculated above.',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: Colors.orange.shade900,
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),

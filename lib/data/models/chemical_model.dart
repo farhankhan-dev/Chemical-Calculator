@@ -1,3 +1,5 @@
+import '../../core/utils/atomic_utils.dart';
+
 /// Chemical data model with JSON serialization.
 ///
 /// Maps directly to entries in assets/data/chemicals.json.
@@ -15,6 +17,10 @@ class ChemicalModel {
 
   final int? atomicNumber;
   final double? atomicMass;
+
+  int get displayAtomicNumber {
+    return AtomicUtils.getAtomicNumber(formula, explicitAtomicNumber: atomicNumber);
+  }
 
   const ChemicalModel({
     required this.id,

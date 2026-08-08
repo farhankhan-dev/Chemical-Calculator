@@ -23,24 +23,40 @@ class HomeController extends ChangeNotifier {
 
   /// Initialize — preload the chemical database and load recent searches.
   Future<void> init() async {
+    if (_datasource.hasCache) {
+      _isLoading = false;
+      _loadRecentSearches();
+      return;
+    }
+
     _isLoading = true;
     notifyListeners();
 
-    // Preload cache so first search is fast
-    await _datasource.getAllChemicals();
-    await _loadRecentSearches();
-
-    _isLoading = false;
-    notifyListeners();
+    try {
+      await Future.wait([
+        _datasource.getAllChemicals(),
+        _loadRecentSearches(),
+      ]).timeout(const Duration(milliseconds: 1500));
+    } catch (e) {
+      debugPrint('Error initializing HomeController: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
   
   Future<void> _loadRecentSearches() async {
-    final recentNames = await PreferencesService.getRecentSearches();
-    final all = await _datasource.getAllChemicals();
-    _recentSearches = recentNames
-        .map((name) => all.where((c) => c.name == name).firstOrNull)
-        .whereType<ChemicalModel>()
-        .toList();
+    try {
+      final recentNames = await PreferencesService.getRecentSearches();
+      final all = await _datasource.getAllChemicals();
+      _recentSearches = recentNames
+          .map((name) => all.where((c) => c.name == name).firstOrNull)
+          .whereType<ChemicalModel>()
+          .toList();
+    } catch (e) {
+      debugPrint('Error loading recent searches: $e');
+      _recentSearches = [];
+    }
     notifyListeners();
   }
 
@@ -76,6 +92,13 @@ class HomeController extends ChangeNotifier {
     _selectedChemical = null;
     _suggestions = [];
     _query = '';
+    notifyListeners();
+  }
+
+  /// Clear all recent searches.
+  Future<void> clearRecentSearches() async {
+    await PreferencesService.clearRecentSearches();
+    _recentSearches = [];
     notifyListeners();
   }
 }

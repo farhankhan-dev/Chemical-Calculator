@@ -8,6 +8,8 @@ import '../models/chemical_model.dart';
 class ChemicalLocalDatasource {
   List<ChemicalModel>? _cache;
 
+  bool get hasCache => _cache != null;
+
   /// Loads all chemicals from the JSON asset. Results are cached after
   /// the first call.
   Future<List<ChemicalModel>> getAllChemicals() async {

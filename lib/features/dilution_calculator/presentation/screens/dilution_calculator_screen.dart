@@ -217,10 +217,15 @@ class _DilutionCalculatorScreenState extends State<DilutionCalculatorScreen> {
                   color: AppColors.primarySurface,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Text(
-                  _resultMessage!,
-                  style: AppTextStyles.h3.copyWith(color: AppColors.primaryDark),
-                  textAlign: TextAlign.center,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _resultMessage!,
+                      style: AppTextStyles.h3.copyWith(color: AppColors.primaryDark),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
             ]

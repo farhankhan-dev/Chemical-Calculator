@@ -46,61 +46,57 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: _controller.isLoading
-            ? const Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
-              )
-            : SingleChildScrollView(
-                padding: AppSpacing.screenPadding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: AppSpacing.sm),
+        child: SingleChildScrollView(
+          padding: AppSpacing.screenPadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: AppSpacing.sm),
 
-                    // Header: App name + SVG molecule
-                    _buildHeader(),
+              // Header: App name + SVG molecule
+              _buildHeader(),
 
-                    const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.lg),
 
-                    // Search bar with autocomplete
-                    ChemicalSearchBar(
-                      controller: _textController,
-                      suggestions: _controller.suggestions,
-                      onChanged: (query) {
-                        _controller.onQueryChanged(query);
-                      },
-                      onSelected: (chemical) {
-                        _textController.text = chemical.name;
-                        _controller.selectChemical(chemical);
-                        // Dismiss keyboard
-                        FocusScope.of(context).unfocus();
-                      },
-                      onClear: () {
-                        _textController.clear();
-                        _controller.clearSelection();
-                      },
-                    ),
-
-                    // Chemical detail card
-                    if (_controller.selectedChemical != null) ...[
-                      const SizedBox(height: AppSpacing.lg),
-                      ChemicalInfoCard(
-                        chemical: _controller.selectedChemical!,
-                      ),
-                    ] else if (_controller.recentSearches.isNotEmpty) ...[
-                      const SizedBox(height: AppSpacing.lg),
-                      _buildRecentSearches(),
-                    ],
-
-                    const SizedBox(height: AppSpacing.xl),
-
-                    // Disclaimer footer
-                    _buildDisclaimer(),
-
-                    const SizedBox(height: AppSpacing.lg),
-                  ],
-                ),
+              // Search bar with autocomplete
+              ChemicalSearchBar(
+                controller: _textController,
+                suggestions: _controller.suggestions,
+                onChanged: (query) {
+                  _controller.onQueryChanged(query);
+                },
+                onSelected: (chemical) {
+                  _textController.text = chemical.name;
+                  _controller.selectChemical(chemical);
+                  // Dismiss keyboard
+                  FocusScope.of(context).unfocus();
+                },
+                onClear: () {
+                  _textController.clear();
+                  _controller.clearSelection();
+                },
               ),
+
+              // Chemical detail card
+              if (_controller.selectedChemical != null) ...[
+                const SizedBox(height: AppSpacing.lg),
+                ChemicalInfoCard(
+                  chemical: _controller.selectedChemical!,
+                ),
+              ] else if (_controller.recentSearches.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.lg),
+                _buildRecentSearches(),
+              ],
+
+              const SizedBox(height: AppSpacing.xl),
+
+              // Disclaimer footer
+              _buildDisclaimer(),
+
+              const SizedBox(height: AppSpacing.lg),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -135,14 +131,27 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
 
         // Molecule image from assets
-        Transform.translate(
-          offset: const Offset(-12, 0),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
           child: SizedBox(
-            width: 100,
-            height: 100,
+            width: 90,
+            height: 90,
             child: Image.asset(
               'assets/images/head-image.jpeg',
-              fit: BoxFit.contain,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.primarySurface,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.science,
+                    size: 40,
+                    color: AppColors.primary,
+                  ),
+                );
+              },
             ),
           ),
         ),
@@ -183,34 +192,95 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Recently Searched',
-          style: AppTextStyles.h3.copyWith(
-            color: AppColors.textPrimary,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: _controller.recentSearches.map((chemical) {
-            return ActionChip(
-              label: Text(
-                chemical.name,
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.primaryDark,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Recently Searched',
+              style: AppTextStyles.h3.copyWith(
+                color: AppColors.textPrimary,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            InkWell(
+              onTap: () async {
+                await _controller.clearRecentSearches();
+                setState(() {});
+              },
+              borderRadius: BorderRadius.circular(8),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: Text(
+                  'Clear',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textTertiary,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-              backgroundColor: AppColors.primarySurface,
-              side: const BorderSide(color: AppColors.primaryLight, width: 0.5),
-              onPressed: () {
-                _textController.text = chemical.name;
-                _controller.selectChemical(chemical);
-              },
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: _controller.recentSearches.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 8),
+          itemBuilder: (context, index) {
+            final chemical = _controller.recentSearches[index];
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.borderLight),
+              ),
+              child: Material(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(12),
+                clipBehavior: Clip.antiAlias,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+                  leading: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.primarySurface,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.science_outlined,
+                      color: AppColors.primary,
+                      size: 20,
+                    ),
+                  ),
+                  title: Text(
+                    chemical.name,
+                    style: AppTextStyles.h3.copyWith(
+                      color: AppColors.textPrimary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  subtitle: Text(
+                    chemical.formula,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  trailing: const Icon(
+                    Icons.north_west,
+                    color: AppColors.textTertiary,
+                    size: 16,
+                  ),
+                  onTap: () {
+                    _textController.text = chemical.name;
+                    _controller.selectChemical(chemical);
+                  },
+                ),
+              ),
             );
-          }).toList(),
+          },
         ),
       ],
     );

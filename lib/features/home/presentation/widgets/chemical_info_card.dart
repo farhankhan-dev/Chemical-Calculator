@@ -40,25 +40,23 @@ class ChemicalInfoCard extends StatelessWidget {
           ),
           child: Column(
             children: [
-              _buildPropertyRow(
-                icon: Icons.science_outlined,
-                label: 'Molecular Weight',
-                value: '${chemical.molecularWeight} g/mol',
-              ),
-              const Divider(height: 1),
-              _buildPropertyRow(
-                icon: Icons.balance_outlined,
-                label: 'Equivalent Weight',
-                value: chemical.equivalentWeight != null
-                    ? '${chemical.equivalentWeight} g/eq'
-                    : 'N/A',
-              ),
-              const Divider(height: 1),
-              _buildPropertyRow(
-                icon: Icons.fitness_center_outlined,
-                label: 'Molar Mass',
-                value: '${chemical.molecularWeight} g/mol',
-              ),
+              if (chemical.category == 'Element') ...[
+                _buildPropertyRow(
+                  icon: Icons.numbers_outlined,
+                  label: 'Atomic Number',
+                  value: '${chemical.displayAtomicNumber}',
+                ),
+                const Divider(height: 1),
+              ],
+              if (chemical.category == 'Element') ...[
+                _buildPropertyRow(
+                  icon: Icons.scale_outlined,
+                  label: 'Atomic Mass',
+                  value: '${chemical.atomicMass ?? chemical.molecularWeight} u',
+                ),
+                const Divider(height: 1),
+              ],
+
               if (chemical.density != null) ...[
                 const Divider(height: 1),
                 _buildPropertyRow(

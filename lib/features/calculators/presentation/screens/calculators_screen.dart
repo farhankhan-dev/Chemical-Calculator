@@ -9,6 +9,7 @@ import '../../../mass_calculator/presentation/screens/mass_calculator_screen.dar
 import '../../../equivalent_weight_calculator/presentation/screens/equivalent_weight_calculator_screen.dart';
 import '../../../molar_mass_calculator/presentation/screens/molar_mass_calculator_screen.dart';
 import '../../../molality_calculator/presentation/screens/molality_calculator_screen.dart';
+import '../../../molecular_weight_calculator/presentation/screens/molecular_weight_calculator_screen.dart';
 
 class CalculatorsScreen extends StatelessWidget {
   const CalculatorsScreen({super.key});
@@ -96,6 +97,15 @@ class CalculatorsScreen extends StatelessWidget {
                       icon: Icons.functions,
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (_) => const MolalityCalculatorScreen()));
+                      },
+                    ),
+                    _buildCalculatorCard(
+                      context,
+                      title: 'Molecular Weight Calculator',
+                      subtitle: 'Calculate molecular weight from chemical formula.',
+                      icon: Icons.scale_outlined,
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const MolecularWeightCalculatorScreen()));
                       },
                     ),
                     const SizedBox(height: AppSpacing.lg),

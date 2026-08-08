@@ -134,15 +134,26 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.science_outlined, color: AppColors.primary),
-                        const SizedBox(width: 12),
-                        Text(
-                          _selectedChemical?.name ?? 'Choose a chemical',
-                          style: AppTextStyles.bodyLarge,
-                        ),
-                      ],
+                    Expanded(
+                      child: Row(
+                        children: [
+                          const Icon(Icons.science_outlined, color: AppColors.primary),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              _selectedChemical != null
+                                  ? '${_selectedChemical!.name} (${_selectedChemical!.formula})'
+                                  : 'Choose a chemical',
+                              style: AppTextStyles.bodyLarge.copyWith(
+                                fontWeight: _selectedChemical != null
+                                    ? FontWeight.w600
+                                    : FontWeight.normal,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const Icon(Icons.expand_more, color: AppColors.textSecondary),
                   ],
@@ -266,6 +277,35 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                       _calculationString ?? '',
                       style: AppTextStyles.mono.copyWith(color: AppColors.primaryDark, fontSize: 12),
                     ),
+                    if (_result == null && _selectedChemical != null) ...[ 
+                      const SizedBox(height: 16),
+                      const Divider(color: Colors.white),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Icon(Icons.info_outline, color: Colors.orange.shade700, size: 18),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Equivalent Weight is N/A — Why?',
+                            style: AppTextStyles.label.copyWith(
+                              color: Colors.orange.shade800,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        '"${_selectedChemical!.name}" does not have Equivalent Weight data in our database.\n\n'
+                        'Equivalent Weight = Molar Mass ÷ n-factor\n\n'
+                        'The n-factor (valency factor) tells how many H⁺ or OH⁻ ions a compound donates or accepts in a reaction. For some chemicals — like pure elements, organic solvents, or compounds with variable valency — no single fixed n-factor can be assigned.\n\n'
+                        'You can still calculate manually using the fields above if you know the n-factor for your specific reaction.',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: Colors.orange.shade900,
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),

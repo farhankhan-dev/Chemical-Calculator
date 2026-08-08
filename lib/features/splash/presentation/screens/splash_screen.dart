@@ -120,11 +120,11 @@ class _SplashScreenState extends State<SplashScreen>
 
                 const SizedBox(height: 24),
 
-                // "Chemi Calc" text with fade animation
+                // "ChemiCalc" text with fade animation
                 Opacity(
                   opacity: _textFade.value,
                   child: Text(
-                    'Chemi Calc',
+                    'ChemiCalc',
                     style: AppTextStyles.splashTitle.copyWith(
                       color: AppColors.primary,
                     ),

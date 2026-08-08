@@ -210,15 +210,26 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.science_outlined, color: AppColors.primary),
-                        const SizedBox(width: 12),
-                        Text(
-                          _selectedChemical?.name ?? 'Choose a chemical',
-                          style: AppTextStyles.bodyLarge,
-                        ),
-                      ],
+                    Expanded(
+                      child: Row(
+                        children: [
+                          const Icon(Icons.science_outlined, color: AppColors.primary),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              _selectedChemical != null
+                                  ? '${_selectedChemical!.name} (${_selectedChemical!.formula})'
+                                  : 'Choose a chemical',
+                              style: AppTextStyles.bodyLarge.copyWith(
+                                fontWeight: _selectedChemical != null
+                                    ? FontWeight.w600
+                                    : FontWeight.normal,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const Icon(Icons.expand_more, color: AppColors.textSecondary),
                   ],
@@ -329,46 +340,81 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
               ),
             ),
 
-            if (_result != null) ...[
+            if (_result != null || (_calculationString != null && _calculationString!.contains('Cannot calculate'))) ...[
               const SizedBox(height: AppSpacing.xl),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: AppColors.primarySurface,
+                  color: _result == null
+                      ? Colors.orange.withValues(alpha: 0.1)
+                      : AppColors.primarySurface,
                   borderRadius: BorderRadius.circular(16),
+                  border: _result == null
+                      ? Border.all(color: Colors.orange.withValues(alpha: 0.4))
+                      : null,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      _isMassNeeded ? 'Mass Needed' : 'Volume Needed',
-                      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primaryDark),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      _isMassNeeded 
-                          ? '${FormatUtils.format(_result!)} g'
-                          : '${FormatUtils.format(_result!)} ${_isVolMl ? 'mL' : 'L'}',
-                      style: AppTextStyles.h1.copyWith(color: AppColors.primary, fontSize: 32),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '(Pure substance)',
-                      style: AppTextStyles.bodySmall.copyWith(color: AppColors.primaryDark),
-                    ),
-                    const SizedBox(height: 16),
-                    const Divider(color: Colors.white),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Calculation',
-                      style: AppTextStyles.label.copyWith(color: AppColors.primaryDark),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      _calculationString ?? '',
-                      style: AppTextStyles.mono.copyWith(color: AppColors.primaryDark, fontSize: 12),
-                    ),
+                    if (_result != null) ...[
+                      Text(
+                        _isMassNeeded ? 'Mass Needed' : 'Volume Needed',
+                        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primaryDark),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        _isMassNeeded
+                            ? '${FormatUtils.format(_result!)} g'
+                            : '${FormatUtils.format(_result!)} ${_isVolMl ? 'mL' : 'L'}',
+                        style: AppTextStyles.h1.copyWith(color: AppColors.primary, fontSize: 32),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '(Pure substance)',
+                        style: AppTextStyles.bodySmall.copyWith(color: AppColors.primaryDark),
+                      ),
+                      const SizedBox(height: 16),
+                      const Divider(color: Colors.white),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Calculation',
+                        style: AppTextStyles.label.copyWith(color: AppColors.primaryDark),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        _calculationString ?? '',
+                        style: AppTextStyles.mono.copyWith(color: AppColors.primaryDark, fontSize: 12),
+                      ),
+                    ],
+                    if (_result == null && _calculationString != null) ...[
+                      Row(
+                        children: [
+                          Icon(Icons.info_outline, color: Colors.orange.shade700, size: 18),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Result is N/A — Why?',
+                            style: AppTextStyles.label.copyWith(
+                              color: Colors.orange.shade800,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Normality cannot be calculated for this chemical because its Equivalent Weight is not available in the database.\n\n'
+                        'Equivalent Weight = Molar Mass ÷ n-factor\n\n'
+                        'The n-factor depends on how many H⁺ or OH⁻ ions a compound donates/accepts in a reaction. For some chemicals (e.g., pure elements, organic solvents), this value is not defined or not stored.\n\n'
+                        'To use Normality mode, either:\n'
+                        '  • Select a chemical that has Equivalent Weight data (e.g., HCl, H₂SO₄, NaOH), or\n'
+                        '  • Switch to Molarity mode instead.',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: Colors.orange.shade900,
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
