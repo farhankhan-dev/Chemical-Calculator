@@ -342,12 +342,19 @@ class _LibraryScreenState extends State<LibraryScreen> {
           onTap: () {
             // Dismiss keyboard before navigating
             FocusScope.of(context).unfocus();
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => ChemicalDetailScreen(chemical: chemical),
-              ),
-            );
+            
+            // Add a small delay so the focus manager finishes its work
+            // before pushing the new route. This prevents the app from 
+            // freezing when the user navigates back to this screen.
+            Future.delayed(const Duration(milliseconds: 50), () {
+              if (!mounted) return;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ChemicalDetailScreen(chemical: chemical),
+                ),
+              );
+            });
           },
         ),
       ),
