@@ -6,14 +6,14 @@ import '../../../../data/models/chemical_model.dart';
 import '../../../../core/widgets/chemical_selector.dart';
 import '../../../../core/utils/format_utils.dart';
 
-class ReverseCalculatorScreen extends StatefulWidget {
-  const ReverseCalculatorScreen({super.key});
+class MolarityCalculatorScreen extends StatefulWidget {
+  const MolarityCalculatorScreen({super.key});
 
   @override
-  State<ReverseCalculatorScreen> createState() => _ReverseCalculatorScreenState();
+  State<MolarityCalculatorScreen> createState() => _MolarityCalculatorScreenState();
 }
 
-class _ReverseCalculatorScreenState extends State<ReverseCalculatorScreen> {
+class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
   ChemicalModel? _selectedChemical;
   
   final TextEditingController _massController = TextEditingController();
@@ -81,7 +81,7 @@ class _ReverseCalculatorScreenState extends State<ReverseCalculatorScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Reverse Calculator'),
+        title: const Text('Molarity Calculator'),
         backgroundColor: AppColors.surface,
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
@@ -92,6 +92,30 @@ class _ReverseCalculatorScreenState extends State<ReverseCalculatorScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.primarySurface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.primaryLight),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.functions, color: AppColors.primary),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Molarity (M) = Mass (g) / (Molar Mass (g/mol) × Volume (L))',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.primaryDark,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
             Text(
               'Calculate concentration from known mass.',
               style: AppTextStyles.bodyMedium,

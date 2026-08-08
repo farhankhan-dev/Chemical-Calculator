@@ -78,11 +78,10 @@ class _ChemicalSelectionSheetState extends State<_ChemicalSelectionSheet> {
       maxChildSize: 0.95,
       minChildSize: 0.5,
       builder: (_, controller) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: AppColors.background,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-          ),
+        return Material(
+          color: AppColors.background,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          clipBehavior: Clip.antiAlias,
           child: Column(
             children: [
               const SizedBox(height: 12),

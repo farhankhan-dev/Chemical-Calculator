@@ -130,11 +130,30 @@ class _DilutionCalculatorScreenState extends State<DilutionCalculatorScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'C₁V₁ = C₂V₂',
-              style: AppTextStyles.h2.copyWith(color: AppColors.primary),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.primarySurface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.primaryLight),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.functions, color: AppColors.primary),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'C₁V₁ = C₂V₂',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.primaryDark,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.md),
             Text(
               'Enter three values and leave the one you want to calculate empty.',
               style: AppTextStyles.bodyMedium,

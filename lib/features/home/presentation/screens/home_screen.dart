@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
@@ -88,6 +87,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ChemicalInfoCard(
                         chemical: _controller.selectedChemical!,
                       ),
+                    ] else if (_controller.recentSearches.isNotEmpty) ...[
+                      const SizedBox(height: AppSpacing.lg),
+                      _buildRecentSearches(),
                     ],
 
                     const SizedBox(height: AppSpacing.xl),
@@ -132,14 +134,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
 
-        // SVG molecule image from assets
+        // Molecule image from assets
         Transform.translate(
           offset: const Offset(-12, 0),
           child: SizedBox(
             width: 100,
             height: 100,
-            child: SvgPicture.asset(
-              'assets/images/head-image.svg',
+            child: Image.asset(
+              'assets/images/head-image.jpeg',
               fit: BoxFit.contain,
             ),
           ),
@@ -174,6 +176,43 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildRecentSearches() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Recently Searched',
+          style: AppTextStyles.h3.copyWith(
+            color: AppColors.textPrimary,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: _controller.recentSearches.map((chemical) {
+            return ActionChip(
+              label: Text(
+                chemical.name,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.primaryDark,
+                ),
+              ),
+              backgroundColor: AppColors.primarySurface,
+              side: const BorderSide(color: AppColors.primaryLight, width: 0.5),
+              onPressed: () {
+                _textController.text = chemical.name;
+                _controller.selectChemical(chemical);
+              },
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 }

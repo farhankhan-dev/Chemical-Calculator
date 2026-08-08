@@ -4,10 +4,11 @@ import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
 
 import '../../../dilution_calculator/presentation/screens/dilution_calculator_screen.dart';
-import '../../../reverse_calculator/presentation/screens/reverse_calculator_screen.dart';
+import '../../../molarity_calculator/presentation/screens/molarity_calculator_screen.dart';
 import '../../../mass_calculator/presentation/screens/mass_calculator_screen.dart';
 import '../../../equivalent_weight_calculator/presentation/screens/equivalent_weight_calculator_screen.dart';
 import '../../../molar_mass_calculator/presentation/screens/molar_mass_calculator_screen.dart';
+import '../../../molality_calculator/presentation/screens/molality_calculator_screen.dart';
 
 class CalculatorsScreen extends StatelessWidget {
   const CalculatorsScreen({super.key});
@@ -81,11 +82,20 @@ class CalculatorsScreen extends StatelessWidget {
                     ),
                     _buildCalculatorCard(
                       context,
-                      title: 'Reverse Calculator',
+                      title: 'Molarity Calculator',
                       subtitle: 'Calculate concentration or volume from known mass.',
                       icon: Icons.sync_outlined,
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const ReverseCalculatorScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const MolarityCalculatorScreen()));
+                      },
+                    ),
+                    _buildCalculatorCard(
+                      context,
+                      title: 'Molality Calculator',
+                      subtitle: 'Calculate molality from moles and solvent mass.',
+                      icon: Icons.functions,
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const MolalityCalculatorScreen()));
                       },
                     ),
                     const SizedBox(height: AppSpacing.lg),

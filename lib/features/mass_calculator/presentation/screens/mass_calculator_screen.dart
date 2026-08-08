@@ -111,6 +111,31 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.primarySurface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.primaryLight),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.functions, color: AppColors.primary),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Mass (g) = Concentration (M/N) × Volume (L) × Molar/Eq. Mass',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.primaryDark,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xl),
+
             // Mode Toggle
             Container(
               decoration: BoxDecoration(
@@ -206,21 +231,17 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
             Text('Target', style: AppTextStyles.label),
             Row(
               children: [
-                Radio<bool>(
-                  value: true,
-                  groupValue: _isMolarity,
-                  onChanged: (val) => setState(() => _isMolarity = true),
-                  activeColor: AppColors.primary,
+                _buildCustomRadio(
+                  selected: _isMolarity,
+                  onTap: () => setState(() => _isMolarity = true),
+                  label: 'Molarity (M)',
                 ),
-                Text('Molarity (M)', style: AppTextStyles.bodyMedium),
                 const SizedBox(width: 20),
-                Radio<bool>(
-                  value: false,
-                  groupValue: _isMolarity,
-                  onChanged: (val) => setState(() => _isMolarity = false),
-                  activeColor: AppColors.primary,
+                _buildCustomRadio(
+                  selected: !_isMolarity,
+                  onTap: () => setState(() => _isMolarity = false),
+                  label: 'Normality (N)',
                 ),
-                Text('Normality (N)', style: AppTextStyles.bodyMedium),
               ],
             ),
             const SizedBox(height: AppSpacing.md),
@@ -354,6 +375,42 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
             ]
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildCustomRadio({required bool selected, required VoidCallback onTap, required String label}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: selected ? AppColors.primary : AppColors.textTertiary,
+                width: 2,
+              ),
+            ),
+            child: selected
+                ? Center(
+                    child: Container(
+                      width: 10,
+                      height: 10,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  )
+                : null,
+          ),
+          const SizedBox(width: 8),
+          Text(label, style: AppTextStyles.bodyMedium),
+        ],
       ),
     );
   }

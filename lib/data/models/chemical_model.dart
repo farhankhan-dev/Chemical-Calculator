@@ -13,6 +13,9 @@ class ChemicalModel {
   final String? casNumber;
   final String category;
 
+  final int? atomicNumber;
+  final double? atomicMass;
+
   const ChemicalModel({
     required this.id,
     required this.name,
@@ -23,6 +26,8 @@ class ChemicalModel {
     this.meltingPoint,
     this.boilingPoint,
     this.casNumber,
+    this.atomicNumber,
+    this.atomicMass,
     required this.category,
   });
 
@@ -45,6 +50,10 @@ class ChemicalModel {
           ? (json['boilingPoint'] as num).toDouble()
           : null,
       casNumber: json['casNumber'] as String?,
+      atomicNumber: json['atomicNumber'] as int?,
+      atomicMass: json['atomicMass'] != null
+          ? (json['atomicMass'] as num).toDouble()
+          : null,
       category: json['category'] as String? ?? 'Other',
     );
   }
@@ -60,6 +69,8 @@ class ChemicalModel {
       'meltingPoint': meltingPoint,
       'boilingPoint': boilingPoint,
       'casNumber': casNumber,
+      'atomicNumber': atomicNumber,
+      'atomicMass': atomicMass,
       'category': category,
     };
   }

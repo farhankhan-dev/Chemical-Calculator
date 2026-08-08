@@ -89,6 +89,31 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.primarySurface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.primaryLight),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.functions, color: AppColors.primary),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Eq. Weight = Molar Mass / Valency',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.primaryDark,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xl),
+
             // Select Chemical
             Text('Lookup from Database', style: AppTextStyles.label),
             const SizedBox(height: 8),
