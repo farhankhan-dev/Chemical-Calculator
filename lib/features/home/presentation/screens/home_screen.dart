@@ -88,12 +88,41 @@ class _HomeScreenState extends State<HomeScreen> {
                 _buildRecentSearches(),
               ],
 
-              const SizedBox(height: AppSpacing.sm),
-
+              const SizedBox(height: AppSpacing.xl),
+              _buildDisclaimer(),
               const SizedBox(height: AppSpacing.lg),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildDisclaimer() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.primarySurface.withValues(alpha: 0.5),
+        borderRadius: AppSpacing.borderRadiusMd,
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.info_outline_rounded,
+            size: 16,
+            color: AppColors.primary,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'For educational reference — always verify critical calculations.',
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.primary,
+                fontSize: 11,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -117,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Chemical Formulas\n in One Place',
+                ' Chemical Formulas\n in One Place',
                 style: AppTextStyles.bodyMedium.copyWith(
                   fontSize: 14,
                   height: 1.4,
@@ -131,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: SizedBox(
-            width: 90,
+            width: 100,
             height: 90,
             child: Image.asset(
               'assets/images/head-image.jpeg',
