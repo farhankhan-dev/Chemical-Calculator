@@ -7,6 +7,6 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
     // Verify splash screen elements are displayed
-    expect(find.text('Chemi Calc'), findsOneWidget);
+    expect(find.text('ChemiCalc'), findsOneWidget);
   });
 }

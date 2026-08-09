@@ -4,7 +4,7 @@ import '../../../../app/theme/app_text_styles.dart';
 
 /// Animated splash screen — 1.4 seconds.
 ///
-/// Shows the app logo with scale animation, "Chemi Calc" text with fade-in,
+/// Shows the app logo with scale animation, "Chemicalc" text with fade-in,
 /// and "Powered by Devriz" at the bottom.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

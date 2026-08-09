@@ -1,6 +1,6 @@
 {
-    "name": "chemi_calc",
-    "short_name": "chemi_calc",
+    "name": "ChemiCalc",
+    "short_name": "ChemiCalc",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
