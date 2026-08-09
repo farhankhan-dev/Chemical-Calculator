@@ -28,9 +28,9 @@ class CalculatorsScreen extends StatelessWidget {
               Text(
                 'Calculators',
                 style: AppTextStyles.h1.copyWith(
-                  color: AppColors.textPrimary,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
+                  color: AppColors.primary,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
               const SizedBox(height: 4),

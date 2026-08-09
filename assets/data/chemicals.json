@@ -72,7 +72,7 @@
     "category": "Organic Compound",
     "atomicNumber": null,
     "atomicMass": 58.08,
-    "note": null
+    "note": "The simplest ketone; exemplifies polar aprotic solvent behavior and low boiling point hazard • MP: -94.7°C; low due to lack of hydrogen bonding capability • BP: 56.1°C; extremely low due to dipole-dipole interactions only (no H-bonding) • Flash point: -20°C; highly flammable with low vapor pressure • Widely used as solvent for plastics, paints, and pharmaceuticals; important in synthesis of bisphenol A and methyl methacrylate"
   },
   {
     "id": 6,
@@ -237,7 +237,7 @@
     "category": "Inorganic Compound",
     "atomicNumber": null,
     "atomicMass": 17.031,
-    "note": null
+    "note": "One of the most important industrial chemicals; fundamental to understanding hydrogen bonding and gas behavior at STP • MP: -77.7°C; exists as gas at STP due to weak intermolecular forces • BP: -33.3°C; hydrogen bonding elevates BP above PH3 • High solubility in water due to hydrogen bonding (forming NH4OH) • Key precursor for fertilizers (urea, ammonium salts) and explosives; used in Ostwald process for HNO3 production"
   },
   {
     "id": 17,
@@ -312,7 +312,7 @@
     "category": "Salt",
     "atomicNumber": null,
     "atomicMass": 53.489,
-    "note": null
+    "note": "Classic example of sublimation; no true liquid phase at 1 atm due to decomposition • No true MP; sublimation/decomposition at ~338°C to NH3(g) + HCl(g) • No true BP; decomposes to gases without melting (can recombine on cooling) • Dissolves endothermically in water; used as flux for soldering and as an electrolyte • Source of NH3 in thermal decomposition; used in dry cell batteries, as expectorant, and in textile printing"
   },
   {
     "id": 22,
@@ -612,7 +612,7 @@
     "category": "Organic Compound",
     "atomicNumber": null,
     "atomicMass": 78.11,
-    "note": null
+    "note": "The foundational aromatic hydrocarbon; exemplifies aromaticity (delocalized π-electrons) and stability paradox • MP: 5.5°C; relatively high due to efficient π-π stacking in crystal lattice • BP: 80.1°C; elevated due to strong π-π interactions • Classified as Group 1 carcinogen; metabolized to epoxide intermediates that bind to DNA • Parent compound for all aromatic chemistry; precursor to styrene, phenol, cyclohexane, and many pharmaceuticals"
   },
   {
     "id": 42,
@@ -792,7 +792,7 @@
     "category": "Salt",
     "atomicNumber": null,
     "atomicMass": 100.086,
-    "note": null
+    "note": "The most abundant carbonate mineral; demonstrates thermal decomposition (calcination) and the carbon cycle • MP: 1339°C (CaO + CO2 begins at ~840°C); decomposes before true melting • No true BP; decomposes at ~840°C to CaO + CO2 • Insoluble in water; dissolves in acidic solution (cave formation via CO2 + H2O → H2CO3) • Major component of limestone, marble, and chalk; critical in cement production (Portland cement) and carbon capture"
   },
   {
     "id": 54,
@@ -1242,7 +1242,7 @@
     "category": "Inorganic Compound",
     "atomicNumber": null,
     "atomicMass": 18.01528,
-    "note": ""
+    "note": "The universal solvent; exhibits anomalous physical properties due to extensive hydrogen bonding network • MP: 0.0°C; abnormally high for a hydride of Group 16 due to H-bonding • BP: 100.0°C; extremely high for a small molecule (compare H2S = -60°C) • Highest heat capacity of any common liquid (4.18 J/g·K); maximum density at 4°C • Essential for all known life; primary solvent in biological and chemical systems; standard reference point for thermodynamics"
   },
   {
     "id": 84,
@@ -1362,7 +1362,7 @@
     "category": "Organic Compound",
     "atomicNumber": null,
     "atomicMass": 46.069,
-    "note": null
+    "note": "The most important simple alcohol; serves as reference point for alcohol physical properties and reactivity • MP: -114.1°C; low MP due to small size and limited hydrogen bonding • BP: 78.4°C; significantly lower than water despite hydrogen bonding • Flammable; undergoes oxidation to acetaldehyde then acetic acid • Universal solvent for organic compounds; used as fuel, disinfectant, and chemical feedstock"
   },
   {
     "id": 92,
@@ -1617,7 +1617,7 @@
     "category": "Inorganic Compound",
     "atomicNumber": null,
     "atomicMass": 34.0147,
-    "note": null
+    "note": "Classic example of thermodynamically unstable compound; decomposes via radical mechanism • MP: -0.4°C; slightly below water's MP due to altered H-bonding network • BP: 150.2°C; higher than water due to stronger H-bonding (more H-bond donors/acceptors) • Decomposes exothermically: 2H2O2 → 2H2O + O2 (ΔH = -98 kJ/mol); catalyzed by MnO2, Fe2+, and light • Key industrial bleaching agent (paper, textiles); used as disinfectant and rocket propellant (high-test peroxide)"
   },
   {
     "id": 109,
@@ -2202,7 +2202,7 @@
     "category": "Organic Compound",
     "atomicNumber": null,
     "atomicMass": 32.04,
-    "note": null
+    "note": "The simplest alcohol; critical case study for toxicity and metabolic conversion to formaldehyde/formic acid • MP: -97.6°C; very low due to minimal van der Waals interactions • BP: 64.7°C; lower than ethanol due to weaker intermolecular forces • Highly toxic; metabolized to formaldehyde (toxic) and formic acid (causes blindness/death) • Key industrial feedstock for formaldehyde, acetic acid, and MTBE production; used as fuel and solvent"
   },
   {
     "id": 148,
@@ -2922,7 +2922,7 @@
     "category": "Salt",
     "atomicNumber": null,
     "atomicMass": 101.102,
-    "note": null
+    "note": "Classic oxidizer and component of gunpowder; decomposes thermally releasing O2 • MP: 334°C; lower than other nitrates due to large cation size • No true BP; decomposes at ~400°C releasing O2 (2KNO3 → 2KNO2 + O2) • Strong oxidizer; forms gunpowder mixture with charcoal and sulfur (75% KNO3, 15% C, 10% S) • Fertilizer (source of N and K); used in fireworks, rocket propellants, and food preservation (curing meats)"
   },
   {
     "id": 196,
@@ -3132,7 +3132,7 @@
     "category": "Salt",
     "atomicNumber": null,
     "atomicMass": 169.872,
-    "note": null
+    "note": "Classic example of photochemical decomposition; light-sensitive ionic compound • MP: 212°C; relatively low for a nitrate salt (large Ag+ cation weakens ionic lattice) • No true BP; decomposes at ~440°C to Ag + NO2 + O2 • Light-sensitive: 2AgNO3 → 2Ag + 2NO2 + O2 (photodecomposition; stains black) • Widely used in analytical chemistry (halide precipitation); precursor to AgCl, AgBr, and AgI; used in photography and as antimicrobial agent"
   },
   {
     "id": 210,
@@ -3192,7 +3192,7 @@
     "category": "Salt",
     "atomicNumber": null,
     "atomicMass": 84.0066,
-    "note": null
+    "note": "Most thermally labile common carbonate; decomposes at low temperature to Na2CO3 + CO2 + H2O • Decomposes at ~50-100°C (no true MP); loses H2O and CO2 sequentially • No true BP; decomposes chemically before melting • Amphoteric; reacts with both acids (releasing CO2) and bases • Key leavening agent in baking; used as antacid, fire extinguisher, and in photography; precursor to Na2CO3"
   },
   {
     "id": 214,
@@ -3252,7 +3252,7 @@
     "category": "Salt",
     "atomicNumber": null,
     "atomicMass": 105.988,
-    "note": null
+    "note": "Classic salt that decomposes before boiling; illustrates difference between physical and chemical change • MP: 851°C; decomposes at 851°C to Na2O + CO2 • No true BP; undergoes thermal decomposition before reaching boiling point • Highly hygroscopic; forms hydrates (Na2CO3·10H2O = washing soda) • Major industrial chemical (glass production); used in water softening, detergent, and pH adjustment in paper industry"
   },
   {
     "id": 218,
@@ -3432,7 +3432,7 @@
     "category": "Salt",
     "atomicNumber": null,
     "atomicMass": 84.994,
-    "note": null
+    "note": "Another classic nitrate salt; decomposition path differs from KNO3 and releases NOx gases • MP: 307°C; higher than KNO3 due to smaller Na+ cation (stronger ionic bonding) • No true BP; decomposes at ~380°C: 2NaNO3 → 2NaNO2 + O2 (continues to Na2O + NOx at higher T) • Strong oxidizer; hygroscopic (requires careful storage) • Major fertilizer (Chile saltpeter); used in glass production, explosives, and as food preservative"
   },
   {
     "id": 230,
@@ -3867,7 +3867,7 @@
     "category": "Organic Compound",
     "atomicNumber": null,
     "atomicMass": 92.14,
-    "note": null
+    "note": "Methyl-substituted benzene; demonstrates effect of substituents on aromatic ring properties • MP: -95.0°C; methyl group disrupts π-π stacking (lower MP than benzene) • BP: 110.6°C; methyl group adds van der Waals interactions (higher BP than benzene) • Classified as neurotoxin; metabolized to hippuric acid (biomarker for exposure) • Precursor to TNT, benzoic acid, and polyurethanes; widely used as solvent and paint thinner"
   },
   {
     "id": 259,
@@ -3927,7 +3927,7 @@
     "category": "Inorganic Compound",
     "atomicNumber": null,
     "atomicMass": 18.015,
-    "note": null
+    "note": "The universal solvent; exhibits anomalous physical properties due to extensive hydrogen bonding network • MP: 0.0°C; abnormally high for a hydride of Group 16 due to H-bonding • BP: 100.0°C; extremely high for a small molecule (compare H2S = -60°C) • Highest heat capacity of any common liquid (4.18 J/g·K); maximum density at 4°C • Essential for all known life; primary solvent in biological and chemical systems; standard reference point for thermodynamics"
   },
   {
     "id": 263,

@@ -1,4 +1,5 @@
 import json
+import os
 
 user_data = """1	Ammonia	NH3	Gas at room temp; negative BP (-33.3°C) [citation:1][citation:12]	Students expect all compounds to be liquid/solid; must understand phase at STP	Yes - Add "Gas at STP" warning
 2	Ethanol	C2H5OH	Common lab solvent; MP -114.1°C, BP 78.4°C [citation:2][citation:13]	Often confused with methanol (similar formula, very different toxicity)	Yes - Display toxicity warning
@@ -17,17 +18,18 @@ user_data = """1	Ammonia	NH3	Gas at room temp; negative BP (-33.3°C) [citation:
 15	Silver Nitrate	AgNO3	Light-sensitive; MP 212°C [citation:9]	Photodecomposes; must be stored properly; stains skin black	Yes - Add "Light-Sensitive - Store in dark" warning"""
 
 notes = {}
-for line in user_data.strip().split('\\n'):
-    parts = line.split('\\t')
+for line in user_data.strip().split('\n'):
+    parts = line.split('\t')
     if len(parts) >= 5:
         name = parts[1].strip()
         reason = parts[4].strip()
         notes[name.lower()] = reason
 
-# water vs dihydrogen monoxide? Water isn't strictly 'water' in the json if it's 'Dihydrogen monoxide'. Let's map 'water' to 'dihydrogen monoxide' just in case.
 notes['dihydrogen monoxide'] = notes.get('water', '')
 
-with open('assets/data/chemicals.json', 'r', encoding='utf-8') as f:
+file_path = 'assets/data/chemicals.json'
+
+with open(file_path, 'r', encoding='utf-8') as f:
     chemicals = json.load(f)
 
 for chem in chemicals:
@@ -38,5 +40,7 @@ for chem in chemicals:
         # Default empty note or none
         chem['note'] = None
 
-with open('assets/data/chemicals.json', 'w', encoding='utf-8') as f:
+with open(file_path, 'w', encoding='utf-8') as f:
     json.dump(chemicals, f, indent=2, ensure_ascii=False)
+
+print("Notes updated successfully.")
