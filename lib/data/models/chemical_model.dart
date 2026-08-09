@@ -17,6 +17,7 @@ class ChemicalModel {
 
   final int? atomicNumber;
   final double? atomicMass;
+  final String? note;
 
   int get displayAtomicNumber {
     return AtomicUtils.getAtomicNumber(formula, explicitAtomicNumber: atomicNumber);
@@ -34,6 +35,7 @@ class ChemicalModel {
     this.casNumber,
     this.atomicNumber,
     this.atomicMass,
+    this.note,
     required this.category,
   });
 
@@ -60,6 +62,7 @@ class ChemicalModel {
       atomicMass: json['atomicMass'] != null
           ? (json['atomicMass'] as num).toDouble()
           : null,
+      note: json['note'] as String?,
       category: json['category'] as String? ?? 'Other',
     );
   }
@@ -77,6 +80,7 @@ class ChemicalModel {
       'casNumber': casNumber,
       'atomicNumber': atomicNumber,
       'atomicMass': atomicMass,
+      'note': note,
       'category': category,
     };
   }

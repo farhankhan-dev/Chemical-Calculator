@@ -104,8 +104,69 @@ class ChemicalDetailScreen extends StatelessWidget {
             if (chemical.boilingPoint != null)
               _buildDetailRow('Boiling Point', '${chemical.boilingPoint} °C', Icons.local_fire_department_outlined),
             if (chemical.casNumber != null)
-              _buildDetailRow('CAS Number', chemical.casNumber!, Icons.tag),
+              _buildDetailRow(
+                'CAS Number', 
+                chemical.casNumber!, 
+                Icons.tag,
+                trailing: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: const BorderSide(color: Colors.purple, width: 2),
+                        ),
+                        title: const Text('CAS Number', style: TextStyle(color: Colors.black)),
+                        content: const Text(
+                          'A CAS Registry Number is a unique numerical identifier assigned by the Chemical Abstracts Service to every chemical substance. It ensures accurate identification regardless of the various names an element or compound might have.',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('Close', style: TextStyle(color: Colors.purple)),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    child: const Text(
+                      '¡',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.purple,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               
+            if (chemical.note != null && chemical.note!.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.lg),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.amber.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.amber.shade700),
+                ),
+                child: Text(
+                  'Note : ${chemical.note!}',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w600,
+                    height: 1.4,
+                  ),
+                ),
+              ),
+            ],
+
             const SizedBox(height: AppSpacing.xxl),
           ],
         ),
@@ -113,7 +174,7 @@ class ChemicalDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(String label, String value, IconData icon) {
+  Widget _buildDetailRow(String label, String value, IconData icon, {Widget? trailing}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -165,6 +226,7 @@ class ChemicalDetailScreen extends StatelessWidget {
               ],
             ),
           ),
+          if (trailing != null) trailing,
         ],
       ),
     );
