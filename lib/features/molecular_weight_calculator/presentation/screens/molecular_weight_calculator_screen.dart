@@ -3,6 +3,9 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/utils/format_utils.dart';
+import '../../../../data/datasources/chemical_local_datasource.dart';
+import '../../../../data/models/chemical_model.dart';
+import '../../../home/presentation/widgets/chemical_search_bar.dart';
 
 class MolecularWeightCalculatorScreen extends StatefulWidget {
   const MolecularWeightCalculatorScreen({super.key});
@@ -16,10 +19,13 @@ class _MolecularWeightCalculatorScreenState
     extends State<MolecularWeightCalculatorScreen> {
   final TextEditingController _formulaController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final ChemicalLocalDatasource _datasource = ChemicalLocalDatasource();
 
   double? _totalMass;
   List<Map<String, dynamic>> _breakdown = [];
   String? _error;
+  List<ChemicalModel> _suggestions = [];
+  ChemicalModel? _selectedChemical;
 
   static const Map<String, double> atomicWeights = {
     'H': 1.008, 'He': 4.0026, 'Li': 6.94, 'Be': 9.0122, 'B': 10.81,
@@ -44,9 +50,41 @@ class _MolecularWeightCalculatorScreenState
     super.dispose();
   }
 
+  void _onSearchChanged(String query) async {
+    if (query.trim().isEmpty) {
+      if (mounted) {
+        setState(() {
+          _suggestions = [];
+          _selectedChemical = null;
+        });
+      }
+      return;
+    }
+    
+    // If they start typing something else, clear the selected chemical
+    if (_selectedChemical != null && _selectedChemical!.formula != query.trim()) {
+      setState(() => _selectedChemical = null);
+    }
+
+    final results = await _datasource.searchByFormula(query);
+    if (mounted) {
+      setState(() => _suggestions = results);
+    }
+  }
+
   void _calculate() {
     final formula = _formulaController.text.trim();
     if (formula.isEmpty) return;
+
+    if (_selectedChemical != null && formula == _selectedChemical!.formula) {
+      setState(() {
+        _totalMass = _selectedChemical!.molecularWeight;
+        _error = null;
+        _breakdown = []; // Database items bypass breakdown parsing
+      });
+      FocusScope.of(context).unfocus();
+      return;
+    }
 
     if (formula.contains('(') || formula.contains(')')) {
       setState(() {
@@ -216,31 +254,27 @@ class _MolecularWeightCalculatorScreenState
             ),
             const SizedBox(height: AppSpacing.lg),
 
-            Text('Chemical Formula', style: AppTextStyles.label),
-            const SizedBox(height: 8),
-            TextField(
+            ChemicalSearchBar(
               controller: _formulaController,
-              decoration: InputDecoration(
-                hintText: 'e.g. H2SO4, C6H12O6, NaCl',
-                filled: true,
-                fillColor: AppColors.surface,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.border),
-                ),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.clear, size: 18),
-                  onPressed: () {
-                    _formulaController.clear();
-                    setState(() {
-                      _totalMass = null;
-                      _breakdown = [];
-                      _error = null;
-                    });
-                  },
-                ),
-              ),
-              onSubmitted: (_) => _calculate(),
+              suggestions: _suggestions,
+              hintText: 'e.g. NaCl or H2O',
+              onChanged: _onSearchChanged,
+              onSelected: (chem) {
+                _formulaController.text = chem.formula;
+                setState(() {
+                  _suggestions = [];
+                  _selectedChemical = chem;
+                });
+                FocusManager.instance.primaryFocus?.unfocus();
+                _calculate();
+              },
+              onClear: () {
+                _formulaController.clear();
+                setState(() {
+                  _suggestions = [];
+                  _selectedChemical = null;
+                });
+              },
             ),
             const SizedBox(height: AppSpacing.lg),
 
@@ -331,6 +365,7 @@ class _MolecularWeightCalculatorScreenState
               Text('Step-by-Step Calculation', style: AppTextStyles.h3),
               const SizedBox(height: AppSpacing.sm),
               Container(
+                width: double.infinity,
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: AppColors.surface,
@@ -340,135 +375,45 @@ class _MolecularWeightCalculatorScreenState
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      'MW = Σ (Number of Atoms × Atomic Weight)',
+                      style: AppTextStyles.label.copyWith(
+                        color: AppColors.primaryDark,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
                     ..._breakdown.map((item) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 6),
                         child: Text(
-                          '${item['element']} (×${item['count']})  =  ${item['count']} × ${item['weight']} g/mol  =  ${FormatUtils.format(item['contribution'])} g/mol',
+                          '${item['element']}: ${item['weight']} × ${item['count']} = ${FormatUtils.format(item['contribution'])}',
                           style: AppTextStyles.mono.copyWith(
                             color: AppColors.textPrimary,
-                            fontSize: 13,
+                            fontSize: 14,
+                            height: 1.4,
                           ),
                         ),
                       );
                     }),
+                    const SizedBox(height: 4),
                     const Divider(),
+                    const SizedBox(height: 4),
                     Text(
-                      'Total  =  ${FormatUtils.format(_totalMass!)} g/mol',
+                      'Total = ${FormatUtils.format(_totalMass!)} g/mol',
                       style: AppTextStyles.mono.copyWith(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w700,
-                        fontSize: 14,
+                        fontSize: 15,
                       ),
                     ),
                   ],
                 ),
               ),
 
-              const SizedBox(height: AppSpacing.xl),
 
-              // Element Breakdown
-              Text('Element Breakdown', style: AppTextStyles.h3),
-              const SizedBox(height: AppSpacing.sm),
-              Material(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
-                clipBehavior: Clip.antiAlias,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.borderLight),
-                  ),
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: _breakdown.length,
-                    separatorBuilder: (_, __) =>
-                        const Divider(height: 1),
-                    itemBuilder: (context, index) {
-                      final item = _breakdown[index];
-                      final percentage =
-                          (item['contribution'] / _totalMass!) * 100;
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: AppColors.primarySurface,
-                          foregroundColor: AppColors.primary,
-                          child: Text(item['element'],
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                        title: Text('${item['element']} × ${item['count']}'),
-                        subtitle: Text('${item['weight']} g/mol each'),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              '${FormatUtils.format(item['contribution'])} g/mol',
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.textPrimary),
-                            ),
-                            Text(
-                              '${FormatUtils.format(percentage)}%',
-                              style: AppTextStyles.bodySmall,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
 
-              const SizedBox(height: AppSpacing.xl),
 
-              // Why explanation
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.primarySurface,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.primaryLight),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.lightbulb_outline,
-                            color: AppColors.primary, size: 18),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Why this answer?',
-                          style: AppTextStyles.label.copyWith(
-                              color: AppColors.primaryDark,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Molecular Weight (MW) = Σ (nᵢ × Aᵢ)\n\n'
-                      'Every element has a fixed Atomic Weight (shown in the periodic table). '
-                      'To find the molecular weight of a compound:\n\n'
-                      '1. Identify each element in the formula.\n'
-                      '2. Look up its atomic weight (g/mol).\n'
-                      '3. Multiply by the number of atoms of that element.\n'
-                      '4. Sum all the values.\n\n'
-                      'Example: H₂SO₄\n'
-                      '  H: 2 × 1.008 = 2.016\n'
-                      '  S: 1 × 32.06 = 32.06\n'
-                      '  O: 4 × 15.999 = 63.996\n'
-                      '  MW = 2.016 + 32.06 + 63.996 = 98.072 g/mol\n\n'
-                      'This value tells you the mass of one mole (6.022 × 10²³) of that molecule.',
-                      style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.primaryDark, height: 1.6),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
             ],
           ],
         ),

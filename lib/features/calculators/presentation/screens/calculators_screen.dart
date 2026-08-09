@@ -28,9 +28,9 @@ class CalculatorsScreen extends StatelessWidget {
               Text(
                 'Calculators',
                 style: AppTextStyles.h1.copyWith(
-                  color: AppColors.textPrimary,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
+                  color: AppColors.primary,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
               const SizedBox(height: 4),
@@ -45,42 +45,6 @@ class CalculatorsScreen extends StatelessWidget {
               Expanded(
                 child: ListView(
                   children: [
-                    _buildCalculatorCard(
-                      context,
-                      title: 'Mass Calculator',
-                      subtitle: 'Calculate mass or volume requirements.',
-                      imageAsset: 'assets/images/Mass_calculator _icon.png',
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const MassCalculatorScreen()));
-                      },
-                    ),
-                    _buildCalculatorCard(
-                      context,
-                      title: 'Dilution Calculator',
-                      subtitle: 'Solve N₁V₁ = N₂V₂ dilution problems.',
-                      imageAsset: 'assets/images/Dilution_calculator_icon.png',
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const DilutionCalculatorScreen()));
-                      },
-                    ),
-                    _buildCalculatorCard(
-                      context,
-                      title: 'Equivalent Weight Calculator',
-                      subtitle: 'Calculate equivalent weight of compounds.',
-                      imageAsset: 'assets/images/Equivalent_Calculator_icon.png',
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const EquivalentWeightCalculatorScreen()));
-                      },
-                    ),
-                    _buildCalculatorCard(
-                      context,
-                      title: 'Molar Mass Calculator',
-                      subtitle: 'Calculate molar mass of chemical compounds.',
-                      imageAsset: 'assets/images/Molar_Mass_icon.png',
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const MolarMassCalculatorScreen()));
-                      },
-                    ),
                     _buildCalculatorCard(
                       context,
                       title: 'Molarity Calculator',
@@ -101,11 +65,47 @@ class CalculatorsScreen extends StatelessWidget {
                     ),
                     _buildCalculatorCard(
                       context,
+                      title: 'Equivalent Weight Calculator',
+                      subtitle: 'Calculate equivalent weight of compounds.',
+                      imageAsset: 'assets/images/Equivalent_Calculator_icon.png',
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const EquivalentWeightCalculatorScreen()));
+                      },
+                    ),
+                    _buildCalculatorCard(
+                      context,
                       title: 'Molecular Weight Calculator',
                       subtitle: 'Calculate molecular weight from chemical formula.',
                       icon: Icons.scale_outlined,
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (_) => const MolecularWeightCalculatorScreen()));
+                      },
+                    ),
+                    _buildCalculatorCard(
+                      context,
+                      title: 'Dilution Calculator',
+                      subtitle: 'Solve N₁V₁ = N₂V₂ dilution problems.',
+                      imageAsset: 'assets/images/Dilution_calculator_icon.png',
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const DilutionCalculatorScreen()));
+                      },
+                    ),
+                    _buildCalculatorCard(
+                      context,
+                      title: 'Molar Mass Calculator',
+                      subtitle: 'Calculate molar mass of chemical compounds.',
+                      imageAsset: 'assets/images/Molar_Mass_icon.png',
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const MolarMassCalculatorScreen()));
+                      },
+                    ),
+                    _buildCalculatorCard(
+                      context,
+                      title: 'Mass Calculator',
+                      subtitle: 'Calculate mass or volume requirements.',
+                      imageAsset: 'assets/images/Mass_calculator _icon.png',
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const MassCalculatorScreen()));
                       },
                     ),
                     const SizedBox(height: AppSpacing.lg),

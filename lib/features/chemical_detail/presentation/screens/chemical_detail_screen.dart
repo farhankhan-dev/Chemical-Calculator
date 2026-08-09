@@ -104,8 +104,66 @@ class ChemicalDetailScreen extends StatelessWidget {
             if (chemical.boilingPoint != null)
               _buildDetailRow('Boiling Point', '${chemical.boilingPoint} °C', Icons.local_fire_department_outlined),
             if (chemical.casNumber != null)
-              _buildDetailRow('CAS Number', chemical.casNumber!, Icons.tag),
+              _buildDetailRow(
+                'CAS Number', 
+                chemical.casNumber!, 
+                Icons.tag,
+                labelTrailing: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        backgroundColor: Colors.purple.shade50,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(color: AppColors.primary, width: 2),
+                        ),
+                        title: const Text('CAS Number', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                        content: const Text(
+                          'A CAS Registry Number is a unique numerical identifier assigned by the Chemical Abstracts Service to every chemical substance. It ensures accurate identification regardless of the various names an element or compound might have.',
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('Close', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 4.0),
+                    child: Icon(
+                      Icons.info_outline_rounded,
+                      size: 16,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
+              ),
               
+            if (chemical.note != null && chemical.note!.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.lg),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.purple.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.primary),
+                ),
+                child: Text(
+                  'Note : ${chemical.note!}',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w600,
+                    height: 1.4,
+                  ),
+                ),
+              ),
+            ],
+
             const SizedBox(height: AppSpacing.xxl),
           ],
         ),
@@ -113,7 +171,7 @@ class ChemicalDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(String label, String value, IconData icon) {
+  Widget _buildDetailRow(String label, String value, IconData icon, {Widget? trailing, Widget? labelTrailing}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -148,11 +206,20 @@ class ChemicalDetailScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  label,
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      label,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                    if (labelTrailing != null) ...[
+                      const SizedBox(width: 6),
+                      labelTrailing,
+                    ],
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -165,6 +232,7 @@ class ChemicalDetailScreen extends StatelessWidget {
               ],
             ),
           ),
+          if (trailing != null) trailing,
         ],
       ),
     );

@@ -89,73 +89,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
 
               const SizedBox(height: AppSpacing.xl),
-
-              // Disclaimer footer
               _buildDisclaimer(),
-
               const SizedBox(height: AppSpacing.lg),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Text section
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'ChemiCalc',
-                style: AppTextStyles.h1.copyWith(
-                  color: AppColors.primary,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'All Chemical Formulas\nin One Place',
-                style: AppTextStyles.bodyMedium.copyWith(
-                  fontSize: 14,
-                  height: 1.4,
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        // Molecule image from assets
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: SizedBox(
-            width: 90,
-            height: 90,
-            child: Image.asset(
-              'assets/images/head-image.jpeg',
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.primarySurface,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.science,
-                    size: 40,
-                    color: AppColors.primary,
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -187,6 +126,66 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  Widget _buildHeader() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Text section
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'ChemiCalc',
+                style: AppTextStyles.h1.copyWith(
+                  color: AppColors.primary,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                ' Chemical Formulas\n in One Place',
+                style: AppTextStyles.bodyMedium.copyWith(
+                  fontSize: 14,
+                  height: 1.4,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        // Molecule image from assets
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: SizedBox(
+            width: 100,
+            height: 90,
+            child: Image.asset(
+              'assets/images/head-image.jpeg',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.primarySurface,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.science,
+                    size: 40,
+                    color: AppColors.primary,
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
 
   Widget _buildRecentSearches() {
     return Column(

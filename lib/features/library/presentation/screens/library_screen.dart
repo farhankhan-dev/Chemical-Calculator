@@ -128,9 +128,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
               Text(
                 'Chemical Library',
                 style: AppTextStyles.h1.copyWith(
-                  color: AppColors.textPrimary,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
+                  color: AppColors.primary,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
               const SizedBox(height: 4),
@@ -340,6 +340,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
           trailing: const Icon(Icons.chevron_right,
               color: AppColors.textTertiary, size: 20),
           onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
             Navigator.push(
               context,
               MaterialPageRoute(

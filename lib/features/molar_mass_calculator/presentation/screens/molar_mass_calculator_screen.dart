@@ -3,6 +3,9 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/utils/format_utils.dart';
+import '../../../../data/datasources/chemical_local_datasource.dart';
+import '../../../../data/models/chemical_model.dart';
+import '../../../home/presentation/widgets/chemical_search_bar.dart';
 
 class MolarMassCalculatorScreen extends StatefulWidget {
   const MolarMassCalculatorScreen({super.key});
@@ -14,10 +17,13 @@ class MolarMassCalculatorScreen extends StatefulWidget {
 class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
   final TextEditingController _formulaController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final ChemicalLocalDatasource _datasource = ChemicalLocalDatasource();
   
   double? _totalMass;
   List<Map<String, dynamic>> _breakdown = [];
   String? _error;
+  List<ChemicalModel> _suggestions = [];
+  ChemicalModel? _selectedChemical;
 
   static const Map<String, double> atomicWeights = {
     'H': 1.008, 'He': 4.0026, 'Li': 6.94, 'Be': 9.0122, 'B': 10.81, 'C': 12.011, 'N': 14.007, 'O': 15.999, 'F': 18.998, 'Ne': 20.180,
@@ -36,6 +42,27 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
     super.dispose();
   }
 
+  void _onSearchChanged(String query) async {
+    if (query.trim().isEmpty) {
+      if (mounted) {
+        setState(() {
+          _suggestions = [];
+          _selectedChemical = null;
+        });
+      }
+      return;
+    }
+
+    if (_selectedChemical != null && _selectedChemical!.formula != query.trim()) {
+      setState(() => _selectedChemical = null);
+    }
+
+    final results = await _datasource.searchByFormula(query);
+    if (mounted) {
+      setState(() => _suggestions = results);
+    }
+  }
+
   void _calculate() {
     String formula = _formulaController.text.trim();
     if (formula.isEmpty) return;
@@ -45,6 +72,16 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
     double total = 0.0;
     List<Map<String, dynamic>> breakdown = [];
     bool hasError = false;
+
+    if (_selectedChemical != null && formula == _selectedChemical!.formula) {
+      setState(() {
+        _totalMass = _selectedChemical!.molecularWeight;
+        _error = null;
+        _breakdown = [];
+      });
+      FocusScope.of(context).unfocus();
+      return;
+    }
 
     // Check if there are unsupported characters like brackets
     if (formula.contains('(') || formula.contains(')')) {
@@ -178,20 +215,27 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
             ),
             const SizedBox(height: AppSpacing.lg),
 
-            Text('Chemical Formula', style: AppTextStyles.label),
-            const SizedBox(height: 8),
-            TextField(
+            ChemicalSearchBar(
               controller: _formulaController,
-              decoration: InputDecoration(
-                hintText: 'e.g. H2SO4 or C6H12O6',
-                filled: true,
-                fillColor: AppColors.surface,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.border),
-                ),
-              ),
-              onSubmitted: (_) => _calculate(),
+              suggestions: _suggestions,
+              hintText: 'e.g. H2SO4 or C6H12O6',
+              onChanged: _onSearchChanged,
+              onSelected: (chem) {
+                _formulaController.text = chem.formula;
+                setState(() {
+                  _suggestions = [];
+                  _selectedChemical = chem;
+                });
+                FocusManager.instance.primaryFocus?.unfocus();
+                _calculate();
+              },
+              onClear: () {
+                _formulaController.clear();
+                setState(() {
+                  _suggestions = [];
+                  _selectedChemical = null;
+                });
+              },
             ),
             const SizedBox(height: AppSpacing.lg),
 
@@ -251,53 +295,7 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: AppSpacing.xl),
-              Text('Element Breakdown', style: AppTextStyles.h3),
-              const SizedBox(height: AppSpacing.sm),
-              Material(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
-                clipBehavior: Clip.antiAlias,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.borderLight),
-                  ),
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: _breakdown.length,
-                    separatorBuilder: (context, index) => const Divider(height: 1),
-                    itemBuilder: (context, index) {
-                      final item = _breakdown[index];
-                      final percentage = (item['contribution'] / _totalMass!) * 100;
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: AppColors.primarySurface,
-                          foregroundColor: AppColors.primary,
-                          child: Text(item['element'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        title: Text('${item['element']} × ${item['count']}'),
-                        subtitle: Text('${item['weight']} g/mol each'),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              '${FormatUtils.format(item['contribution'])} g',
-                              style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.bold, color: AppColors.textPrimary),
-                            ),
-                            Text(
-                              '${FormatUtils.format(percentage)}%',
-                              style: AppTextStyles.bodySmall,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
+
             ]
           ],
         ),
