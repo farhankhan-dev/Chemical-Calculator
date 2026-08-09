@@ -295,53 +295,7 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: AppSpacing.xl),
-              Text('Element Breakdown', style: AppTextStyles.h3),
-              const SizedBox(height: AppSpacing.sm),
-              Material(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
-                clipBehavior: Clip.antiAlias,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.borderLight),
-                  ),
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: _breakdown.length,
-                    separatorBuilder: (context, index) => const Divider(height: 1),
-                    itemBuilder: (context, index) {
-                      final item = _breakdown[index];
-                      final percentage = (item['contribution'] / _totalMass!) * 100;
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: AppColors.primarySurface,
-                          foregroundColor: AppColors.primary,
-                          child: Text(item['element'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        title: Text('${item['element']} × ${item['count']}'),
-                        subtitle: Text('${item['weight']} g/mol each'),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              '${FormatUtils.format(item['contribution'])} g',
-                              style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.bold, color: AppColors.textPrimary),
-                            ),
-                            Text(
-                              '${FormatUtils.format(percentage)}%',
-                              style: AppTextStyles.bodySmall,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
+
             ]
           ],
         ),
