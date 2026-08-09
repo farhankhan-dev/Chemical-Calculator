@@ -136,7 +136,7 @@ class _SplashScreenState extends State<SplashScreen>
                 Opacity(
                   opacity: _textFade.value,
                   child: Text(
-                    'All Chemical Formulas in One Place',
+                    'Chemical Formulas in One Place',
                     style: AppTextStyles.splashSubtitle.copyWith(
                       color: AppColors.textSecondary,
                     ),

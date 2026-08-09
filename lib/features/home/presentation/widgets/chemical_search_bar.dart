@@ -33,16 +33,12 @@ class ChemicalSearchBar extends StatelessWidget {
       children: [
         // Label
         Text(
-          'Enter Chemical Name to get results',
+          ' Enter Chemical Name to get results',
           style: AppTextStyles.label.copyWith(
             fontWeight: FontWeight.w600,
           ),
         ),
-        const SizedBox(height: 4),
-        Text(
-          'Type any chemical to get results',
-          style: AppTextStyles.bodySmall,
-        ),
+
         const SizedBox(height: AppSpacing.sm),
 
         // Search input field
