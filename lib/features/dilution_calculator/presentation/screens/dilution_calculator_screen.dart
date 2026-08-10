@@ -139,7 +139,7 @@ class _DilutionCalculatorScreenState extends State<DilutionCalculatorScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.functions, color: AppColors.primary),
+                  Image.asset('assets/images/Dilution_calculator_icon.png', width: 24, height: 24),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(

@@ -66,7 +66,7 @@ class _MolecularWeightCalculatorScreenState
       setState(() => _selectedChemical = null);
     }
 
-    final results = await _datasource.searchByFormula(query);
+    final results = await _datasource.search(query);
     if (mounted) {
       setState(() => _suggestions = results);
     }
@@ -205,7 +205,7 @@ class _MolecularWeightCalculatorScreenState
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.functions, color: AppColors.primary),
+                      const Icon(Icons.scale_outlined, color: AppColors.primary),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
@@ -351,7 +351,9 @@ class _MolecularWeightCalculatorScreenState
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'for: ${_formulaController.text.trim()}',
+                      _selectedChemical != null
+                          ? 'for: ${_selectedChemical!.name} (${_selectedChemical!.formula})'
+                          : 'for: ${_formulaController.text.trim()}',
                       style: AppTextStyles.bodySmall.copyWith(
                           color: Colors.white70),
                     ),

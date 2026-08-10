@@ -68,7 +68,7 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
             '= ${FormatUtils.format(chem.molecularWeight)} / ${FormatUtils.format(nFactor)} = ${FormatUtils.format(_result!)} g/eq';
       } else {
         _result = null;
-        _calculationString = 'Equivalent weight data not available for this chemical.\nPlease use manual entry.';
+        _calculationString = 'Equivalent weight value N/A\nPlease use manual entry.';
       }
     });
   }
@@ -98,7 +98,7 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.functions, color: AppColors.primary),
+                  Image.asset('assets/images/Equivalent_Calculator_icon.png', width: 24, height: 24),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -296,7 +296,7 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        '"${_selectedChemical!.name}" does not have Equivalent Weight data in our database.\n\n'
+                        '"${_selectedChemical!.name}" does not have Equivalent weight fixed value.\n\n'
                         'Equivalent Weight = Molar Mass ÷ n-factor\n\n'
                         'The n-factor (valency factor) tells how many H⁺ or OH⁻ ions a compound donates or accepts in a reaction. For some chemicals — like pure elements, organic solvents, or compounds with variable valency — no single fixed n-factor can be assigned.\n\n'
                         'You can still calculate manually using the fields above if you know the n-factor for your specific reaction.',

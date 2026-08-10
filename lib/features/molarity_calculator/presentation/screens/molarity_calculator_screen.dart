@@ -101,7 +101,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.functions, color: AppColors.primary),
+                  const Icon(Icons.sync_outlined, color: AppColors.primary),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(

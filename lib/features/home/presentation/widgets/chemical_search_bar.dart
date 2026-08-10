@@ -33,7 +33,7 @@ class ChemicalSearchBar extends StatelessWidget {
       children: [
         // Label
         Text(
-          ' Enter Chemical Name to get results',
+          ' Enter Chemical Formula to get results',
           style: AppTextStyles.label.copyWith(
             fontWeight: FontWeight.w600,
           ),

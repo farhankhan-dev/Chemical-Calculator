@@ -120,7 +120,7 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.functions, color: AppColors.primary),
+                  Image.asset('assets/images/Mass_calculator _icon.png', width: 24, height: 24),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(

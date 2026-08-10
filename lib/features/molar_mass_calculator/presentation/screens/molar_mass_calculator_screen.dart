@@ -194,7 +194,7 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.functions, color: AppColors.primary),
+                  Image.asset('assets/images/Molar_Mass_icon.png', width: 24, height: 24),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -210,7 +210,7 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
-              'Calculate precise molar mass from any chemical formula.',
+              'Calculate precise molar mass from chemical formula.',
               style: AppTextStyles.bodyMedium,
             ),
             const SizedBox(height: AppSpacing.lg),
