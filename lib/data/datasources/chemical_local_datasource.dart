@@ -50,6 +50,20 @@ class ChemicalLocalDatasource {
     return [...prefixMatches, ...containsMatches];
   }
 
+  String _normalizeFormula(String formula) {
+    return formula
+        .replaceAll('₀', '0')
+        .replaceAll('₁', '1')
+        .replaceAll('₂', '2')
+        .replaceAll('₃', '3')
+        .replaceAll('₄', '4')
+        .replaceAll('₅', '5')
+        .replaceAll('₆', '6')
+        .replaceAll('₇', '7')
+        .replaceAll('₈', '8')
+        .replaceAll('₉', '9');
+  }
+
   /// Search chemicals by name or formula.
   Future<List<ChemicalModel>> search(String query) async {
     final all = await getAllChemicals();
@@ -63,12 +77,14 @@ class ChemicalLocalDatasource {
 
     for (final chem in all) {
       final nameLower = chem.name.toLowerCase();
-      final formulaLower = chem.formula.toLowerCase();
+      final formulaLower = _normalizeFormula(chem.formula).toLowerCase();
 
       if (nameLower.startsWith(q)) {
         prefixMatches.add(chem);
       } else if (nameLower.contains(q)) {
         containsMatches.add(chem);
+      } else if (formulaLower.startsWith(q)) {
+        formulaMatches.insert(0, chem); // prefix match for formula
       } else if (formulaLower.contains(q)) {
         formulaMatches.add(chem);
       }
@@ -89,7 +105,7 @@ class ChemicalLocalDatasource {
     final containsMatches = <ChemicalModel>[];
 
     for (final chem in all) {
-      final formulaLower = chem.formula.toLowerCase();
+      final formulaLower = _normalizeFormula(chem.formula).toLowerCase();
 
       if (formulaLower.startsWith(q)) {
         prefixMatches.add(chem);

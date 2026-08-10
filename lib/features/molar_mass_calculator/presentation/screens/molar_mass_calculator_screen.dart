@@ -57,7 +57,7 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
       setState(() => _selectedChemical = null);
     }
 
-    final results = await _datasource.searchByFormula(query);
+    final results = await _datasource.search(query);
     if (mounted) {
       setState(() => _suggestions = results);
     }
