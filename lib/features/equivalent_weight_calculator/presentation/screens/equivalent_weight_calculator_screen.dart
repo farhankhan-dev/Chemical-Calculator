@@ -73,6 +73,231 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
     });
   }
 
+  void _showEwNoteDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.purple.shade50,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.primary, width: 2),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Header
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.12),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.info_outline_rounded, color: AppColors.primary, size: 20),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Equivalent Weight Reference Notes',
+                        style: AppTextStyles.label.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.of(ctx).pop(),
+                      child: const Icon(Icons.close, color: AppColors.primary, size: 20),
+                    ),
+                  ],
+                ),
+              ),
+              // Scrollable content
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildEwNoteSection(
+                        title: '✅ Fixed EW — Single, definite EW value',
+                        color: Colors.green.shade800,
+                        bgColor: Colors.green.shade50,
+                        rows: const [
+                          ['Acetic Acid', 'CH₃COOH', '60.052 g/eq', 'Acid (1H⁺)'],
+                          ['Sulfuric Acid', 'H₂SO₄', '49.036 g/eq', 'Acid (2H⁺)'],
+                          ['Sodium Hydroxide', 'NaOH', '39.997 g/eq', 'Base (1OH⁻)'],
+                          ['Calcium Hydroxide', 'Ca(OH)₂', '37.046 g/eq', 'Base (2OH⁻)'],
+                          ['Sodium Chloride', 'NaCl', '58.44 g/eq', 'Salt (1 charge)'],
+                          ['Sodium Phosphate', 'Na₃PO₄', '54.647 g/eq', 'Salt (3 charge)'],
+                          ['Sulfate Ion', 'SO₄²⁻', '48.03 g/eq', 'Ion (2 charge)'],
+                        ],
+                      ),
+                      const SizedBox(height: 14),
+                      _buildEwNoteSection(
+                        title: '⚠️ Variable EW — EW depends on reaction/pH',
+                        color: Colors.orange.shade800,
+                        bgColor: Colors.orange.shade50,
+                        rows: const [
+                          ['KMnO₄', 'Acid (5e⁻)', '31.61 g/eq', 'Neutral/Base (3e⁻) → 52.68 g/eq'],
+                          ['KMnO₄', 'Strong Base (1e⁻)', '158.03 g/eq', 'Redox varies by pH'],
+                          ['K₂Cr₂O₇', 'Acid (6e⁻)', '49.03 g/eq', 'Neutral/Base (3e⁻) → 98.06 g/eq'],
+                          ['KIO₃', 'Acid (6e⁻)', '35.67 g/eq', 'Neutral/Base (4e⁻) → 53.50 g/eq'],
+                          ['KClO₃', 'Acid (6e⁻)', '20.42 g/eq', 'Varies for other reactions'],
+                          ['Fe₂O₃', 'Salt (charge)', '26.62 g/eq', 'Redox varies'],
+                          ['H₂CrO₄', 'Acid (2H⁺)', '59.01 g/eq', 'Redox varies'],
+                          ['Cr₂O₃', 'Salt (charge)', '25.33 g/eq', 'Redox varies'],
+                          ['PbO₂', 'Salt (charge)', '59.80 g/eq', 'Redox varies'],
+                          ['K₄Fe(CN)₆', 'Salt (charge)', '92.09 g/eq', 'Redox varies'],
+                          ['Al(OH)₃', 'As base (3OH⁻)', '26.00 g/eq', 'As acid (1H⁺) → 78.00 / (2H⁺) → 39.00'],
+                        ],
+                      ),
+                      const SizedBox(height: 14),
+                      _buildEwNoteSection(
+                        title: '🔶 Special Cases',
+                        color: Colors.deepOrange.shade800,
+                        bgColor: Colors.deepOrange.shade50,
+                        rows: const [
+                          ['NH₄Cl', 'Salt (charge)', '53.49 g/eq', 'Sublimes/decomposes — no liquid phase'],
+                          ['HClO₄', 'Acid (1H⁺)', '100.46 g/eq', 'Unstable pure compound'],
+                        ],
+                      ),
+                      const SizedBox(height: 14),
+                      _buildEwNoteSection(
+                        title: '❌ No Fixed EW — Polymers / Unstable species',
+                        color: Colors.red.shade800,
+                        bgColor: Colors.red.shade50,
+                        rows: const [
+                          ['Cellulose', '(C₆H₁₀O₅)ₙ', 'N/A', 'Chain length varies'],
+                          ['Polystyrene', '(C₈H₈)ₙ', 'N/A', 'Chain length varies'],
+                          ['Polyurethane Foam', 'C₂₇H₃₆N₂O₁₀', 'N/A', 'Complex variable structure'],
+                          ['Phenyl Radical', 'C₆H₅', 'N/A', 'Unstable radical — not a stable compound'],
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                        ),
+                        child: Text(
+                          'ℹ️ The app displays the most commonly used EW value with a valid reason. For variable EW compounds, the condition/context is shown alongside the value.',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w600,
+                            height: 1.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Close button
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(ctx).pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      elevation: 0,
+                    ),
+                    child: const Text('Got it', style: TextStyle(fontWeight: FontWeight.w700)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEwNoteSection({
+    required String title,
+    required Color color,
+    required Color bgColor,
+    required List<List<String>> rows,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 6),
+            child: Text(
+              title,
+              style: AppTextStyles.labelSmall.copyWith(
+                color: color,
+                fontWeight: FontWeight.w700,
+                fontSize: 12,
+              ),
+            ),
+          ),
+          const Divider(height: 1),
+          ...rows.map((row) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Text(
+                        row[0],
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: color,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: Text(
+                        '${row[2]}  •  ${row[1]}',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: Colors.black87,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: Text(
+                        row[3],
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: Colors.black54,
+                          fontSize: 10,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+          const SizedBox(height: 4),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,6 +307,16 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
         backgroundColor: AppColors.surface,
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.info_outline_rounded,
+              color: AppColors.primary,
+            ),
+            tooltip: 'EW Reference Notes',
+            onPressed: () => _showEwNoteDialog(context),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         controller: _scrollController,
