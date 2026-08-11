@@ -76,6 +76,307 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
     });
   }
 
+  void _showNormalityNoteDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.purple.shade50,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.primary, width: 2),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Header
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.12),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.info_outline_rounded, color: AppColors.primary, size: 20),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Normality Reference Notes',
+                        style: AppTextStyles.label.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.of(ctx).pop(),
+                      child: const Icon(Icons.close, color: AppColors.primary, size: 20),
+                    ),
+                  ],
+                ),
+              ),
+              // Scrollable content
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Molarity vs Normality
+                      _buildNoteCard(
+                        title: 'Molarity (M)',
+                        content: 'Moles of solute per Liter of solution.\nStatus: FIXED value for a given solution. Does NOT depend on reaction type.',
+                        icon: Icons.check_circle_outline,
+                        color: Colors.green.shade800,
+                        bgColor: Colors.green.shade50,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildNoteCard(
+                        title: 'Normality (N)',
+                        content: 'Equivalents of solute per Liter of solution.\nStatus: DEPENDS on reaction type because it uses n-factor.',
+                        icon: Icons.warning_amber_rounded,
+                        color: Colors.orange.shade800,
+                        bgColor: Colors.orange.shade50,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildNoteCard(
+                        title: 'Relation',
+                        content: 'N = M × n-factor',
+                        icon: Icons.link,
+                        color: AppColors.primary,
+                        bgColor: AppColors.primary.withValues(alpha: 0.08),
+                      ),
+                      const SizedBox(height: 16),
+                      // n-factor table
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.blue.shade300),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(12, 10, 12, 6),
+                              child: Text(
+                                '📐 n-factor Guide',
+                                style: AppTextStyles.labelSmall.copyWith(
+                                  color: Colors.blue.shade800,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            const Divider(height: 1),
+                            _buildNFactorRow('Acids', 'Number of replaceable H⁺ ions', 'H₂SO₄ → n = 2'),
+                            _buildNFactorRow('Bases', 'Number of OH⁻ ions', 'NaOH → n = 1'),
+                            _buildNFactorRow('Salts', 'Total ionic charge', 'Na₃PO₄ → n = 3'),
+                            _buildNFactorRow('Redox', 'Electrons transferred', 'KMnO₄ (acid) → n = 5'),
+                            const SizedBox(height: 4),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Theory
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.purple.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '📖 Why Normality Matters',
+                              style: AppTextStyles.labelSmall.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Normality is used in titrations and acid-base/redox reactions because it accounts for the "reacting capacity" of a compound. Unlike molarity, which is fixed, normality changes based on what the compound does in a specific reaction. This makes it more practical for stoichiometric calculations in volumetric analysis.',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: Colors.black87,
+                                height: 1.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      // Important + App Behavior
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.red.shade300),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '⚠️ Important',
+                              style: AppTextStyles.labelSmall.copyWith(
+                                color: Colors.red.shade800,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Some compounds (KMnO₄, K₂Cr₂O₇, Al(OH)₃) have variable normality.',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: Colors.red.shade900,
+                                fontWeight: FontWeight.w600,
+                                height: 1.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                        ),
+                        child: Text(
+                          'ℹ️ This app shows the value for the MOST COMMON condition (acid medium). For other conditions, recalculate using: N = M × n-factor',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w600,
+                            height: 1.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Close button
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(ctx).pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      elevation: 0,
+                    ),
+                    child: const Text('Got it', style: TextStyle(fontWeight: FontWeight.w700)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNoteCard({
+    required String title,
+    required String content,
+    required IconData icon,
+    required Color color,
+    required Color bgColor,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: color, size: 18),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppTextStyles.labelSmall.copyWith(
+                    color: color,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  content,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: Colors.black87,
+                    height: 1.5,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNFactorRow(String type, String description, String example) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 50,
+            child: Text(
+              type,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: Colors.blue.shade800,
+                fontWeight: FontWeight.w700,
+                fontSize: 11,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              description,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: Colors.black87,
+                fontSize: 11,
+              ),
+            ),
+          ),
+          Text(
+            example,
+            style: AppTextStyles.bodySmall.copyWith(
+              color: Colors.black54,
+              fontSize: 10,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +386,16 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
         backgroundColor: AppColors.surface,
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.info_outline_rounded,
+              color: AppColors.primary,
+            ),
+            tooltip: 'Normality Reference Notes',
+            onPressed: () => _showNormalityNoteDialog(context),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         controller: _scrollController,
@@ -307,32 +618,64 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                       _calculationString ?? '',
                       style: AppTextStyles.mono.copyWith(color: AppColors.primaryDark, fontSize: 12),
                     ),
-                    if (_normality == null) ...[ 
+                    if (_normality == null && _selectedChemical != null) ...[
                       const SizedBox(height: 16),
                       const Divider(color: Colors.white),
                       const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Icon(Icons.info_outline, color: Colors.orange.shade700, size: 18),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Normality is N/A — Why?',
-                            style: AppTextStyles.label.copyWith(
-                              color: Colors.orange.shade800,
-                              fontWeight: FontWeight.w700,
+                      Container(
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade50,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.red.shade300),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.warning_amber_rounded, color: Colors.red.shade700, size: 18),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    '⚠️ Note: ${_selectedChemical!.name} does not have a fixed Normality value.',
+                                    style: AppTextStyles.label.copyWith(
+                                      color: Colors.red.shade800,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Normality could not be calculated for "${_selectedChemical?.name ?? 'this chemical'}" because its Equivalent Weight is not stored in the database.\n\n'
-                        'Normality (N) = (Mass ÷ Eq. Weight) ÷ Volume (L)\n\n'
-                        'Equivalent Weight requires knowing the n-factor — the number of H⁺ or OH⁻ ions the compound can donate or accept. For some chemicals (elements, organic compounds, salts with complex reactions), this is not defined.\n\n'
-                        'Molarity is still valid and has been calculated above.',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: Colors.orange.shade900,
-                          height: 1.5,
+                            const SizedBox(height: 10),
+                            Text(
+                              'Reason: This compound\'s n-factor depends on reaction conditions.',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: Colors.red.shade900,
+                                fontWeight: FontWeight.w600,
+                                height: 1.5,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'For standard textbook problems, use the value shown above.',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: Colors.red.shade800,
+                                height: 1.5,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'If your problem specifies a different condition, recalculate using: N = M × n-factor',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: Colors.red.shade800,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.italic,
+                                height: 1.5,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
