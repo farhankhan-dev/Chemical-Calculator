@@ -49,14 +49,14 @@ class _ChemicalSelectionSheetState extends State<_ChemicalSelectionSheet> {
   }
 
   void _onSearchChanged(String query) {
-    if (query.isEmpty) {
+    if (query.trim().isEmpty) {
       setState(() {
         _filteredChemicals = _allChemicals;
       });
       return;
     }
 
-    final q = query.toLowerCase();
+    final q = query.trim().toLowerCase();
     setState(() {
       _filteredChemicals = _allChemicals.where((c) {
         return c.name.toLowerCase().contains(q) || 

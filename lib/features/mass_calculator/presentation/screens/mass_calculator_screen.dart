@@ -25,6 +25,7 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
 
   double? _result;
   String? _calculationString;
+  String? _validationError;
 
   @override
   void dispose() {
@@ -35,7 +36,16 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
   }
 
   void _calculate() {
-    if (_selectedChemical == null) return;
+    setState(() {
+      _validationError = null;
+    });
+
+    if (_selectedChemical == null || _targetController.text.isEmpty || _volMassController.text.isEmpty) {
+      setState(() {
+        _validationError = 'Please fill all requirements';
+      });
+      return;
+    }
     
     final target = double.tryParse(_targetController.text);
     final volMass = double.tryParse(_volMassController.text);
@@ -95,6 +105,297 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
     });
   }
 
+  void _showMassNoteDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.purple.shade50,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.primary, width: 2),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Header
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.12),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.info_outline_rounded, color: AppColors.primary, size: 20),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Mass Reference Notes',
+                        style: AppTextStyles.label.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.of(ctx).pop(),
+                      child: const Icon(Icons.close, color: AppColors.primary, size: 20),
+                    ),
+                  ],
+                ),
+              ),
+              // Scrollable content
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildNoteCard(
+                        title: 'What is Mass?',
+                        content: 'Amount of substance measured in grams',
+                        icon: Icons.scale_outlined,
+                        color: AppColors.primary,
+                        bgColor: AppColors.primary.withValues(alpha: 0.08),
+                      ),
+                      const SizedBox(height: 12),
+                      _buildNoteCard(
+                        title: 'Formulas',
+                        content: '1. Mass = Moles × Molecular Weight (MW)\n2. Mass = Molarity × Volume (L) × MW',
+                        icon: Icons.functions,
+                        color: Colors.blue.shade800,
+                        bgColor: Colors.blue.shade50,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildNoteCard(
+                        title: 'Unit',
+                        content: 'grams (g) or kilograms (kg)',
+                        icon: Icons.straighten,
+                        color: AppColors.primary,
+                        bgColor: AppColors.primary.withValues(alpha: 0.08),
+                      ),
+                      const SizedBox(height: 12),
+                      _buildNoteCard(
+                        title: 'Used For',
+                        content: 'Preparing solutions, stoichiometry, reactions',
+                        icon: Icons.science_outlined,
+                        color: Colors.orange.shade800,
+                        bgColor: Colors.orange.shade50,
+                      ),
+                      const SizedBox(height: 16),
+                      // Conversion Table
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.blue.shade300),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(12, 10, 12, 6),
+                              child: Text(
+                                '📐 Conversions',
+                                style: AppTextStyles.labelSmall.copyWith(
+                                  color: Colors.blue.shade800,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            const Divider(height: 1),
+                            _buildNFactorRow('Mass from Moles', 'mass = moles × MW'),
+                            _buildNFactorRow('Mass from Molarity', 'mass = M × Volume (L) × MW'),
+                            _buildNFactorRow('Mass from Density', 'mass = Volume × Density'),
+                            _buildNFactorRow('Volume from Mass', 'Volume (L) = mass ÷ (M × MW)'),
+                            _buildNFactorRow('Volume from Moles', 'Volume (L) = moles ÷ M'),
+                            const SizedBox(height: 4),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Key Concepts
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.green.shade300),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '💡 Key Concepts',
+                              style: AppTextStyles.labelSmall.copyWith(
+                                color: Colors.green.shade800,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              '• Mass is conserved in chemical reactions (Law of Conservation of Mass)\n'
+                              '• Mass depends on the amount of substance, not on temperature or pressure\n'
+                              '• Always convert mL to L when using molarity: 1 L = 1000 mL',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: Colors.green.shade900,
+                                fontWeight: FontWeight.w600,
+                                height: 1.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      // Examples
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '📝 Examples',
+                              style: AppTextStyles.labelSmall.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Example 1 - Mass needed\nHow many grams of NaCl are needed to make 500 mL of 0.5 M solution?\n'
+                              'mass = M × V(L) × MW = 0.5 × 0.5 × 58.44 = 14.61 g\n\n'
+                              'Example 2 - Volume needed\nWhat volume of solution can be made with 10 g of NaOH at 0.1 M?\n'
+                              'V(L) = mass ÷ (M × MW) = 10 ÷ (0.1 × 40) = 2.5 L = 2500 mL',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: Colors.black87,
+                                height: 1.5,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Close button
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(ctx).pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      elevation: 0,
+                    ),
+                    child: const Text('Got it', style: TextStyle(fontWeight: FontWeight.w700)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNoteCard({
+    required String title,
+    required String content,
+    required IconData icon,
+    required Color color,
+    required Color bgColor,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: color, size: 18),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppTextStyles.labelSmall.copyWith(
+                    color: color,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  content,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: Colors.black87,
+                    height: 1.5,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNFactorRow(String type, String description) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              type,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: Colors.blue.shade800,
+                fontWeight: FontWeight.w700,
+                fontSize: 11,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              description,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: Colors.black87,
+                fontSize: 11,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,6 +405,16 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
         backgroundColor: AppColors.surface,
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.info_outline_rounded,
+              color: AppColors.primary,
+            ),
+            tooltip: 'Mass Reference Notes',
+            onPressed: () => _showMassNoteDialog(context),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         controller: _scrollController,
@@ -339,6 +650,16 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
                 ),
               ),
             ),
+            
+            if (_validationError != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: Text(
+                  _validationError!,
+                  style: AppTextStyles.bodyMedium.copyWith(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ),
 
             if (_result != null || (_calculationString != null && _calculationString!.contains('Cannot calculate'))) ...[
               const SizedBox(height: AppSpacing.xl),

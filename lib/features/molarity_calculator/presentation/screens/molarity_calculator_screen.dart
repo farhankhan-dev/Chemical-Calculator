@@ -25,6 +25,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
   double? _molarity;
   double? _normality;
   String? _calculationString;
+  String? _validationError;
 
   @override
   void dispose() {
@@ -35,7 +36,16 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
   }
 
   void _calculate() {
-    if (_selectedChemical == null) return;
+    setState(() {
+      _validationError = null;
+    });
+
+    if (_selectedChemical == null || _massController.text.isEmpty || _volController.text.isEmpty) {
+      setState(() {
+        _validationError = 'Please fill all requirements';
+      });
+      return;
+    }
     
     final mass = double.tryParse(_massController.text);
     final vol = double.tryParse(_volController.text);
@@ -560,6 +570,16 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                 ),
               ),
             ),
+            
+            if (_validationError != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: Text(
+                  _validationError!,
+                  style: AppTextStyles.bodyMedium.copyWith(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ),
 
             if (_molarity != null) ...[
               const SizedBox(height: AppSpacing.xl),
