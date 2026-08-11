@@ -460,10 +460,12 @@ class _DilutionCalculatorScreenState extends State<DilutionCalculatorScreen> {
                   child: OutlinedButton(
                     onPressed: _clear,
                     style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.purple.shade50,
+                      side: const BorderSide(color: AppColors.primary, width: 2),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
-                    child: Text('Clear', style: AppTextStyles.h3),
+                    child: Text('Clear', style: AppTextStyles.h3.copyWith(color: AppColors.primary)),
                   ),
                 ),
                 const SizedBox(width: 16),

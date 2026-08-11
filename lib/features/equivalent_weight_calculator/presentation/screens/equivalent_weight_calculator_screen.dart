@@ -123,6 +123,47 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      _buildNoteCard(
+                        title: 'What is Equivalent Weight?',
+                        content: 'Mass of a substance that reacts with or displaces 1 gram of hydrogen, 8 grams of oxygen, or 35.5 grams of chlorine.',
+                        icon: Icons.scale_outlined,
+                        color: AppColors.primary,
+                        bgColor: AppColors.primary.withValues(alpha: 0.08),
+                      ),
+                      const SizedBox(height: 12),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.blue.shade300),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '💡 What to Remember',
+                              style: AppTextStyles.labelSmall.copyWith(
+                                color: Colors.blue.shade800,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              '• Equivalent weight = Molar Mass ÷ n-factor\n'
+                              '• It is used mainly in titrations and volumetric analysis.\n'
+                              '• For some compounds, it changes depending on the reaction type (acid-base vs redox).',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: Colors.blue.shade900,
+                                fontWeight: FontWeight.w600,
+                                height: 1.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
                       _buildEwNoteSection(
                         title: '✅ Fixed EW — Single, definite EW value',
                         color: Colors.green.shade800,
@@ -220,6 +261,54 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildNoteCard({
+    required String title,
+    required String content,
+    required IconData icon,
+    required Color color,
+    required Color bgColor,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: color, size: 18),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppTextStyles.labelSmall.copyWith(
+                    color: color,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  content,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: Colors.black87,
+                    height: 1.5,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
