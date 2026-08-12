@@ -23,7 +23,19 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
   bool _isVolMl = true; // false = Liters
 
   double? _molarity;
+  double? _displayedMolarity;
+  String _displayedUnitLabel = 'mol/L';
   double? _normality;
+  
+  String _selectedOutputUnit = 'M (mol/L)';
+  final List<String> _outputUnits = [
+    'M (mol/L)',
+    'mM (mmol/L)',
+    'µM (µmol/L)',
+    'nM (nmol/L)',
+    'ppm (mg/L)',
+    'ppb (µg/L)'
+  ];
   String? _calculationString;
   String? _validationError;
 
@@ -63,14 +75,50 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
         _normality = equivalents / volLiters;
         
         _calculationString = 'Moles = ${FormatUtils.format(mass)} g / ${FormatUtils.format(_selectedChemical!.molecularWeight)} g/mol = ${FormatUtils.format(moles)}\n'
-            'Molarity = ${FormatUtils.format(moles)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_molarity!)} M\n\n'
-            'Eq = ${FormatUtils.format(mass)} g / ${FormatUtils.format(eqWeight)} g/eq = ${FormatUtils.format(equivalents)}\n'
-            'Normality = ${FormatUtils.format(equivalents)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_normality!)} N';
+            'Molarity = ${FormatUtils.format(moles)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_molarity!)} M\n';
       } else {
         _normality = null;
         _calculationString = 'Moles = ${FormatUtils.format(mass)} g / ${FormatUtils.format(_selectedChemical!.molecularWeight)} g/mol = ${FormatUtils.format(moles)}\n'
-            'Molarity = ${FormatUtils.format(moles)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_molarity!)} M\n\n'
-            'Normality: N/A (Equivalent weight not available)';
+            'Molarity = ${FormatUtils.format(moles)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_molarity!)} M\n';
+      }
+      
+      switch (_selectedOutputUnit) {
+        case 'M (mol/L)':
+          _displayedMolarity = _molarity;
+          _displayedUnitLabel = 'mol/L';
+          break;
+        case 'mM (mmol/L)':
+          _displayedMolarity = _molarity! * 1000;
+          _displayedUnitLabel = 'mmol/L';
+          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × 1000 = ${_displayedMolarity!} mM\n';
+          break;
+        case 'µM (µmol/L)':
+          _displayedMolarity = _molarity! * 1000000;
+          _displayedUnitLabel = 'µmol/L';
+          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × 10⁶ = ${_displayedMolarity!} µM\n';
+          break;
+        case 'nM (nmol/L)':
+          _displayedMolarity = _molarity! * 1000000000;
+          _displayedUnitLabel = 'nmol/L';
+          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × 10⁹ = ${_displayedMolarity!} nM\n';
+          break;
+        case 'ppm (mg/L)':
+          _displayedMolarity = _molarity! * _selectedChemical!.molecularWeight * 1000;
+          _displayedUnitLabel = 'mg/L (ppm)';
+          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × ${_selectedChemical!.molecularWeight} g/mol × 1000 = ${_displayedMolarity!} ppm\n';
+          break;
+        case 'ppb (µg/L)':
+          _displayedMolarity = _molarity! * _selectedChemical!.molecularWeight * 1000000;
+          _displayedUnitLabel = 'µg/L (ppb)';
+          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × ${_selectedChemical!.molecularWeight} g/mol × 10⁶ = ${_displayedMolarity!} ppb\n';
+          break;
+      }
+      
+      if (eqWeight != null) {
+        _calculationString = '$_calculationString\nEq = ${FormatUtils.format(mass)} g / ${FormatUtils.format(eqWeight)} g/eq = ${FormatUtils.format(mass/eqWeight)}\n'
+            'Normality = ${FormatUtils.format(mass/eqWeight)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_normality!)} N';
+      } else {
+        _calculationString = '$_calculationString\nNormality: N/A (Equivalent weight not available)';
       }
     });
 
@@ -552,6 +600,36 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                 ),
               ],
             ),
+            const SizedBox(height: AppSpacing.lg),
+
+            // Output Unit Selector
+            Text('Desired Concentration Unit', style: AppTextStyles.labelSmall),
+            const SizedBox(height: 8),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: _selectedOutputUnit,
+                  isExpanded: true,
+                  icon: const Icon(Icons.expand_more, color: AppColors.textSecondary),
+                  items: _outputUnits.map((u) => DropdownMenuItem(value: u, child: Text(u, style: AppTextStyles.bodyMedium))).toList(),
+                  onChanged: (val) {
+                    if (val != null) {
+                      setState(() {
+                        _selectedOutputUnit = val;
+                        if (_molarity != null) _calculate();
+                      });
+                    }
+                  },
+                ),
+              ),
+            ),
             const SizedBox(height: AppSpacing.xl),
 
             // Calculate Button
@@ -594,12 +672,12 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Molarity (M)',
+                      'Concentration',
                       style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primaryDark),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 12),
                     Text(
-                      '${FormatUtils.format(_molarity!)} mol/L',
+                      '${FormatUtils.format(_displayedMolarity!)} $_displayedUnitLabel',
                       style: AppTextStyles.h1.copyWith(color: AppColors.primary, fontSize: 32),
                     ),
                     if (_normality != null) ...[

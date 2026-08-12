@@ -29,30 +29,32 @@ class PeriodicTableGrid extends StatelessWidget {
         final tileWidth = computedTileWidth.clamp(36.0, 56.0);
         final tileHeight = tileWidth * 1.18;
 
-        return SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Top Group Numbers (1 to 18)
-                  _buildGroupHeaders(tileWidth),
-                  const SizedBox(height: 3),
+        Widget gridContent = Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Top Group Numbers (1 to 18)
+              _buildGroupHeaders(tileWidth),
+              const SizedBox(height: 3),
 
-                  // Main Periodic Table Grid (18 columns x 7 periods)
-                  _buildMainGrid(tileWidth, tileHeight),
+              // Main Periodic Table Grid (18 columns x 7 periods)
+              _buildMainGrid(tileWidth, tileHeight),
 
-                  const SizedBox(height: 10),
+              const SizedBox(height: 10),
 
-                  // Separator and Lanthanides / Actinides section
-                  _buildFBlockGrid(tileWidth, tileHeight),
-                ],
-              ),
-            ),
+              // Separator and Lanthanides / Actinides section
+              _buildFBlockGrid(tileWidth, tileHeight),
+            ],
           ),
+        );
+
+        return InteractiveViewer(
+          minScale: 0.2,
+          maxScale: 4.0,
+          constrained: false,
+          boundaryMargin: const EdgeInsets.all(20),
+          child: gridContent,
         );
       },
     );
@@ -92,10 +94,10 @@ class PeriodicTableGrid extends StatelessWidget {
 
               if (atomicNum == null) {
                 // Empty cell in the periodic grid
-                return SizedBox(
+                return Container(
                   width: tileWidth,
                   height: tileHeight,
-                  child: Container(margin: const EdgeInsets.only(right: 3)),
+                  margin: EdgeInsets.only(right: gIndex == 17 ? 0 : 3),
                 );
               }
 

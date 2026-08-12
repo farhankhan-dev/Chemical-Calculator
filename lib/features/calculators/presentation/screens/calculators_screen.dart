@@ -25,36 +25,46 @@ class CalculatorsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                'Calculators',
-                style: AppTextStyles.h1.copyWith(
-                  color: AppColors.primary,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Choose a calculator or tool to get started',
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textSecondary,
-                  fontSize: 14,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Calculators',
+                          style: AppTextStyles.h1.copyWith(
+                            color: AppColors.primary,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Choose a calculator or tool to get started',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.textSecondary,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.grid_on, color: AppColors.primary, size: 28),
+                    tooltip: 'Interactive Periodic Table',
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const PeriodicTableScreen()));
+                    },
+                  ),
+                ],
               ),
               const SizedBox(height: AppSpacing.lg),
               Expanded(
                 child: ListView(
                   children: [
-                    _buildCalculatorCard(
-                      context,
-                      title: 'Interactive Periodic Table',
-                      subtitle: 'Explore all 118 chemical elements in landscape mode.',
-                      icon: Icons.grid_on,
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const PeriodicTableScreen()));
-                      },
-                    ),
                     _buildCalculatorCard(
                       context,
                       title: 'Molarity Calculator',

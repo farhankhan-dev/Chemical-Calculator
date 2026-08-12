@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
 
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 2500),
+      duration: const Duration(milliseconds: 3000),
       vsync: this,
     );
 
@@ -55,8 +55,8 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // Navigate to home after 2.5 seconds
-    Future.delayed(const Duration(milliseconds: 2500), () {
+    // Navigate to home after 3.0 seconds
+    Future.delayed(const Duration(milliseconds: 3000), () {
       if (mounted) {
         Navigator.of(context).pushReplacementNamed('/home');
       }

@@ -20,6 +20,8 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
   final PeriodicTableController _controller = PeriodicTableController();
   late final Map<int, ElementModel> _elementsMap;
 
+  bool _isLandscape = false;
+
   @override
   void initState() {
     super.initState();
@@ -28,7 +30,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
       for (var e in _controller.allElements) e.atomicNumber: e
     };
     _controller.addListener(_onControllerChanged);
-    _setLandscapeOrientation();
+    _restorePortraitOrientation();
   }
 
   void _setLandscapeOrientation() {
@@ -41,8 +43,18 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
   void _restorePortraitOrientation() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
     ]);
+  }
+
+  void _toggleOrientation() {
+    setState(() {
+      _isLandscape = !_isLandscape;
+      if (_isLandscape) {
+        _setLandscapeOrientation();
+      } else {
+        _restorePortraitOrientation();
+      }
+    });
   }
 
   void _onControllerChanged() {
@@ -101,7 +113,22 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const Spacer(),
+                    IconButton(
+                      icon: Icon(
+                        _isLandscape ? Icons.screen_lock_portrait : Icons.screen_rotation,
+                        color: AppColors.primary,
+                        size: 20,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: _toggleOrientation,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
                     Expanded(
                       child: ElementSearchBar(
                         query: _controller.searchQuery,
@@ -142,7 +169,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
                     matchingAtomicNumbers: matchingNums,
                     hasActiveFilter: hasActiveFilter,
                     onElementSelected: (element) {
-                      ElementDetailScreen.show(context, element);
+                      ElementDetailScreen.show(context, element, isLandscape: _isLandscape);
                     },
                   ),
                 ),

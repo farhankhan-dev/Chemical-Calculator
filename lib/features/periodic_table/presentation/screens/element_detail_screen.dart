@@ -9,7 +9,7 @@ class ElementDetailScreen extends StatelessWidget {
 
   const ElementDetailScreen({super.key, required this.element});
 
-  static Future<void> show(BuildContext context, ElementModel element) async {
+  static Future<void> show(BuildContext context, ElementModel element, {bool isLandscape = false}) async {
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -22,10 +22,16 @@ class ElementDetailScreen extends StatelessWidget {
       builder: (_) => ElementDetailScreen(element: element),
     );
 
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
+    if (isLandscape) {
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    } else {
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
+    }
   }
 
   @override
@@ -378,6 +384,7 @@ class ElementDetailScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   item.label,
@@ -385,11 +392,15 @@ class ElementDetailScreen extends StatelessWidget {
                     color: AppColors.textSecondary,
                   ),
                 ),
-                Text(
-                  item.value,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    item.value,
+                    textAlign: TextAlign.right,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                 ),
               ],
