@@ -27,10 +27,11 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/icons/logo.png"
+  image_path_android: "assets/icons/chem_calc_icon.png"
+  image_path_ios: "assets/icons/logo.png"
   min_sdk_android: 21
   adaptive_icon_background: "#0A6CF0"
-  adaptive_icon_foreground: "assets/icons/logo.png"
+  adaptive_icon_foreground: "assets/icons/chem_calc_icon.png"
   remove_alpha_ios: true
 
 
