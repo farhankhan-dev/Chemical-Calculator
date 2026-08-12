@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/calculators/presentation/screens/calculators_screen.dart';
+import '../features/periodic_table/presentation/screens/periodic_table_screen.dart';
 import '../features/library/presentation/screens/library_screen.dart';
 import 'theme/app_colors.dart';
 
@@ -17,8 +19,29 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = const [
     HomeScreen(),
     CalculatorsScreen(),
+    PeriodicTableScreen(),
     LibraryScreen(),
   ];
+
+  void _onTabSelected(int index) {
+    if (index != 2 && _currentIndex == 2) {
+      // Restore portrait mode when navigating away from Periodic Table tab
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    } else if (index == 2) {
+      // Set landscape mode when switching to Periodic Table tab
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    }
+
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +52,8 @@ class _MainScreenState extends State<MainScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+        onTap: _onTabSelected,
+        type: BottomNavigationBarType.fixed,
         backgroundColor: AppColors.surface,
         selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.textSecondary,
@@ -49,6 +69,11 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Calculator',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.grid_on_outlined),
+            activeIcon: Icon(Icons.grid_on),
+            label: 'Periodic Table',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.menu_book_outlined),
             activeIcon: Icon(Icons.menu_book),
             label: 'Library',
@@ -58,3 +83,4 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 }
+
