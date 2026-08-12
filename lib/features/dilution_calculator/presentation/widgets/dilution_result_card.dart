@@ -1,0 +1,1 @@
+// Dilution result card widget
