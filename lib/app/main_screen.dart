@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/calculators/presentation/screens/calculators_screen.dart';
-import '../features/periodic_table/presentation/screens/periodic_table_screen.dart';
 import '../features/library/presentation/screens/library_screen.dart';
 import 'theme/app_colors.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
-
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -19,25 +16,10 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = const [
     HomeScreen(),
     CalculatorsScreen(),
-    PeriodicTableScreen(),
     LibraryScreen(),
   ];
 
   void _onTabSelected(int index) {
-    if (index != 2 && _currentIndex == 2) {
-      // Restore portrait mode when navigating away from Periodic Table tab
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
-    } else if (index == 2) {
-      // Set landscape mode when switching to Periodic Table tab
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight,
-      ]);
-    }
-
     setState(() {
       _currentIndex = index;
     });
@@ -67,11 +49,6 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.calculate_outlined),
             activeIcon: Icon(Icons.calculate),
             label: 'Calculator',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.grid_on_outlined),
-            activeIcon: Icon(Icons.grid_on),
-            label: 'Periodic Table',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.menu_book_outlined),
