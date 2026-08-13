@@ -171,6 +171,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
                     onElementSelected: (element) {
                       ElementDetailScreen.show(context, element, isLandscape: _isLandscape);
                     },
+                    onCategorySelected: _controller.toggleCategory,
                   ),
                 ),
               ],

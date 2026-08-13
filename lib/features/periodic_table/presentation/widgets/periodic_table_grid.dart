@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../models/element_model.dart';
+import '../../models/element_category.dart';
 import 'element_tile.dart';
 
 class PeriodicTableGrid extends StatelessWidget {
@@ -9,6 +10,7 @@ class PeriodicTableGrid extends StatelessWidget {
   final Set<int> matchingAtomicNumbers;
   final bool hasActiveFilter;
   final ValueChanged<ElementModel> onElementSelected;
+  final ValueChanged<ElementCategory>? onCategorySelected;
 
   const PeriodicTableGrid({
     super.key,
@@ -16,6 +18,7 @@ class PeriodicTableGrid extends StatelessWidget {
     required this.matchingAtomicNumbers,
     required this.hasActiveFilter,
     required this.onElementSelected,
+    this.onCategorySelected,
   });
 
   @override
@@ -106,18 +109,16 @@ class PeriodicTableGrid extends StatelessWidget {
               if (atomicNum == -57) {
                 // Placeholder cell for Lanthanides (57-71)
                 return _buildSeriesPlaceholder(
-                  context, tileWidth, tileHeight, '57-71', 'Lanthanides', AppColors.primarySurface, () {
-                    final element = elementsMap[57];
-                    if (element != null) onElementSelected(element);
+                  context, tileWidth, tileHeight, '57-71', 'Lanthanides', ElementCategory.lanthanide, () {
+                    onCategorySelected?.call(ElementCategory.lanthanide);
                   });
               }
 
               if (atomicNum == -89) {
                 // Placeholder cell for Actinides (89-103)
                 return _buildSeriesPlaceholder(
-                  context, tileWidth, tileHeight, '89-103', 'Actinides', AppColors.primarySurface, () {
-                    final element = elementsMap[89];
-                    if (element != null) onElementSelected(element);
+                  context, tileWidth, tileHeight, '89-103', 'Actinides', ElementCategory.actinide, () {
+                    onCategorySelected?.call(ElementCategory.actinide);
                   });
               }
 
@@ -238,11 +239,11 @@ class PeriodicTableGrid extends StatelessWidget {
   }
 
   Widget _buildSeriesPlaceholder(
-    BuildContext context, double width, double height, String range, String title, Color bg, VoidCallback onTap) {
+    BuildContext context, double width, double height, String range, String title, ElementCategory category, VoidCallback onTap) {
     return Padding(
       padding: const EdgeInsets.only(right: 3),
       child: Material(
-        color: bg,
+        color: category.bgTint,
         borderRadius: BorderRadius.circular(6),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
@@ -251,7 +252,7 @@ class PeriodicTableGrid extends StatelessWidget {
             width: width,
             height: height,
             decoration: BoxDecoration(
-              border: Border.all(color: AppColors.primary.withValues(alpha: 0.4), width: 1),
+              border: Border.all(color: category.borderColor, width: 1),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Column(
@@ -259,17 +260,17 @@ class PeriodicTableGrid extends StatelessWidget {
               children: [
                 Text(
                   range,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 7.5,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
+                    color: category.color,
                   ),
                 ),
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 6,
-                    color: AppColors.textSecondary,
+                    color: category.color,
                   ),
                   textAlign: TextAlign.center,
                 ),

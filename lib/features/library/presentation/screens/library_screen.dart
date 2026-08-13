@@ -5,7 +5,6 @@ import '../../../../app/theme/app_text_styles.dart';
 import '../../../../data/datasources/chemical_local_datasource.dart';
 import '../../../../data/models/chemical_model.dart';
 import '../../../chemical_detail/presentation/screens/chemical_detail_screen.dart';
-import 'add_chemical_screen.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -139,19 +138,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
                         ),
                       ],
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      final added = await Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const AddChemicalScreen()),
-                      );
-                      if (added == true) {
-                        _loadChemicals();
-                      }
-                    },
-                    icon: const Icon(Icons.add, color: AppColors.primary, size: 28),
-                    tooltip: 'Add Custom Chemical',
                   ),
                 ],
               ),
