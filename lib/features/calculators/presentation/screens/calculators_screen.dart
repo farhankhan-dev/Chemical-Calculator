@@ -3,7 +3,6 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
 
-import '../../../periodic_table/presentation/screens/periodic_table_screen.dart';
 import '../../../dilution_calculator/presentation/screens/dilution_calculator_screen.dart';
 import '../../../molarity_calculator/presentation/screens/molarity_calculator_screen.dart';
 import '../../../mass_calculator/presentation/screens/mass_calculator_screen.dart';
@@ -52,13 +51,7 @@ class CalculatorsScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.grid_on, color: AppColors.primary, size: 28),
-                    tooltip: 'Interactive Periodic Table',
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const PeriodicTableScreen()));
-                    },
-                  ),
+
                 ],
               ),
               const SizedBox(height: AppSpacing.lg),

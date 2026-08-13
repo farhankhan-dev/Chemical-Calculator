@@ -20,7 +20,7 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
   final ChemicalLocalDatasource _datasource = ChemicalLocalDatasource();
   
   double? _totalMass;
-  List<Map<String, dynamic>> _breakdown = [];
+
   String? _error;
   List<ChemicalModel> _suggestions = [];
   ChemicalModel? _selectedChemical;
@@ -77,7 +77,6 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
       setState(() {
         _totalMass = _selectedChemical!.molecularWeight;
         _error = null;
-        _breakdown = [];
       });
       FocusScope.of(context).unfocus();
       return;
@@ -88,7 +87,6 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
       setState(() {
         _error = 'Brackets are not supported in this version. Please multiply out the elements (e.g., N2H8S1O4 instead of (NH4)2SO4).';
         _totalMass = null;
-        _breakdown = [];
       });
       return;
     }
@@ -98,7 +96,6 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
       setState(() {
         _error = 'Invalid chemical formula format.';
         _totalMass = null;
-        _breakdown = [];
       });
       return;
     }
@@ -109,7 +106,6 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
       setState(() {
         _error = 'Formula contains invalid characters or elements.';
         _totalMass = null;
-        _breakdown = [];
       });
       return;
     }
@@ -147,13 +143,11 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
     if (hasError) {
       setState(() {
         _totalMass = null;
-        _breakdown = [];
       });
     } else {
       setState(() {
         _error = null;
         _totalMass = total;
-        _breakdown = breakdown;
       });
     }
 

@@ -39,7 +39,7 @@ class PeriodicTableGrid extends StatelessWidget {
               const SizedBox(height: 3),
 
               // Main Periodic Table Grid (18 columns x 7 periods)
-              _buildMainGrid(tileWidth, tileHeight),
+              _buildMainGrid(context, tileWidth, tileHeight),
 
               const SizedBox(height: 10),
 
@@ -50,11 +50,13 @@ class PeriodicTableGrid extends StatelessWidget {
         );
 
         return InteractiveViewer(
-          minScale: 0.2,
-          maxScale: 4.0,
+          minScale: 0.05,
+          maxScale: 6.0,
           constrained: false,
-          boundaryMargin: const EdgeInsets.all(20),
-          child: gridContent,
+          boundaryMargin: const EdgeInsets.all(100),
+          child: RepaintBoundary(
+            child: gridContent,
+          ),
         );
       },
     );
@@ -81,7 +83,7 @@ class PeriodicTableGrid extends StatelessWidget {
     );
   }
 
-  Widget _buildMainGrid(double tileWidth, double tileHeight) {
+  Widget _buildMainGrid(BuildContext context, double tileWidth, double tileHeight) {
     return Column(
       children: List.generate(7, (pIndex) {
         final period = pIndex + 1;
@@ -104,13 +106,19 @@ class PeriodicTableGrid extends StatelessWidget {
               if (atomicNum == -57) {
                 // Placeholder cell for Lanthanides (57-71)
                 return _buildSeriesPlaceholder(
-                  tileWidth, tileHeight, '57-71', 'Lanthanides', AppColors.primarySurface);
+                  context, tileWidth, tileHeight, '57-71', 'Lanthanides', AppColors.primarySurface, () {
+                    final element = elementsMap[57];
+                    if (element != null) onElementSelected(element);
+                  });
               }
 
               if (atomicNum == -89) {
                 // Placeholder cell for Actinides (89-103)
                 return _buildSeriesPlaceholder(
-                  tileWidth, tileHeight, '89-103', 'Actinides', AppColors.primarySurface);
+                  context, tileWidth, tileHeight, '89-103', 'Actinides', AppColors.primarySurface, () {
+                    final element = elementsMap[89];
+                    if (element != null) onElementSelected(element);
+                  });
               }
 
               final element = elementsMap[atomicNum];
@@ -230,36 +238,45 @@ class PeriodicTableGrid extends StatelessWidget {
   }
 
   Widget _buildSeriesPlaceholder(
-    double width, double height, String range, String title, Color bg) {
-    return Container(
-      width: width,
-      height: height,
-      margin: const EdgeInsets.only(right: 3),
-      decoration: BoxDecoration(
+    BuildContext context, double width, double height, String range, String title, Color bg, VoidCallback onTap) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 3),
+      child: Material(
         color: bg,
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.4), width: 1),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            range,
-            style: const TextStyle(
-              fontSize: 7.5,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.primary.withValues(alpha: 0.4), width: 1),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  range,
+                  style: const TextStyle(
+                    fontSize: 7.5,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
+                ),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 6,
+                    color: AppColors.textSecondary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 6,
-              color: AppColors.textSecondary,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+        ),
       ),
     );
   }

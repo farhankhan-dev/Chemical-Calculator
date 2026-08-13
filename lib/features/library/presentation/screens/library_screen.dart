@@ -5,7 +5,8 @@ import '../../../../app/theme/app_text_styles.dart';
 import '../../../../data/datasources/chemical_local_datasource.dart';
 import '../../../../data/models/chemical_model.dart';
 import '../../../chemical_detail/presentation/screens/chemical_detail_screen.dart';
-import '../../../periodic_table/presentation/screens/periodic_table_screen.dart';
+import 'add_chemical_screen.dart';
+
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
 
@@ -48,31 +49,18 @@ class _LibraryScreenState extends State<LibraryScreen> {
     }
   }
 
-  void _onSearchChanged(String query) {
+  void _onSearchChanged(String query) async {
     if (query.isEmpty) {
       setState(() => _filteredChemicals = _allChemicals);
       return;
     }
-    final q = query.toLowerCase();
-    setState(() {
-      final matches = _allChemicals.where((c) {
-        return c.name.toLowerCase().contains(q) || c.formula.toLowerCase().contains(q);
-      }).toList();
-
-      matches.sort((a, b) {
-        int getScore(ChemicalModel c) {
-          final n = c.name.toLowerCase();
-          final f = c.formula.toLowerCase();
-          if (n.startsWith(q)) return 1;
-          if (f.startsWith(q)) return 2;
-          if (n.contains(q)) return 3;
-          return 4;
-        }
-        final diff = getScore(a) - getScore(b);
-        return diff != 0 ? diff : a.name.compareTo(b.name);
+    
+    final results = await _datasource.search(query);
+    if (mounted) {
+      setState(() {
+        _filteredChemicals = results;
       });
-      _filteredChemicals = matches;
-    });
+    }
   }
 
   void _scrollToLetter(String letter) {
@@ -137,7 +125,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           'Chemical Library',
                           style: AppTextStyles.h1.copyWith(
                             color: AppColors.primary,
-                            fontSize: 30,
+                            fontSize: 24,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
@@ -146,22 +134,24 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           'Browse all chemicals alphabetically',
                           style: AppTextStyles.bodyMedium.copyWith(
                             color: AppColors.textSecondary,
-                            fontSize: 14,
+                            fontSize: 12,
                           ),
                         ),
                       ],
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.grid_on, color: AppColors.primary, size: 28),
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      final added = await Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => const PeriodicTableScreen(),
-                        ),
+                        MaterialPageRoute(builder: (_) => const AddChemicalScreen()),
                       );
+                      if (added == true) {
+                        _loadChemicals();
+                      }
                     },
+                    icon: const Icon(Icons.add, color: AppColors.primary, size: 28),
+                    tooltip: 'Add Custom Chemical',
                   ),
                 ],
               ),
@@ -363,14 +353,17 @@ class _LibraryScreenState extends State<LibraryScreen> {
           ),
           trailing: const Icon(Icons.chevron_right,
               color: AppColors.textTertiary, size: 20),
-          onTap: () {
+          onTap: () async {
             FocusManager.instance.primaryFocus?.unfocus();
-            Navigator.push(
+            final result = await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => ChemicalDetailScreen(chemical: chemical),
               ),
             );
+            if (result == true && mounted) {
+              _loadChemicals();
+            }
           },
         ),
       ),
