@@ -1,5 +1,20 @@
 [
   {
+    "id": 342,
+    "name": "2,4-Dinitrophenylhydrazine",
+    "formula": "C₆H₆N₄O₄",
+    "molecularWeight": 198.14,
+    "equivalentWeight": null,
+    "density": 1.52,
+    "meltingPoint": 196.0,
+    "boilingPoint": null,
+    "casNumber": "119-26-6",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used to identify carbonyls"
+  },
+  {
     "id": 1,
     "name": "Acetaldehyde",
     "formula": "C₂H₄O",
@@ -11,8 +26,8 @@
     "casNumber": "75-07-0",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 44.05,
-    "note": null
+    "atomicMass": null,
+    "note": "Simple aldehyde; used as precursor to many organic compounds"
   },
   {
     "id": 2,
@@ -26,8 +41,8 @@
     "casNumber": "60-35-5",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 59.068,
-    "note": null
+    "atomicMass": null,
+    "note": "Simple amide; used as plasticizer and solvent"
   },
   {
     "id": 3,
@@ -41,8 +56,8 @@
     "casNumber": "71-50-1",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 59.044,
-    "note": null
+    "atomicMass": null,
+    "note": "Acetate ion - monovalent anion (n=1)"
   },
   {
     "id": 4,
@@ -56,8 +71,8 @@
     "casNumber": "64-19-7",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 60.052,
-    "note": null
+    "atomicMass": null,
+    "note": "Simple carboxylic acid; n=1 for EW; vinegar is 5-8% acetic acid"
   },
   {
     "id": 5,
@@ -71,14 +86,14 @@
     "casNumber": "67-64-1",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 58.08,
-    "note": "The simplest ketone; exemplifies polar aprotic solvent behavior and low boiling point hazard • MP: -94.7°C; low due to lack of hydrogen bonding capability • BP: 56.1°C; extremely low due to dipole-dipole interactions only (no H-bonding) • Flash point: -20°C; highly flammable with low vapor pressure • Widely used as solvent for plastics, paints, and pharmaceuticals; important in synthesis of bisphenol A and methyl methacrylate"
+    "atomicMass": null,
+    "note": "The simplest ketone; polar aprotic solvent; highly flammable (flash point -20°C)"
   },
   {
     "id": 6,
     "name": "Acetonitrile",
     "formula": "C₂H₃N",
-    "molecularWeight": 79.865,
+    "molecularWeight": 41.053,
     "equivalentWeight": null,
     "density": 0.786,
     "meltingPoint": -45.0,
@@ -86,8 +101,8 @@
     "casNumber": "75-05-8",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 41.053,
-    "note": null
+    "atomicMass": null,
+    "note": "Polar aprotic solvent; commonly used in HPLC and organic synthesis"
   },
   {
     "id": 7,
@@ -101,8 +116,83 @@
     "casNumber": "74-86-2",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 26.038,
-    "note": null
+    "atomicMass": null,
+    "note": "Simplest alkyne; used as fuel in welding (oxy-acetylene)"
+  },
+  {
+    "id": 397,
+    "name": "Acrylic acid",
+    "formula": "C₃H₄O₂",
+    "molecularWeight": 72.06,
+    "equivalentWeight": 72.06,
+    "density": 1.051,
+    "meltingPoint": 13.5,
+    "boilingPoint": 141.0,
+    "casNumber": "79-10-7",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Acid (n=1); used in polymer production"
+  },
+  {
+    "id": 396,
+    "name": "Acrylonitrile",
+    "formula": "C₃H₃N",
+    "molecularWeight": 53.06,
+    "equivalentWeight": null,
+    "density": 0.81,
+    "meltingPoint": -83.6,
+    "boilingPoint": 77.3,
+    "casNumber": "107-13-1",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used in ABS plastic production"
+  },
+  {
+    "id": 428,
+    "name": "Adenine",
+    "formula": "C₅H₅N₅",
+    "molecularWeight": 135.13,
+    "equivalentWeight": null,
+    "density": 1.6,
+    "meltingPoint": 360.0,
+    "boilingPoint": null,
+    "casNumber": "73-24-5",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of nucleic acids"
+  },
+  {
+    "id": 373,
+    "name": "Adipic acid",
+    "formula": "C₆H₁₀O₄",
+    "molecularWeight": 146.14,
+    "equivalentWeight": 73.07,
+    "density": 1.36,
+    "meltingPoint": 152.1,
+    "boilingPoint": 337.5,
+    "casNumber": "124-04-9",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Dicarboxylic acid (n=2); precursor to nylon 6,6"
+  },
+  {
+    "id": 409,
+    "name": "Alanine",
+    "formula": "C₃H₇NO₂",
+    "molecularWeight": 89.09,
+    "equivalentWeight": null,
+    "density": 1.424,
+    "meltingPoint": 297.0,
+    "boilingPoint": null,
+    "casNumber": "56-41-7",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of proteins"
   },
   {
     "id": 8,
@@ -116,8 +206,8 @@
     "casNumber": "21645-51-2",
     "category": "Base",
     "atomicNumber": null,
-    "atomicMass": 78.0,
-    "note": null
+    "atomicMass": null,
+    "note": "Amphoteric base (n=3); decomposes on heating to Al₂O₃ + 3H₂O"
   },
   {
     "id": 9,
@@ -131,15 +221,15 @@
     "casNumber": "10043-01-3",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 342.15,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=6); used in water treatment as flocculant"
   },
   {
     "id": 10,
     "name": "Aluminum",
     "formula": "Al",
     "molecularWeight": 26.982,
-    "equivalentWeight": 8.994,
+    "equivalentWeight": null,
     "density": 2.7,
     "meltingPoint": 660.32,
     "boilingPoint": 2519.0,
@@ -147,13 +237,13 @@
     "category": "Element",
     "atomicNumber": 13,
     "atomicMass": 26.982,
-    "note": null
+    "note": "Lightweight metal; third most abundant element in Earth's crust"
   },
   {
     "id": 11,
     "name": "Aluminum bromide",
     "formula": "AlBr₃",
-    "molecularWeight": 79.904,
+    "molecularWeight": 266.69,
     "equivalentWeight": 88.8967,
     "density": 3.205,
     "meltingPoint": 97.5,
@@ -161,8 +251,8 @@
     "casNumber": "7727-15-3",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 266.69,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=3); Lewis acid used as catalyst"
   },
   {
     "id": 12,
@@ -176,8 +266,8 @@
     "casNumber": "7784-18-1",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 83.9767,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=3); used in aluminum production"
   },
   {
     "id": 13,
@@ -191,8 +281,8 @@
     "casNumber": "1344-28-1",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 101.96,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=6); main component of bauxite; used in ceramics and as abrasive"
   },
   {
     "id": 14,
@@ -206,8 +296,8 @@
     "casNumber": "7784-30-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 121.951,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=3); used in ceramics and as catalyst support"
   },
   {
     "id": 15,
@@ -221,8 +311,8 @@
     "casNumber": "1302-81-4",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 150.158,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=6); decomposes in water to Al(OH)₃ and H₂S"
   },
   {
     "id": 16,
@@ -236,7 +326,7 @@
     "casNumber": "7664-41-7",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 17.031,
+    "atomicMass": null,
     "note": "One of the most important industrial chemicals; fundamental to understanding hydrogen bonding and gas behavior at STP • MP: -77.7°C; exists as gas at STP due to weak intermolecular forces • BP: -33.3°C; hydrogen bonding elevates BP above PH3 • High solubility in water due to hydrogen bonding (forming NH4OH) • Key precursor for fertilizers (urea, ammonium salts) and explosives; used in Ostwald process for HNO3 production"
   },
   {
@@ -251,23 +341,23 @@
     "casNumber": "631-61-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 77.083,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as buffer solution"
   },
   {
     "id": 18,
     "name": "Ammonium bicarbonate",
     "formula": "NH₄HCO₃",
     "molecularWeight": 79.055,
-    "equivalentWeight": 96.086,
+    "equivalentWeight": 79.055,
     "density": 1.586,
     "meltingPoint": 41.9,
     "boilingPoint": null,
     "casNumber": "1066-33-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 96.086,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); decomposes releasing NH₃ and CO₂"
   },
   {
     "id": 19,
@@ -281,8 +371,8 @@
     "casNumber": "12124-97-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 97.943,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used in photography and as flame retardant"
   },
   {
     "id": 20,
@@ -296,8 +386,8 @@
     "casNumber": "506-87-6",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 96.086,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); decomposes to NH₃, CO₂, and H₂O; used as leavening agent"
   },
   {
     "id": 21,
@@ -311,7 +401,7 @@
     "casNumber": "12125-02-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 53.489,
+    "atomicMass": null,
     "note": "Classic example of sublimation; no true liquid phase at 1 atm due to decomposition • No true MP; sublimation/decomposition at ~338°C to NH3(g) + HCl(g) • No true BP; decomposes to gases without melting (can recombine on cooling) • Dissolves endothermically in water; used as flux for soldering and as an electrolyte • Source of NH3 in thermal decomposition; used in dry cell batteries, as expectorant, and in textile printing"
   },
   {
@@ -326,8 +416,8 @@
     "casNumber": "1336-21-6",
     "category": "Base",
     "atomicNumber": null,
-    "atomicMass": 35.046,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=1); exists only in aqueous solution as NH₃·H₂O"
   },
   {
     "id": 23,
@@ -341,8 +431,8 @@
     "casNumber": "12027-06-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 144.94,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as dietary supplement and in photography"
   },
   {
     "id": 24,
@@ -356,8 +446,8 @@
     "casNumber": "6484-52-2",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 80.043,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); strong oxidizer; used as fertilizer and in explosives (ANFO)"
   },
   {
     "id": 25,
@@ -371,23 +461,23 @@
     "casNumber": "13446-48-5",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 64.06,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); decomposes to N₂ + H₂O on heating"
   },
   {
     "id": 26,
     "name": "Ammonium oxide",
     "formula": "(NH₄)₂O",
     "molecularWeight": 52.0763,
-    "equivalentWeight": 26.03815,
+    "equivalentWeight": 26.0382,
     "density": null,
     "meltingPoint": null,
     "boilingPoint": null,
     "casNumber": "12259-92-6",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 52.0763,
-    "note": null
+    "atomicMass": null,
+    "note": "Ionic compound; exists only as solution in water"
   },
   {
     "id": 27,
@@ -401,23 +491,23 @@
     "casNumber": "7727-54-0",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 228.18,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); strong oxidizer; used as polymerization initiator"
   },
   {
     "id": 28,
     "name": "Ammonium phosphate",
     "formula": "(NH₄)₃PO₄",
     "molecularWeight": 149.087,
-    "equivalentWeight": 44.019,
+    "equivalentWeight": 49.696,
     "density": 1.619,
     "meltingPoint": 155.0,
     "boilingPoint": null,
     "casNumber": "10361-65-6",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 132.056,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=3); used as fertilizer"
   },
   {
     "id": 29,
@@ -431,8 +521,53 @@
     "casNumber": "7783-20-2",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 132.134,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); commonly used as fertilizer"
+  },
+  {
+    "id": 355,
+    "name": "Aniline",
+    "formula": "C₆H₇N",
+    "molecularWeight": 93.13,
+    "equivalentWeight": null,
+    "density": 1.0217,
+    "meltingPoint": -6.3,
+    "boilingPoint": 184.13,
+    "casNumber": "62-53-3",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Aromatic amine; used in dye manufacturing"
+  },
+  {
+    "id": 361,
+    "name": "Anthracene",
+    "formula": "C₁₄H₁₀",
+    "molecularWeight": 178.23,
+    "equivalentWeight": null,
+    "density": 1.28,
+    "meltingPoint": 216.4,
+    "boilingPoint": 342.0,
+    "casNumber": "120-12-7",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Polycyclic aromatic hydrocarbon; used in dye production"
+  },
+  {
+    "id": 422,
+    "name": "Arginine",
+    "formula": "C₆H₁₄N₄O₂",
+    "molecularWeight": 174.2,
+    "equivalentWeight": null,
+    "density": 1.1,
+    "meltingPoint": 244.0,
+    "boilingPoint": null,
+    "casNumber": "74-79-3",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of proteins; nitric oxide precursor"
   },
   {
     "id": 30,
@@ -447,7 +582,22 @@
     "category": "Element",
     "atomicNumber": 18,
     "atomicMass": 39.948,
-    "note": null
+    "note": "Noble gas; used as inert gas in welding and lighting"
+  },
+  {
+    "id": 308,
+    "name": "Arsenic",
+    "formula": "As",
+    "molecularWeight": 74.922,
+    "equivalentWeight": null,
+    "density": 5.727,
+    "meltingPoint": 817.0,
+    "boilingPoint": 614.0,
+    "casNumber": "7440-38-2",
+    "category": "Element",
+    "atomicNumber": 33,
+    "atomicMass": 74.922,
+    "note": "Metalloid; used as poison and in medicine"
   },
   {
     "id": 31,
@@ -461,8 +611,68 @@
     "casNumber": "50-81-7",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 176.12,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=2); Vitamin C; antioxidant"
+  },
+  {
+    "id": 419,
+    "name": "Asparagine",
+    "formula": "C₄H₈N₂O₃",
+    "molecularWeight": 132.12,
+    "equivalentWeight": null,
+    "density": 1.543,
+    "meltingPoint": 234.0,
+    "boilingPoint": null,
+    "casNumber": "70-47-3",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of proteins"
+  },
+  {
+    "id": 417,
+    "name": "Aspartic acid",
+    "formula": "C₄H₇NO₄",
+    "molecularWeight": 133.1,
+    "equivalentWeight": null,
+    "density": 1.66,
+    "meltingPoint": 270.0,
+    "boilingPoint": null,
+    "casNumber": "56-84-8",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of proteins"
+  },
+  {
+    "id": 384,
+    "name": "Aspirin",
+    "formula": "C₉H₈O₄",
+    "molecularWeight": 180.16,
+    "equivalentWeight": 180.16,
+    "density": 1.4,
+    "meltingPoint": 135.0,
+    "boilingPoint": null,
+    "casNumber": "50-78-2",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Acid (n=1); used as analgesic and anti-inflammatory"
+  },
+  {
+    "id": 306,
+    "name": "Barium",
+    "formula": "Ba",
+    "molecularWeight": 137.327,
+    "equivalentWeight": null,
+    "density": 3.51,
+    "meltingPoint": 727.0,
+    "boilingPoint": 1897.0,
+    "casNumber": "7440-39-3",
+    "category": "Element",
+    "atomicNumber": 56,
+    "atomicMass": 137.327,
+    "note": "Alkaline earth metal; used in medical imaging"
   },
   {
     "id": 32,
@@ -476,8 +686,8 @@
     "casNumber": "10553-31-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 297.14,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in photography"
   },
   {
     "id": 33,
@@ -491,8 +701,8 @@
     "casNumber": "513-77-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 197.34,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as rat poison and in glass production"
   },
   {
     "id": 34,
@@ -506,8 +716,8 @@
     "casNumber": "10361-37-2",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 208.23,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as laboratory reagent"
   },
   {
     "id": 35,
@@ -521,8 +731,8 @@
     "casNumber": "7787-32-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 175.34,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in optics and as scintillation detector material"
   },
   {
     "id": 36,
@@ -536,8 +746,8 @@
     "casNumber": "17194-00-2",
     "category": "Base",
     "atomicNumber": null,
-    "atomicMass": 171.341,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=2); used as laboratory reagent"
   },
   {
     "id": 37,
@@ -551,8 +761,8 @@
     "casNumber": "13718-50-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 391.136,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as laboratory reagent"
   },
   {
     "id": 38,
@@ -566,8 +776,8 @@
     "casNumber": "10022-31-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 261.337,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in fireworks (green color)"
   },
   {
     "id": 39,
@@ -581,8 +791,8 @@
     "casNumber": "1304-28-5",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 153.326,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=2); forms Ba(OH)₂ in water"
   },
   {
     "id": 40,
@@ -596,8 +806,8 @@
     "casNumber": "7727-43-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 233.38,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as contrast agent for X-ray imaging and as white pigment"
   },
   {
     "id": 41,
@@ -611,7 +821,7 @@
     "casNumber": "71-43-2",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 78.11,
+    "atomicMass": null,
     "note": "The foundational aromatic hydrocarbon; exemplifies aromaticity (delocalized π-electrons) and stability paradox • MP: 5.5°C; relatively high due to efficient π-π stacking in crystal lattice • BP: 80.1°C; elevated due to strong π-π interactions • Classified as Group 1 carcinogen; metabolized to epoxide intermediates that bind to DNA • Parent compound for all aromatic chemistry; precursor to styrene, phenol, cyclohexane, and many pharmaceuticals"
   },
   {
@@ -626,8 +836,8 @@
     "casNumber": "65-85-0",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 122.12,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); used as preservative and as precursor to many organic compounds"
   },
   {
     "id": 43,
@@ -641,8 +851,8 @@
     "casNumber": "71-52-3",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 61.016,
-    "note": null
+    "atomicMass": null,
+    "note": "Bicarbonate ion - monovalent anion (n=1)"
   },
   {
     "id": 44,
@@ -656,8 +866,8 @@
     "casNumber": "7681-52-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 74.439,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); sodium hypochlorite solution; used as disinfectant and bleaching agent"
   },
   {
     "id": 45,
@@ -671,8 +881,38 @@
     "casNumber": "10043-35-3",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 61.83,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); weak acid; used as antiseptic and insecticide"
+  },
+  {
+    "id": 296,
+    "name": "Boron",
+    "formula": "B",
+    "molecularWeight": 10.811,
+    "equivalentWeight": null,
+    "density": 2.34,
+    "meltingPoint": 2076.0,
+    "boilingPoint": 3927.0,
+    "casNumber": "7440-42-8",
+    "category": "Element",
+    "atomicNumber": 5,
+    "atomicMass": 10.811,
+    "note": "Used in fiberglass and as neutron absorber"
+  },
+  {
+    "id": 315,
+    "name": "Boron trifluoride",
+    "formula": "BF₃",
+    "molecularWeight": 67.81,
+    "equivalentWeight": null,
+    "density": 0.00276,
+    "meltingPoint": -126.8,
+    "boilingPoint": -100.3,
+    "casNumber": "7637-07-2",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Lewis acid; used as catalyst in organic synthesis"
   },
   {
     "id": 46,
@@ -686,8 +926,8 @@
     "casNumber": "15541-45-4",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 127.901,
-    "note": null
+    "atomicMass": null,
+    "note": "Bromate ion - monovalent anion (n=1)"
   },
   {
     "id": 47,
@@ -702,7 +942,37 @@
     "category": "Element",
     "atomicNumber": 35,
     "atomicMass": 79.904,
-    "note": null
+    "note": "Diatomic liquid at room temperature; used in flame retardants and as disinfectant"
+  },
+  {
+    "id": 358,
+    "name": "Bromobenzene",
+    "formula": "C₆H₅Br",
+    "molecularWeight": 157.01,
+    "equivalentWeight": null,
+    "density": 1.495,
+    "meltingPoint": -30.8,
+    "boilingPoint": 156.0,
+    "casNumber": "108-86-1",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Aromatic bromide; used in organic synthesis"
+  },
+  {
+    "id": 392,
+    "name": "Bromoform",
+    "formula": "CHBr₃",
+    "molecularWeight": 252.73,
+    "equivalentWeight": null,
+    "density": 2.89,
+    "meltingPoint": 8.3,
+    "boilingPoint": 149.5,
+    "casNumber": "75-25-2",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used as laboratory reagent"
   },
   {
     "id": 48,
@@ -716,8 +986,8 @@
     "casNumber": "76-59-5",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 624.384,
-    "note": null
+    "atomicMass": null,
+    "note": "pH indicator; changes from yellow (acid) to blue (base)"
   },
   {
     "id": 49,
@@ -731,8 +1001,8 @@
     "casNumber": "106-97-8",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 58.12,
-    "note": null
+    "atomicMass": null,
+    "note": "Alkane gas; used as fuel (LPG) and as solvent"
   },
   {
     "id": 50,
@@ -746,8 +1016,53 @@
     "casNumber": "107-92-6",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 88.11,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); also called butyric acid; found in rancid butter"
+  },
+  {
+    "id": 307,
+    "name": "Cadmium",
+    "formula": "Cd",
+    "molecularWeight": 112.414,
+    "equivalentWeight": null,
+    "density": 8.65,
+    "meltingPoint": 321.07,
+    "boilingPoint": 767.0,
+    "casNumber": "7440-43-9",
+    "category": "Element",
+    "atomicNumber": 48,
+    "atomicMass": 112.414,
+    "note": "Toxic metal; used in batteries and as pigment"
+  },
+  {
+    "id": 386,
+    "name": "Caffeine",
+    "formula": "C₈H₁₀N₄O₂",
+    "molecularWeight": 194.19,
+    "equivalentWeight": null,
+    "density": 1.23,
+    "meltingPoint": 236.5,
+    "boilingPoint": null,
+    "casNumber": "58-08-2",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used as stimulant"
+  },
+  {
+    "id": 279,
+    "name": "Calcium",
+    "formula": "Ca",
+    "molecularWeight": 40.078,
+    "equivalentWeight": null,
+    "density": 1.55,
+    "meltingPoint": 842.0,
+    "boilingPoint": 1484.0,
+    "casNumber": "7440-70-2",
+    "category": "Element",
+    "atomicNumber": 20,
+    "atomicMass": 40.078,
+    "note": "Alkaline earth metal; essential for life; used in construction"
   },
   {
     "id": 51,
@@ -761,8 +1076,8 @@
     "casNumber": "62-54-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 158.17,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as food additive"
   },
   {
     "id": 52,
@@ -776,8 +1091,8 @@
     "casNumber": "75-20-7",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 64.099,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used to produce acetylene"
   },
   {
     "id": 53,
@@ -791,7 +1106,7 @@
     "casNumber": "471-34-1",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 100.086,
+    "atomicMass": null,
     "note": "The most abundant carbonate mineral; demonstrates thermal decomposition (calcination) and the carbon cycle • MP: 1339°C (CaO + CO2 begins at ~840°C); decomposes before true melting • No true BP; decomposes at ~840°C to CaO + CO2 • Insoluble in water; dissolves in acidic solution (cave formation via CO2 + H2O → H2CO3) • Major component of limestone, marble, and chalk; critical in cement production (Portland cement) and carbon capture"
   },
   {
@@ -806,8 +1121,8 @@
     "casNumber": "10043-52-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 110.98,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as desiccant and de-icer"
   },
   {
     "id": 55,
@@ -821,8 +1136,8 @@
     "casNumber": "7789-78-8",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 42.094,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as desiccant and reducing agent"
   },
   {
     "id": 56,
@@ -836,8 +1151,8 @@
     "casNumber": "1305-62-0",
     "category": "Base",
     "atomicNumber": null,
-    "atomicMass": 74.092,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=2); used as lime; used in construction and water treatment"
   },
   {
     "id": 57,
@@ -851,8 +1166,8 @@
     "casNumber": "10102-68-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 293.887,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as laboratory reagent"
   },
   {
     "id": 58,
@@ -866,8 +1181,8 @@
     "casNumber": "10124-37-5",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 164.088,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as fertilizer"
   },
   {
     "id": 59,
@@ -881,8 +1196,8 @@
     "casNumber": "1305-78-8",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 56.0774,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=2); used as lime; used in construction and water treatment"
   },
   {
     "id": 60,
@@ -896,8 +1211,38 @@
     "casNumber": "7758-87-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 310.18,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=6); used as fertilizer and in ceramics"
+  },
+  {
+    "id": 381,
+    "name": "Camphor",
+    "formula": "C₁₀H₁₆O",
+    "molecularWeight": 152.23,
+    "equivalentWeight": null,
+    "density": 0.99,
+    "meltingPoint": 176.0,
+    "boilingPoint": 204.0,
+    "casNumber": "76-22-2",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used in medicine and as plasticizer"
+  },
+  {
+    "id": 275,
+    "name": "Carbon (graphite)",
+    "formula": "C",
+    "molecularWeight": 12.011,
+    "equivalentWeight": null,
+    "density": 2.267,
+    "meltingPoint": 3550.0,
+    "boilingPoint": 4027.0,
+    "casNumber": "7440-44-0",
+    "category": "Element",
+    "atomicNumber": 6,
+    "atomicMass": 12.011,
+    "note": "Non-metal; used in electrodes and as lubricant"
   },
   {
     "id": 61,
@@ -911,8 +1256,8 @@
     "casNumber": "75-15-0",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 76.13,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic solvent; highly flammable; used in rayon production"
   },
   {
     "id": 62,
@@ -926,8 +1271,8 @@
     "casNumber": "630-08-0",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 28.01,
-    "note": null
+    "atomicMass": null,
+    "note": "Toxic gas; formed by incomplete combustion"
   },
   {
     "id": 63,
@@ -941,8 +1286,8 @@
     "casNumber": "56-23-5",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 153.811,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic solvent; used in fire extinguishers; toxic"
   },
   {
     "id": 64,
@@ -956,8 +1301,8 @@
     "casNumber": "463-79-6",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 62.024,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=2); formed when CO2 dissolves in water"
   },
   {
     "id": 65,
@@ -971,8 +1316,23 @@
     "casNumber": "9004-34-6",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 162.1406,
-    "note": null
+    "atomicMass": null,
+    "note": "Polymer; used in paper and textile industry"
+  },
+  {
+    "id": 302,
+    "name": "Cesium",
+    "formula": "Cs",
+    "molecularWeight": 132.905,
+    "equivalentWeight": null,
+    "density": 1.93,
+    "meltingPoint": 28.5,
+    "boilingPoint": 671.0,
+    "casNumber": "7440-46-2",
+    "category": "Element",
+    "atomicNumber": 55,
+    "atomicMass": 132.905,
+    "note": "Alkali metal; used in atomic clocks and in drilling"
   },
   {
     "id": 66,
@@ -987,7 +1347,7 @@
     "category": "Element",
     "atomicNumber": 17,
     "atomicMass": 35.45,
-    "note": null
+    "note": "Diatomic gas; used as disinfectant and in water treatment"
   },
   {
     "id": 67,
@@ -1002,13 +1362,13 @@
     "category": "Element",
     "atomicNumber": 17,
     "atomicMass": 35.45,
-    "note": null
+    "note": "Diatomic gas; used as disinfectant and in water treatment"
   },
   {
     "id": 68,
     "name": "Chlorine Trifluoride",
     "formula": "ClF₃",
-    "molecularWeight": 150.71,
+    "molecularWeight": 92.448,
     "equivalentWeight": 46.224,
     "density": 1.77,
     "meltingPoint": -76.34,
@@ -1016,14 +1376,14 @@
     "casNumber": "7790-91-2",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 92.448,
-    "note": null
+    "atomicMass": null,
+    "note": "Interhalogen compound; used in rocket propellants"
   },
   {
     "id": 69,
     "name": "Chloroacetic acid",
     "formula": "C₂H₃O₂Cl",
-    "molecularWeight": 381.37,
+    "molecularWeight": 94.49,
     "equivalentWeight": 94.49,
     "density": 1.58,
     "meltingPoint": 63.0,
@@ -1031,23 +1391,68 @@
     "casNumber": "79-11-8",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 94.49,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); used in organic synthesis"
+  },
+  {
+    "id": 357,
+    "name": "Chlorobenzene",
+    "formula": "C₆H₅Cl",
+    "molecularWeight": 112.56,
+    "equivalentWeight": null,
+    "density": 1.11,
+    "meltingPoint": -45.6,
+    "boilingPoint": 131.7,
+    "casNumber": "108-90-7",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Aromatic chloride; used as solvent and in pesticide production"
+  },
+  {
+    "id": 391,
+    "name": "Chloroform",
+    "formula": "CHCl₃",
+    "molecularWeight": 119.38,
+    "equivalentWeight": null,
+    "density": 1.489,
+    "meltingPoint": -63.5,
+    "boilingPoint": 61.2,
+    "casNumber": "67-66-3",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic solvent; used as anesthetic"
+  },
+  {
+    "id": 383,
+    "name": "Cholesterol",
+    "formula": "C₂₇H₄₆O",
+    "molecularWeight": 386.65,
+    "equivalentWeight": null,
+    "density": 1.052,
+    "meltingPoint": 149.0,
+    "boilingPoint": 360.0,
+    "casNumber": "57-88-5",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Sterol; used in cell membranes and as hormone precursor"
   },
   {
     "id": 70,
     "name": "Chromate",
     "formula": "CrO₄²⁻",
-    "molecularWeight": 15.992,
-    "equivalentWeight": 7.996,
+    "molecularWeight": 115.992,
+    "equivalentWeight": 57.996,
     "density": null,
     "meltingPoint": null,
     "boilingPoint": null,
     "casNumber": "11104-59-9",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 15.992,
-    "note": null
+    "atomicMass": null,
+    "note": "Chromate ion - divalent anion (n=2)"
   },
   {
     "id": 71,
@@ -1061,8 +1466,8 @@
     "casNumber": "7738-94-5",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 118.01,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=2); strong oxidizer; used in cleaning glassware"
   },
   {
     "id": 72,
@@ -1076,8 +1481,53 @@
     "casNumber": "1308-38-9",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 151.9904,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=6); used as green pigment"
+  },
+  {
+    "id": 290,
+    "name": "Chromium",
+    "formula": "Cr",
+    "molecularWeight": 51.996,
+    "equivalentWeight": null,
+    "density": 7.19,
+    "meltingPoint": 1907.0,
+    "boilingPoint": 2671.0,
+    "casNumber": "7440-47-3",
+    "category": "Element",
+    "atomicNumber": 24,
+    "atomicMass": 51.996,
+    "note": "Used in stainless steel and as pigment"
+  },
+  {
+    "id": 324,
+    "name": "Chromium(III) chloride",
+    "formula": "CrCl₃",
+    "molecularWeight": 158.36,
+    "equivalentWeight": 52.787,
+    "density": 2.87,
+    "meltingPoint": 1152.0,
+    "boilingPoint": null,
+    "casNumber": "10025-73-7",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=3); used as catalyst and as precursor"
+  },
+  {
+    "id": 331,
+    "name": "Cisplatin",
+    "formula": "Pt(NH₃)₂Cl₂",
+    "molecularWeight": 300.05,
+    "equivalentWeight": null,
+    "density": 3.74,
+    "meltingPoint": 270.0,
+    "boilingPoint": null,
+    "casNumber": "15663-27-1",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=2); anti-cancer drug"
   },
   {
     "id": 73,
@@ -1091,8 +1541,83 @@
     "casNumber": "77-92-9",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 192.123,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=3); found in citrus fruits; used as preservative and flavoring"
+  },
+  {
+    "id": 300,
+    "name": "Cobalt",
+    "formula": "Co",
+    "molecularWeight": 58.933,
+    "equivalentWeight": null,
+    "density": 8.9,
+    "meltingPoint": 1495.0,
+    "boilingPoint": 2927.0,
+    "casNumber": "7440-48-4",
+    "category": "Element",
+    "atomicNumber": 27,
+    "atomicMass": 58.933,
+    "note": "Transition metal; used in batteries and as pigment"
+  },
+  {
+    "id": 322,
+    "name": "Cobalt(II) chloride",
+    "formula": "CoCl₂",
+    "molecularWeight": 129.84,
+    "equivalentWeight": 64.92,
+    "density": 3.356,
+    "meltingPoint": 735.0,
+    "boilingPoint": 1049.0,
+    "casNumber": "7646-79-9",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=2); used as humidity indicator"
+  },
+  {
+    "id": 321,
+    "name": "Cobalt(II) oxide",
+    "formula": "CoO",
+    "molecularWeight": 74.93,
+    "equivalentWeight": 37.465,
+    "density": 6.44,
+    "meltingPoint": 1795.0,
+    "boilingPoint": null,
+    "casNumber": "1307-96-6",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=2); used as pigment and in ceramics"
+  },
+  {
+    "id": 353,
+    "name": "Congo red",
+    "formula": "C₃₂H₂₂N₆Na₂O₆S₂",
+    "molecularWeight": 696.66,
+    "equivalentWeight": null,
+    "density": null,
+    "meltingPoint": 350.0,
+    "boilingPoint": null,
+    "casNumber": "573-58-0",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "pH indicator; blue in acid, red in base"
+  },
+  {
+    "id": 282,
+    "name": "Copper",
+    "formula": "Cu",
+    "molecularWeight": 63.546,
+    "equivalentWeight": null,
+    "density": 8.96,
+    "meltingPoint": 1084.62,
+    "boilingPoint": 2562.0,
+    "casNumber": "7440-50-8",
+    "category": "Element",
+    "atomicNumber": 29,
+    "atomicMass": 63.546,
+    "note": "Transition metal; used in electrical wiring and in alloys"
   },
   {
     "id": 74,
@@ -1106,8 +1631,8 @@
     "casNumber": "20427-59-2",
     "category": "Base",
     "atomicNumber": null,
-    "atomicMass": 97.561,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=2); used in fungicides"
   },
   {
     "id": 75,
@@ -1121,8 +1646,8 @@
     "casNumber": "7758-98-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 159.609,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as fungicide and algaecide"
   },
   {
     "id": 76,
@@ -1136,8 +1661,8 @@
     "casNumber": "1317-39-1",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 143.09,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as pigment and in ceramics"
   },
   {
     "id": 77,
@@ -1151,8 +1676,8 @@
     "casNumber": "12069-69-1",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 123.55,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as pigment"
   },
   {
     "id": 78,
@@ -1166,8 +1691,8 @@
     "casNumber": "7447-39-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 134.45,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as catalyst and in fireworks"
   },
   {
     "id": 79,
@@ -1181,8 +1706,98 @@
     "casNumber": "57-12-5",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 26.02,
-    "note": null
+    "atomicMass": null,
+    "note": "Cyanide ion - monovalent anion (n=1); highly toxic"
+  },
+  {
+    "id": 370,
+    "name": "Cyclohexane",
+    "formula": "C₆H₁₂",
+    "molecularWeight": 84.16,
+    "equivalentWeight": null,
+    "density": 0.7739,
+    "meltingPoint": 6.5,
+    "boilingPoint": 80.7,
+    "casNumber": "110-82-7",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic solvent; used in paint thinners"
+  },
+  {
+    "id": 371,
+    "name": "Cyclohexanol",
+    "formula": "C₆H₁₂O",
+    "molecularWeight": 100.16,
+    "equivalentWeight": null,
+    "density": 0.9624,
+    "meltingPoint": 25.9,
+    "boilingPoint": 161.1,
+    "casNumber": "108-93-0",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used as solvent and in nylon production"
+  },
+  {
+    "id": 372,
+    "name": "Cyclohexanone",
+    "formula": "C₆H₁₀O",
+    "molecularWeight": 98.14,
+    "equivalentWeight": null,
+    "density": 0.9478,
+    "meltingPoint": -32.1,
+    "boilingPoint": 155.6,
+    "casNumber": "108-94-1",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used in nylon production"
+  },
+  {
+    "id": 415,
+    "name": "Cysteine",
+    "formula": "C₃H₇NO₂S",
+    "molecularWeight": 121.16,
+    "equivalentWeight": null,
+    "density": 1.3,
+    "meltingPoint": 240.0,
+    "boilingPoint": null,
+    "casNumber": "52-90-4",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of proteins; contains sulfur"
+  },
+  {
+    "id": 430,
+    "name": "Cytosine",
+    "formula": "C₄H₅N₃O",
+    "molecularWeight": 111.1,
+    "equivalentWeight": null,
+    "density": 1.55,
+    "meltingPoint": 320.0,
+    "boilingPoint": null,
+    "casNumber": "71-30-7",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of nucleic acids"
+  },
+  {
+    "id": 405,
+    "name": "Deoxyribose",
+    "formula": "C₅H₁₀O₄",
+    "molecularWeight": 134.13,
+    "equivalentWeight": null,
+    "density": 1.34,
+    "meltingPoint": 91.0,
+    "boilingPoint": null,
+    "casNumber": "533-67-5",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Simple sugar; used in DNA synthesis"
   },
   {
     "id": 80,
@@ -1197,7 +1812,22 @@
     "category": "Element",
     "atomicNumber": 35,
     "atomicMass": 79.904,
-    "note": null
+    "note": "Diatomic liquid at room temperature; used in flame retardants"
+  },
+  {
+    "id": 314,
+    "name": "Diborane",
+    "formula": "B₂H₆",
+    "molecularWeight": 27.67,
+    "equivalentWeight": null,
+    "density": 0.4448,
+    "meltingPoint": -164.85,
+    "boilingPoint": -92.5,
+    "casNumber": "19287-45-7",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Highly reactive gas; used as reducing agent"
   },
   {
     "id": 81,
@@ -1211,8 +1841,8 @@
     "casNumber": "75-09-2",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 84.93,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic solvent; used in paint strippers and degreasers"
   },
   {
     "id": 82,
@@ -1226,8 +1856,38 @@
     "casNumber": "13907-47-6",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 215.988,
-    "note": null
+    "atomicMass": null,
+    "note": "Dichromate ion - divalent anion (n=2)"
+  },
+  {
+    "id": 344,
+    "name": "Dicyclohexylcarbodiimide",
+    "formula": "C₁₃H₂₂N₂",
+    "molecularWeight": 206.33,
+    "equivalentWeight": null,
+    "density": 0.984,
+    "meltingPoint": 34.5,
+    "boilingPoint": null,
+    "casNumber": "538-75-0",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used in peptide synthesis"
+  },
+  {
+    "id": 388,
+    "name": "Diethyl ether",
+    "formula": "C₄H₁₀O",
+    "molecularWeight": 74.12,
+    "equivalentWeight": null,
+    "density": 0.7134,
+    "meltingPoint": -116.3,
+    "boilingPoint": 34.6,
+    "casNumber": "60-29-7",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic solvent; used as anesthetic and as solvent"
   },
   {
     "id": 83,
@@ -1241,7 +1901,7 @@
     "casNumber": "7732-18-5",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 18.01528,
+    "atomicMass": null,
     "note": "The universal solvent; exhibits anomalous physical properties due to extensive hydrogen bonding network • MP: 0.0°C; abnormally high for a hydride of Group 16 due to H-bonding • BP: 100.0°C; extremely high for a small molecule (compare H2S = -60°C) • Highest heat capacity of any common liquid (4.18 J/g·K); maximum density at 4°C • Essential for all known life; primary solvent in biological and chemical systems; standard reference point for thermodynamics"
   },
   {
@@ -1256,8 +1916,23 @@
     "casNumber": "67-68-5",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 78.13,
-    "note": null
+    "atomicMass": null,
+    "note": "Polar aprotic solvent; used as cryoprotectant"
+  },
+  {
+    "id": 390,
+    "name": "Dimethylformamide",
+    "formula": "C₃H₇NO",
+    "molecularWeight": 73.09,
+    "equivalentWeight": null,
+    "density": 0.948,
+    "meltingPoint": -60.4,
+    "boilingPoint": 153.0,
+    "casNumber": "68-12-2",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Polar aprotic solvent; used in organic synthesis"
   },
   {
     "id": 85,
@@ -1271,8 +1946,8 @@
     "casNumber": "95-45-4",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 116.12,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic compound; used as reagent for nickel detection"
   },
   {
     "id": 86,
@@ -1286,8 +1961,8 @@
     "casNumber": "10024-97-2",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 44.013,
-    "note": null
+    "atomicMass": null,
+    "note": "Laughing gas; used as anesthetic and propellant"
   },
   {
     "id": 87,
@@ -1301,8 +1976,8 @@
     "casNumber": "10102-03-1",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 108.01,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as nitrating agent"
   },
   {
     "id": 88,
@@ -1316,8 +1991,8 @@
     "casNumber": "10544-73-7",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 76.01,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in nitrosation reactions"
   },
   {
     "id": 89,
@@ -1331,8 +2006,53 @@
     "casNumber": "7758-11-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 174.2,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as buffer and fertilizer"
+  },
+  {
+    "id": 339,
+    "name": "EDTA (free acid)",
+    "formula": "C₁₀H₁₆N₂O₈",
+    "molecularWeight": 292.24,
+    "equivalentWeight": 73.06,
+    "density": 0.86,
+    "meltingPoint": 240.0,
+    "boilingPoint": null,
+    "casNumber": "60-00-4",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Chelating agent (n=4); used to bind metal ions"
+  },
+  {
+    "id": 338,
+    "name": "EDTA disodium salt",
+    "formula": "C₁₀H₁₄N₂Na₂O₈·2H₂O",
+    "molecularWeight": 372.24,
+    "equivalentWeight": 186.12,
+    "density": 0.86,
+    "meltingPoint": 252.0,
+    "boilingPoint": null,
+    "casNumber": "6381-92-6",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=4); chelating agent"
+  },
+  {
+    "id": 350,
+    "name": "Eriochrome Black T",
+    "formula": "C₂₀H₁₂N₃NaO₇S",
+    "molecularWeight": 461.38,
+    "equivalentWeight": null,
+    "density": null,
+    "meltingPoint": 199.5,
+    "boilingPoint": null,
+    "casNumber": "1787-61-7",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "pH indicator; used in complexometric titrations"
   },
   {
     "id": 90,
@@ -1346,8 +2066,8 @@
     "casNumber": "74-84-0",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 30.07,
-    "note": null
+    "atomicMass": null,
+    "note": "Alkane gas; used as fuel and in petrochemical industry"
   },
   {
     "id": 91,
@@ -1361,8 +2081,23 @@
     "casNumber": "64-17-5",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 46.069,
+    "atomicMass": null,
     "note": "The most important simple alcohol; serves as reference point for alcohol physical properties and reactivity • MP: -114.1°C; low MP due to small size and limited hydrogen bonding • BP: 78.4°C; significantly lower than water despite hydrogen bonding • Flammable; undergoes oxidation to acetaldehyde then acetic acid • Universal solvent for organic compounds; used as fuel, disinfectant, and chemical feedstock"
+  },
+  {
+    "id": 387,
+    "name": "Ethyl acetate",
+    "formula": "C₄H₈O₂",
+    "molecularWeight": 88.11,
+    "equivalentWeight": null,
+    "density": 0.902,
+    "meltingPoint": -83.6,
+    "boilingPoint": 77.1,
+    "casNumber": "141-78-6",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic solvent; used in nail polish remover"
   },
   {
     "id": 92,
@@ -1376,8 +2111,8 @@
     "casNumber": "74-85-1",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 28.054,
-    "note": null
+    "atomicMass": null,
+    "note": "Alkene gas; used in plastic (polyethylene) production"
   },
   {
     "id": 93,
@@ -1391,8 +2126,8 @@
     "casNumber": "107-21-1",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 62.07,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic solvent; used as antifreeze"
   },
   {
     "id": 94,
@@ -1406,8 +2141,38 @@
     "casNumber": "97-53-0",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 164.2,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic compound; found in clove oil; used as flavoring and anesthetic"
+  },
+  {
+    "id": 332,
+    "name": "Ferrocene",
+    "formula": "(C₅H₅)₂Fe",
+    "molecularWeight": 186.03,
+    "equivalentWeight": null,
+    "density": 1.49,
+    "meltingPoint": 172.5,
+    "boilingPoint": 249.0,
+    "casNumber": "102-54-5",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Sandwich compound; used as anti-knock agent"
+  },
+  {
+    "id": 337,
+    "name": "Ferrous ammonium sulfate",
+    "formula": "(NH₄)₂Fe(SO₄)₂·6H₂O",
+    "molecularWeight": 392.14,
+    "equivalentWeight": 392.14,
+    "density": 1.86,
+    "meltingPoint": 100.0,
+    "boilingPoint": null,
+    "casNumber": "10045-89-3",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=2); used as reducing agent"
   },
   {
     "id": 95,
@@ -1422,7 +2187,7 @@
     "category": "Element",
     "atomicNumber": 9,
     "atomicMass": 18.9985,
-    "note": null
+    "note": "Most electronegative element; used in fluorination reactions"
   },
   {
     "id": 96,
@@ -1436,8 +2201,8 @@
     "casNumber": "50-00-0",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 30.031,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic compound; used as disinfectant and in resin production"
   },
   {
     "id": 97,
@@ -1451,8 +2216,8 @@
     "casNumber": "64-18-6",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 46.03,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); found in ant venom; used as preservative"
   },
   {
     "id": 98,
@@ -1466,8 +2231,83 @@
     "casNumber": "57-48-7",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 180.16,
-    "note": null
+    "atomicMass": null,
+    "note": "Simple sugar; found in fruits and honey"
+  },
+  {
+    "id": 363,
+    "name": "Furan",
+    "formula": "C₄H₄O",
+    "molecularWeight": 68.07,
+    "equivalentWeight": null,
+    "density": 0.936,
+    "meltingPoint": -85.6,
+    "boilingPoint": 31.4,
+    "casNumber": "110-00-9",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Heterocyclic compound; used as solvent and in synthesis"
+  },
+  {
+    "id": 407,
+    "name": "Glucose",
+    "formula": "C₆H₁₂O₆",
+    "molecularWeight": 180.156,
+    "equivalentWeight": null,
+    "density": 1.54,
+    "meltingPoint": 146.0,
+    "boilingPoint": null,
+    "casNumber": "50-99-7",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Simple sugar; primary energy source for living organisms"
+  },
+  {
+    "id": 418,
+    "name": "Glutamic acid",
+    "formula": "C₅H₉NO₄",
+    "molecularWeight": 147.13,
+    "equivalentWeight": null,
+    "density": 1.538,
+    "meltingPoint": 199.0,
+    "boilingPoint": null,
+    "casNumber": "56-86-0",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of proteins; neurotransmitter"
+  },
+  {
+    "id": 420,
+    "name": "Glutamine",
+    "formula": "C₅H₁₀N₂O₃",
+    "molecularWeight": 146.14,
+    "equivalentWeight": null,
+    "density": 1.36,
+    "meltingPoint": 185.0,
+    "boilingPoint": null,
+    "casNumber": "56-85-9",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of proteins"
+  },
+  {
+    "id": 376,
+    "name": "Glutaric acid",
+    "formula": "C₅H₈O₄",
+    "molecularWeight": 132.11,
+    "equivalentWeight": 66.055,
+    "density": 1.429,
+    "meltingPoint": 97.5,
+    "boilingPoint": 303.0,
+    "casNumber": "110-94-1",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Dicarboxylic acid (n=2); used in polymer production"
   },
   {
     "id": 99,
@@ -1481,8 +2321,8 @@
     "casNumber": "56-81-5",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 92.09,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic compound; used as humectant and in cosmetics"
   },
   {
     "id": 100,
@@ -1496,8 +2336,53 @@
     "casNumber": "56-81-5",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 92.09382,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic compound; used as humectant and in cosmetics"
+  },
+  {
+    "id": 408,
+    "name": "Glycine",
+    "formula": "C₂H₅NO₂",
+    "molecularWeight": 75.067,
+    "equivalentWeight": null,
+    "density": 1.607,
+    "meltingPoint": 233.0,
+    "boilingPoint": null,
+    "casNumber": "56-40-6",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of proteins"
+  },
+  {
+    "id": 285,
+    "name": "Gold",
+    "formula": "Au",
+    "molecularWeight": 196.967,
+    "equivalentWeight": null,
+    "density": 19.3,
+    "meltingPoint": 1064.18,
+    "boilingPoint": 2856.0,
+    "casNumber": "7440-57-5",
+    "category": "Element",
+    "atomicNumber": 79,
+    "atomicMass": 196.967,
+    "note": "Noble metal; used in jewelry and in electronics"
+  },
+  {
+    "id": 429,
+    "name": "Guanine",
+    "formula": "C₅H₅N₅O",
+    "molecularWeight": 151.13,
+    "equivalentWeight": null,
+    "density": 2.2,
+    "meltingPoint": 360.0,
+    "boilingPoint": null,
+    "casNumber": "73-40-5",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of nucleic acids"
   },
   {
     "id": 101,
@@ -1512,7 +2397,37 @@
     "category": "Element",
     "atomicNumber": 2,
     "atomicMass": 4.0026,
-    "note": null
+    "note": "Noble gas; lighter than air; used in balloons and as coolant"
+  },
+  {
+    "id": 330,
+    "name": "Hexaamminecobalt(III) chloride",
+    "formula": "[Co(NH₃)₆]Cl₃",
+    "molecularWeight": 267.48,
+    "equivalentWeight": null,
+    "density": 1.5,
+    "meltingPoint": 300.0,
+    "boilingPoint": null,
+    "casNumber": "10534-89-1",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Complex compound; used in coordination chemistry"
+  },
+  {
+    "id": 406,
+    "name": "Hexamethylenediamine",
+    "formula": "C₆H₁₆N₂",
+    "molecularWeight": 116.21,
+    "equivalentWeight": null,
+    "density": 0.84,
+    "meltingPoint": 42.0,
+    "boilingPoint": 204.6,
+    "casNumber": "124-09-4",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used in nylon production"
   },
   {
     "id": 102,
@@ -1526,8 +2441,8 @@
     "casNumber": "100-97-0",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 140.186,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic compound; used as fuel tablets and in organic synthesis"
   },
   {
     "id": 103,
@@ -1541,8 +2456,23 @@
     "casNumber": "110-54-3",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 86.18,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic solvent; used in paint thinners and in extraction"
+  },
+  {
+    "id": 427,
+    "name": "Histidine",
+    "formula": "C₆H₉N₃O₂",
+    "molecularWeight": 155.15,
+    "equivalentWeight": null,
+    "density": 1.42,
+    "meltingPoint": 287.0,
+    "boilingPoint": null,
+    "casNumber": "71-00-1",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Essential amino acid; building block of proteins"
   },
   {
     "id": 104,
@@ -1556,8 +2486,8 @@
     "casNumber": "302-01-2",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 32.0452,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=2); used as rocket fuel and in hydrazine hydrate production"
   },
   {
     "id": 105,
@@ -1571,8 +2501,8 @@
     "casNumber": "10035-10-6",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 80.912,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); used as reagent and in organic synthesis"
   },
   {
     "id": 106,
@@ -1586,8 +2516,8 @@
     "casNumber": "7647-01-0",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 36.458,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); widely used as laboratory reagent and in industrial processes"
   },
   {
     "id": 107,
@@ -1601,8 +2531,38 @@
     "casNumber": "74-90-8",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 27.026,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); highly toxic; used as fumigant"
+  },
+  {
+    "id": 274,
+    "name": "Hydrogen",
+    "formula": "H₂",
+    "molecularWeight": 2.016,
+    "equivalentWeight": null,
+    "density": 8.988e-05,
+    "meltingPoint": -259.16,
+    "boilingPoint": -252.87,
+    "casNumber": "1333-74-0",
+    "category": "Element",
+    "atomicNumber": 1,
+    "atomicMass": 1.008,
+    "note": "Lightest element; used in fuel and chemical industry"
+  },
+  {
+    "id": 311,
+    "name": "Hydrogen fluoride",
+    "formula": "HF",
+    "molecularWeight": 20.006,
+    "equivalentWeight": 20.006,
+    "density": 0.99,
+    "meltingPoint": -83.6,
+    "boilingPoint": 19.5,
+    "casNumber": "7664-39-3",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Weak acid (n=1); highly corrosive; used to etch glass"
   },
   {
     "id": 108,
@@ -1616,7 +2576,7 @@
     "casNumber": "7722-84-1",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 34.0147,
+    "atomicMass": null,
     "note": "Classic example of thermodynamically unstable compound; decomposes via radical mechanism • MP: -0.4°C; slightly below water's MP due to altered H-bonding network • BP: 150.2°C; higher than water due to stronger H-bonding (more H-bond donors/acceptors) • Decomposes exothermically: 2H2O2 → 2H2O + O2 (ΔH = -98 kJ/mol); catalyzed by MnO2, Fe2+, and light • Key industrial bleaching agent (paper, textiles); used as disinfectant and rocket propellant (high-test peroxide)"
   },
   {
@@ -1631,8 +2591,23 @@
     "casNumber": "14996-02-2",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 97.064,
-    "note": null
+    "atomicMass": null,
+    "note": "Hydrogen sulfate ion - monovalent anion (n=1)"
+  },
+  {
+    "id": 310,
+    "name": "Hydrogen sulfide",
+    "formula": "H₂S",
+    "molecularWeight": 34.08,
+    "equivalentWeight": null,
+    "density": 0.001363,
+    "meltingPoint": -85.5,
+    "boilingPoint": -60.3,
+    "casNumber": "7783-06-4",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Toxic gas; smells like rotten eggs; used in analytical chemistry"
   },
   {
     "id": 110,
@@ -1646,8 +2621,8 @@
     "casNumber": "10034-85-2",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 127.91,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); used as reducing agent and in organic synthesis"
   },
   {
     "id": 111,
@@ -1661,8 +2636,8 @@
     "casNumber": "123-31-9",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 110.11,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic compound; used as photographic developer"
   },
   {
     "id": 112,
@@ -1676,8 +2651,23 @@
     "casNumber": "14280-30-9",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 17.007,
-    "note": null
+    "atomicMass": null,
+    "note": "Hydroxide ion - monovalent anion (n=1)"
+  },
+  {
+    "id": 345,
+    "name": "Hydroxylamine hydrochloride",
+    "formula": "NH₂OH·HCl",
+    "molecularWeight": 69.49,
+    "equivalentWeight": null,
+    "density": 1.67,
+    "meltingPoint": 151.5,
+    "boilingPoint": null,
+    "casNumber": "5470-11-1",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=1); used as reducing agent"
   },
   {
     "id": 113,
@@ -1691,8 +2681,8 @@
     "casNumber": "13517-11-8",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 96.911,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); used as disinfectant"
   },
   {
     "id": 114,
@@ -1706,8 +2696,8 @@
     "casNumber": "14380-61-1",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 51.449,
-    "note": null
+    "atomicMass": null,
+    "note": "Hypochlorite ion - monovalent anion (n=1); used as bleaching agent"
   },
   {
     "id": 115,
@@ -1721,8 +2711,8 @@
     "casNumber": "7790-92-3",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 52.457,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); weak acid; used as disinfectant"
   },
   {
     "id": 116,
@@ -1736,8 +2726,38 @@
     "casNumber": "14332-21-9",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 143.89,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); weak acid"
+  },
+  {
+    "id": 367,
+    "name": "Imidazole",
+    "formula": "C₃H₄N₂",
+    "molecularWeight": 68.08,
+    "equivalentWeight": null,
+    "density": 1.03,
+    "meltingPoint": 89.0,
+    "boilingPoint": 256.0,
+    "casNumber": "288-32-4",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Heterocyclic compound; used in pharmaceuticals"
+  },
+  {
+    "id": 365,
+    "name": "Indole",
+    "formula": "C₈H₇N",
+    "molecularWeight": 117.15,
+    "equivalentWeight": null,
+    "density": 1.22,
+    "meltingPoint": 52.5,
+    "boilingPoint": 253.0,
+    "casNumber": "120-72-9",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Heterocyclic compound; found in natural products"
   },
   {
     "id": 117,
@@ -1752,7 +2772,7 @@
     "category": "Ion",
     "atomicNumber": 53,
     "atomicMass": 126.904,
-    "note": null
+    "note": "Iodide ion - monovalent anion (n=1)"
   },
   {
     "id": 118,
@@ -1767,7 +2787,52 @@
     "category": "Element",
     "atomicNumber": 53,
     "atomicMass": 126.9045,
-    "note": null
+    "note": "Diatomic solid; essential nutrient; used as antiseptic"
+  },
+  {
+    "id": 359,
+    "name": "Iodobenzene",
+    "formula": "C₆H₅I",
+    "molecularWeight": 204.01,
+    "equivalentWeight": null,
+    "density": 1.823,
+    "meltingPoint": -31.3,
+    "boilingPoint": 188.5,
+    "casNumber": "591-50-4",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Aromatic iodide; used in organic synthesis"
+  },
+  {
+    "id": 393,
+    "name": "Iodoform",
+    "formula": "CHI₃",
+    "molecularWeight": 393.73,
+    "equivalentWeight": null,
+    "density": 4.008,
+    "meltingPoint": 123.0,
+    "boilingPoint": 210.0,
+    "casNumber": "75-47-8",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used as antiseptic"
+  },
+  {
+    "id": 281,
+    "name": "Iron",
+    "formula": "Fe",
+    "molecularWeight": 55.845,
+    "equivalentWeight": null,
+    "density": 7.874,
+    "meltingPoint": 1538.0,
+    "boilingPoint": 2862.0,
+    "casNumber": "7439-89-6",
+    "category": "Element",
+    "atomicNumber": 26,
+    "atomicMass": 55.845,
+    "note": "Transition metal; used in steel production and in life"
   },
   {
     "id": 119,
@@ -1781,8 +2846,53 @@
     "casNumber": "1309-37-1",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 159.69,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=6); used as pigment (rust)"
+  },
+  {
+    "id": 329,
+    "name": "Iron(II) chloride",
+    "formula": "FeCl₂",
+    "molecularWeight": 126.75,
+    "equivalentWeight": 63.375,
+    "density": 3.16,
+    "meltingPoint": 677.0,
+    "boilingPoint": 1023.0,
+    "casNumber": "7758-94-3",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=2); used as reducing agent"
+  },
+  {
+    "id": 327,
+    "name": "Iron(II) sulfate",
+    "formula": "FeSO₄",
+    "molecularWeight": 151.91,
+    "equivalentWeight": 75.955,
+    "density": 2.84,
+    "meltingPoint": 680.0,
+    "boilingPoint": null,
+    "casNumber": "7720-78-7",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=2); used as fertilizer and as reducing agent"
+  },
+  {
+    "id": 328,
+    "name": "Iron(III) chloride",
+    "formula": "FeCl₃",
+    "molecularWeight": 162.2,
+    "equivalentWeight": 54.067,
+    "density": 2.9,
+    "meltingPoint": 306.0,
+    "boilingPoint": 315.0,
+    "casNumber": "7705-08-0",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=3); used as coagulant and as catalyst"
   },
   {
     "id": 120,
@@ -1796,8 +2906,38 @@
     "casNumber": "1309-37-1",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 159.687,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=6); used as pigment"
+  },
+  {
+    "id": 412,
+    "name": "Isoleucine",
+    "formula": "C₆H₁₃NO₂",
+    "molecularWeight": 131.17,
+    "equivalentWeight": null,
+    "density": 1.34,
+    "meltingPoint": 284.0,
+    "boilingPoint": null,
+    "casNumber": "73-32-5",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Essential amino acid; building block of proteins"
+  },
+  {
+    "id": 298,
+    "name": "Krypton",
+    "formula": "Kr",
+    "molecularWeight": 83.798,
+    "equivalentWeight": null,
+    "density": 0.003749,
+    "meltingPoint": -157.36,
+    "boilingPoint": -153.22,
+    "casNumber": "7439-90-9",
+    "category": "Element",
+    "atomicNumber": 36,
+    "atomicMass": 83.798,
+    "note": "Noble gas; used in lighting and in lasers"
   },
   {
     "id": 121,
@@ -1811,8 +2951,23 @@
     "casNumber": "50-21-5",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 90.078,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); found in sour milk; used in food and cosmetics"
+  },
+  {
+    "id": 287,
+    "name": "Lead",
+    "formula": "Pb",
+    "molecularWeight": 207.2,
+    "equivalentWeight": null,
+    "density": 11.34,
+    "meltingPoint": 327.46,
+    "boilingPoint": 1749.0,
+    "casNumber": "7439-92-1",
+    "category": "Element",
+    "atomicNumber": 82,
+    "atomicMass": 207.2,
+    "note": "Toxic metal; used in batteries and as radiation shield"
   },
   {
     "id": 122,
@@ -1826,8 +2981,8 @@
     "casNumber": "301-04-2",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 325.29,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as pigment and in cosmetics"
   },
   {
     "id": 123,
@@ -1841,14 +2996,14 @@
     "casNumber": "10101-63-0",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 461.01,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in solar cells and as pigment"
   },
   {
     "id": 124,
     "name": "Lead(II) acetate",
     "formula": "Pb(C₂H₃O₂)₂",
-    "molecularWeight": 126.904,
+    "molecularWeight": 325.29,
     "equivalentWeight": 162.645,
     "density": 3.25,
     "meltingPoint": 280.0,
@@ -1856,8 +3011,8 @@
     "casNumber": "301-04-2",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 325.29,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as pigment"
   },
   {
     "id": 125,
@@ -1871,8 +3026,68 @@
     "casNumber": "1309-60-0",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 239.1988,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=4); used in lead-acid batteries"
+  },
+  {
+    "id": 411,
+    "name": "Leucine",
+    "formula": "C₆H₁₃NO₂",
+    "molecularWeight": 131.17,
+    "equivalentWeight": null,
+    "density": 1.293,
+    "meltingPoint": 293.0,
+    "boilingPoint": null,
+    "casNumber": "61-90-5",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Essential amino acid; building block of proteins"
+  },
+  {
+    "id": 402,
+    "name": "Linoleic acid",
+    "formula": "C₁₈H₃₂O₂",
+    "molecularWeight": 280.45,
+    "equivalentWeight": 280.45,
+    "density": 0.9038,
+    "meltingPoint": -5.0,
+    "boilingPoint": 230.0,
+    "casNumber": "60-33-3",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Acid (n=1); essential fatty acid"
+  },
+  {
+    "id": 305,
+    "name": "Lithium",
+    "formula": "Li",
+    "molecularWeight": 6.94,
+    "equivalentWeight": null,
+    "density": 0.534,
+    "meltingPoint": 180.5,
+    "boilingPoint": 1342.0,
+    "casNumber": "7439-93-2",
+    "category": "Element",
+    "atomicNumber": 3,
+    "atomicMass": 6.94,
+    "note": "Lightest metal; used in batteries and in medicine"
+  },
+  {
+    "id": 340,
+    "name": "Lithium aluminium hydride",
+    "formula": "LiAlH₄",
+    "molecularWeight": 37.95,
+    "equivalentWeight": 9.4875,
+    "density": 0.917,
+    "meltingPoint": 150.0,
+    "boilingPoint": null,
+    "casNumber": "16853-85-3",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Reducing agent; used in organic synthesis"
   },
   {
     "id": 126,
@@ -1886,8 +3101,8 @@
     "casNumber": "7550-35-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 86.844,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as desiccant"
   },
   {
     "id": 127,
@@ -1901,8 +3116,8 @@
     "casNumber": "7447-41-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 42.394,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as desiccant and in chemical synthesis"
   },
   {
     "id": 128,
@@ -1916,8 +3131,8 @@
     "casNumber": "1310-65-2",
     "category": "Base",
     "atomicNumber": null,
-    "atomicMass": 23.95,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=1); used in lithium batteries and as CO2 scrubber"
   },
   {
     "id": 129,
@@ -1931,8 +3146,8 @@
     "casNumber": "10377-51-2",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 133.844,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used in chemical synthesis"
   },
   {
     "id": 130,
@@ -1946,8 +3161,8 @@
     "casNumber": "12057-24-8",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 29.88,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=2); used in ceramics and glass"
   },
   {
     "id": 131,
@@ -1961,8 +3176,38 @@
     "casNumber": "10377-52-3",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 115.79,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=3); used in lithium batteries"
+  },
+  {
+    "id": 421,
+    "name": "Lysine",
+    "formula": "C₆H₁₄N₂O₂",
+    "molecularWeight": 146.19,
+    "equivalentWeight": null,
+    "density": 1.03,
+    "meltingPoint": 224.0,
+    "boilingPoint": null,
+    "casNumber": "56-87-1",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Essential amino acid; building block of proteins"
+  },
+  {
+    "id": 280,
+    "name": "Magnesium",
+    "formula": "Mg",
+    "molecularWeight": 24.305,
+    "equivalentWeight": null,
+    "density": 1.738,
+    "meltingPoint": 650.0,
+    "boilingPoint": 1090.0,
+    "casNumber": "7439-95-4",
+    "category": "Element",
+    "atomicNumber": 12,
+    "atomicMass": 24.305,
+    "note": "Alkaline earth metal; used in alloys and in medicine"
   },
   {
     "id": 132,
@@ -1976,8 +3221,8 @@
     "casNumber": "546-93-0",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 84.313,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as antacid and in cosmetics"
   },
   {
     "id": 133,
@@ -1991,8 +3236,8 @@
     "casNumber": "7786-30-3",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 95.211,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as de-icer and in water treatment"
   },
   {
     "id": 134,
@@ -2006,8 +3251,8 @@
     "casNumber": "1309-42-8",
     "category": "Base",
     "atomicNumber": null,
-    "atomicMass": 58.319,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=2); used as antacid and flame retardant"
   },
   {
     "id": 135,
@@ -2021,8 +3266,8 @@
     "casNumber": "10377-58-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 278.1139,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as laboratory reagent"
   },
   {
     "id": 136,
@@ -2036,8 +3281,8 @@
     "casNumber": "10377-60-3",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 148.313,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as fertilizer"
   },
   {
     "id": 137,
@@ -2051,8 +3296,8 @@
     "casNumber": "1309-48-4",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 40.3044,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=2); used as antacid and in ceramics"
   },
   {
     "id": 138,
@@ -2066,8 +3311,8 @@
     "casNumber": "7757-87-1",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 262.855,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=6); used as fertilizer"
   },
   {
     "id": 139,
@@ -2081,8 +3326,8 @@
     "casNumber": "7487-88-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 120.361,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as Epsom salt; used in agriculture and medicine"
   },
   {
     "id": 140,
@@ -2096,8 +3341,8 @@
     "casNumber": "12032-36-9",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 56.38,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as laboratory reagent"
   },
   {
     "id": 141,
@@ -2111,8 +3356,23 @@
     "casNumber": "110-16-7",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 116.072,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=2); used in organic synthesis"
+  },
+  {
+    "id": 375,
+    "name": "Malonic acid",
+    "formula": "C₃H₄O₄",
+    "molecularWeight": 104.06,
+    "equivalentWeight": 52.03,
+    "density": 1.619,
+    "meltingPoint": 135.6,
+    "boilingPoint": null,
+    "casNumber": "141-82-2",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Dicarboxylic acid (n=2); used in organic synthesis"
   },
   {
     "id": 142,
@@ -2126,8 +3386,23 @@
     "casNumber": "69-79-4",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 342.3,
-    "note": null
+    "atomicMass": null,
+    "note": "Disaccharide; used in brewing and in food industry"
+  },
+  {
+    "id": 291,
+    "name": "Manganese",
+    "formula": "Mn",
+    "molecularWeight": 54.938,
+    "equivalentWeight": null,
+    "density": 7.21,
+    "meltingPoint": 1246.0,
+    "boilingPoint": 2061.0,
+    "casNumber": "7439-96-5",
+    "category": "Element",
+    "atomicNumber": 25,
+    "atomicMass": 54.938,
+    "note": "Used in steel production and in batteries"
   },
   {
     "id": 143,
@@ -2141,8 +3416,38 @@
     "casNumber": "1313-13-9",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 86.9368,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=4); used in dry cell batteries and as catalyst"
+  },
+  {
+    "id": 325,
+    "name": "Manganese(II) chloride",
+    "formula": "MnCl₂",
+    "molecularWeight": 125.84,
+    "equivalentWeight": 62.92,
+    "density": 2.977,
+    "meltingPoint": 650.0,
+    "boilingPoint": 1225.0,
+    "casNumber": "7773-01-5",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=2); used as fertilizer and as catalyst"
+  },
+  {
+    "id": 326,
+    "name": "Manganese(II) sulfate",
+    "formula": "MnSO₄",
+    "molecularWeight": 151.0,
+    "equivalentWeight": 75.5,
+    "density": 3.25,
+    "meltingPoint": 700.0,
+    "boilingPoint": null,
+    "casNumber": "7785-87-7",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=2); used as fertilizer and as catalyst"
   },
   {
     "id": 144,
@@ -2156,8 +3461,23 @@
     "casNumber": "69-65-8",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 182.172,
-    "note": null
+    "atomicMass": null,
+    "note": "Sugar alcohol; used as sweetener and in medicine"
+  },
+  {
+    "id": 382,
+    "name": "Menthol",
+    "formula": "C₁₀H₂₀O",
+    "molecularWeight": 156.27,
+    "equivalentWeight": null,
+    "density": 0.89,
+    "meltingPoint": 37.0,
+    "boilingPoint": 216.5,
+    "casNumber": "89-78-1",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used in cosmetics and as flavoring"
   },
   {
     "id": 145,
@@ -2171,8 +3491,23 @@
     "casNumber": "7487-94-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 271.52,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); highly toxic; used as disinfectant"
+  },
+  {
+    "id": 286,
+    "name": "Mercury",
+    "formula": "Hg",
+    "molecularWeight": 200.59,
+    "equivalentWeight": null,
+    "density": 13.534,
+    "meltingPoint": -38.83,
+    "boilingPoint": 356.73,
+    "casNumber": "7439-97-6",
+    "category": "Element",
+    "atomicNumber": 80,
+    "atomicMass": 200.59,
+    "note": "Liquid metal; used in thermometers and in dental fillings"
   },
   {
     "id": 146,
@@ -2186,8 +3521,8 @@
     "casNumber": "74-82-8",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 16.043,
-    "note": null
+    "atomicMass": null,
+    "note": "Alkane gas; main component of natural gas; used as fuel"
   },
   {
     "id": 147,
@@ -2201,8 +3536,23 @@
     "casNumber": "67-56-1",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 32.04,
+    "atomicMass": null,
     "note": "The simplest alcohol; critical case study for toxicity and metabolic conversion to formaldehyde/formic acid • MP: -97.6°C; very low due to minimal van der Waals interactions • BP: 64.7°C; lower than ethanol due to weaker intermolecular forces • Highly toxic; metabolized to formaldehyde (toxic) and formic acid (causes blindness/death) • Key industrial feedstock for formaldehyde, acetic acid, and MTBE production; used as fuel and solvent"
+  },
+  {
+    "id": 416,
+    "name": "Methionine",
+    "formula": "C₅H₁₁NO₂S",
+    "molecularWeight": 149.21,
+    "equivalentWeight": null,
+    "density": 1.34,
+    "meltingPoint": 281.0,
+    "boilingPoint": null,
+    "casNumber": "63-68-3",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Essential amino acid; building block of proteins"
   },
   {
     "id": 148,
@@ -2216,14 +3566,14 @@
     "casNumber": "79-20-9",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 74.079,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic solvent; used in paints and adhesives"
   },
   {
     "id": 149,
     "name": "Methyl Ethyl Ketone",
     "formula": "C₄H₈O",
-    "molecularWeight": 115.992,
+    "molecularWeight": 72.107,
     "equivalentWeight": null,
     "density": 0.8054,
     "meltingPoint": -86.64,
@@ -2231,8 +3581,38 @@
     "casNumber": "78-93-3",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 72.107,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic solvent; used in paints and coatings"
+  },
+  {
+    "id": 348,
+    "name": "Methyl orange",
+    "formula": "C₁₄H₁₄N₃NaO₃S",
+    "molecularWeight": 327.33,
+    "equivalentWeight": null,
+    "density": 1.28,
+    "meltingPoint": 300.0,
+    "boilingPoint": null,
+    "casNumber": "547-58-0",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "pH indicator; red in acid, yellow in base"
+  },
+  {
+    "id": 349,
+    "name": "Methyl red",
+    "formula": "C₁₅H₁₅N₃O₂",
+    "molecularWeight": 269.3,
+    "equivalentWeight": null,
+    "density": 1.2,
+    "meltingPoint": 180.5,
+    "boilingPoint": null,
+    "casNumber": "493-52-7",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "pH indicator; red in acid, yellow in base"
   },
   {
     "id": 150,
@@ -2246,8 +3626,23 @@
     "casNumber": "61-73-4",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 319.85,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic dye; used as stain and in medicine"
+  },
+  {
+    "id": 319,
+    "name": "Molybdenum trioxide",
+    "formula": "MoO₃",
+    "molecularWeight": 143.94,
+    "equivalentWeight": null,
+    "density": 4.69,
+    "meltingPoint": 795.0,
+    "boilingPoint": 1155.0,
+    "casNumber": "1313-27-5",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Used as catalyst and as corrosion inhibitor"
   },
   {
     "id": 151,
@@ -2261,8 +3656,8 @@
     "casNumber": "7778-77-0",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 136.084,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as buffer and fertilizer"
   },
   {
     "id": 152,
@@ -2276,14 +3671,89 @@
     "casNumber": "142-47-2",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 169.111,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as flavor enhancer"
+  },
+  {
+    "id": 369,
+    "name": "Morpholine",
+    "formula": "C₄H₉NO",
+    "molecularWeight": 87.12,
+    "equivalentWeight": null,
+    "density": 1.007,
+    "meltingPoint": -4.9,
+    "boilingPoint": 128.9,
+    "casNumber": "110-91-8",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Heterocyclic compound; used as corrosion inhibitor"
+  },
+  {
+    "id": 354,
+    "name": "Murexide",
+    "formula": "C₈H₈N₆O₆",
+    "molecularWeight": 284.19,
+    "equivalentWeight": null,
+    "density": null,
+    "meltingPoint": null,
+    "boilingPoint": null,
+    "casNumber": "3051-09-0",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "pH indicator; used in complexometric titrations"
+  },
+  {
+    "id": 360,
+    "name": "Naphthalene",
+    "formula": "C₁₀H₈",
+    "molecularWeight": 128.17,
+    "equivalentWeight": null,
+    "density": 1.14,
+    "meltingPoint": 80.26,
+    "boilingPoint": 218.0,
+    "casNumber": "91-20-3",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Polycyclic aromatic hydrocarbon; used as moth repellent"
+  },
+  {
+    "id": 297,
+    "name": "Neon",
+    "formula": "Ne",
+    "molecularWeight": 20.18,
+    "equivalentWeight": null,
+    "density": 0.0009,
+    "meltingPoint": -248.59,
+    "boilingPoint": -246.05,
+    "casNumber": "7440-01-9",
+    "category": "Element",
+    "atomicNumber": 10,
+    "atomicMass": 20.18,
+    "note": "Noble gas; used in lighting and in lasers"
+  },
+  {
+    "id": 289,
+    "name": "Nickel",
+    "formula": "Ni",
+    "molecularWeight": 58.693,
+    "equivalentWeight": null,
+    "density": 8.908,
+    "meltingPoint": 1455.0,
+    "boilingPoint": 2913.0,
+    "casNumber": "7440-02-0",
+    "category": "Element",
+    "atomicNumber": 28,
+    "atomicMass": 58.693,
+    "note": "Used in stainless steel and in batteries"
   },
   {
     "id": 153,
     "name": "Nickel acetate",
     "formula": "C₄H₆O₄Ni",
-    "molecularWeight": 314.02,
+    "molecularWeight": 178.797,
     "equivalentWeight": 89.3985,
     "density": 1.744,
     "meltingPoint": null,
@@ -2291,8 +3761,8 @@
     "casNumber": "373-02-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 178.797,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as catalyst"
   },
   {
     "id": 154,
@@ -2306,8 +3776,8 @@
     "casNumber": "13138-45-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 182.703,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as catalyst and in ceramics"
   },
   {
     "id": 155,
@@ -2321,8 +3791,23 @@
     "casNumber": "7786-81-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 154.75,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in electroplating and as catalyst"
+  },
+  {
+    "id": 323,
+    "name": "Nickel(II) oxide",
+    "formula": "NiO",
+    "molecularWeight": 74.69,
+    "equivalentWeight": 37.345,
+    "density": 6.67,
+    "meltingPoint": 1955.0,
+    "boilingPoint": null,
+    "casNumber": "1313-99-1",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=2); used as pigment and in batteries"
   },
   {
     "id": 156,
@@ -2336,8 +3821,8 @@
     "casNumber": "7697-37-2",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 63.012,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); strong acid; used in fertilizer production and explosives"
   },
   {
     "id": 157,
@@ -2351,8 +3836,38 @@
     "casNumber": "14797-65-0",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 46.005,
-    "note": null
+    "atomicMass": null,
+    "note": "Nitrite ion - monovalent anion (n=1)"
+  },
+  {
+    "id": 356,
+    "name": "Nitrobenzene",
+    "formula": "C₆H₅NO₂",
+    "molecularWeight": 123.11,
+    "equivalentWeight": null,
+    "density": 1.199,
+    "meltingPoint": 5.7,
+    "boilingPoint": 210.9,
+    "casNumber": "98-95-3",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Aromatic nitro compound; used as solvent and precursor to aniline"
+  },
+  {
+    "id": 276,
+    "name": "Nitrogen",
+    "formula": "N₂",
+    "molecularWeight": 28.014,
+    "equivalentWeight": null,
+    "density": 0.001251,
+    "meltingPoint": -210.1,
+    "boilingPoint": -195.79,
+    "casNumber": "7727-37-9",
+    "category": "Element",
+    "atomicNumber": 7,
+    "atomicMass": 14.007,
+    "note": "Diatomic gas; used in fertilizers and in industry"
   },
   {
     "id": 158,
@@ -2366,8 +3881,8 @@
     "casNumber": "10102-44-0",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 30.006,
-    "note": null
+    "atomicMass": null,
+    "note": "Toxic gas; used as oxidizing agent"
   },
   {
     "id": 159,
@@ -2381,8 +3896,8 @@
     "casNumber": "10102-43-9",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 30.006,
-    "note": null
+    "atomicMass": null,
+    "note": "Nitric oxide; used as signaling molecule"
   },
   {
     "id": 160,
@@ -2396,8 +3911,23 @@
     "casNumber": "7782-77-6",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 47.013,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); weak acid; used as nitrosating agent"
+  },
+  {
+    "id": 401,
+    "name": "Oleic acid",
+    "formula": "C₁₈H₃₄O₂",
+    "molecularWeight": 282.47,
+    "equivalentWeight": 282.47,
+    "density": 0.895,
+    "meltingPoint": 13.4,
+    "boilingPoint": 360.0,
+    "casNumber": "112-80-1",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Acid (n=1); found in olive oil"
   },
   {
     "id": 161,
@@ -2411,8 +3941,8 @@
     "casNumber": "338-70-5",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 88.018,
-    "note": null
+    "atomicMass": null,
+    "note": "Oxalate ion - divalent anion (n=2)"
   },
   {
     "id": 162,
@@ -2426,14 +3956,14 @@
     "casNumber": "144-62-7",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 90.03,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=2); found in rhubarb; used as bleaching agent"
   },
   {
     "id": 163,
     "name": "Oxygen",
-    "formula": "O",
-    "molecularWeight": 15.999,
+    "formula": "O₂",
+    "molecularWeight": 31.998,
     "equivalentWeight": 7.9995,
     "density": 0.001429,
     "meltingPoint": -218.79,
@@ -2442,7 +3972,7 @@
     "category": "Element",
     "atomicNumber": 8,
     "atomicMass": 15.999,
-    "note": null
+    "note": "Essential for life; supports combustion"
   },
   {
     "id": 164,
@@ -2457,7 +3987,22 @@
     "category": "Inorganic Compound",
     "atomicNumber": 8,
     "atomicMass": 16.0,
-    "note": null
+    "note": "Allotrope of oxygen; used as disinfectant and in water treatment"
+  },
+  {
+    "id": 400,
+    "name": "Palmitic acid",
+    "formula": "C₁₆H₃₂O₂",
+    "molecularWeight": 256.43,
+    "equivalentWeight": 256.43,
+    "density": 0.853,
+    "meltingPoint": 62.9,
+    "boilingPoint": 351.5,
+    "casNumber": "57-10-3",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Acid (n=1); found in palm oil"
   },
   {
     "id": 165,
@@ -2471,8 +4016,23 @@
     "casNumber": "106-46-7",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 147.01,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic compound; used as moth repellent and deodorizer"
+  },
+  {
+    "id": 385,
+    "name": "Paracetamol",
+    "formula": "C₈H₉NO₂",
+    "molecularWeight": 151.16,
+    "equivalentWeight": null,
+    "density": 1.293,
+    "meltingPoint": 170.0,
+    "boilingPoint": null,
+    "casNumber": "103-90-2",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used as analgesic"
   },
   {
     "id": 166,
@@ -2486,8 +4046,8 @@
     "casNumber": "7601-90-3",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 100.46,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); strong acid; used as laboratory reagent"
   },
   {
     "id": 167,
@@ -2501,8 +4061,8 @@
     "casNumber": "13445-49-3",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 194.14,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=2); strong oxidizer; used in organic synthesis"
   },
   {
     "id": 168,
@@ -2516,8 +4076,23 @@
     "casNumber": "108-95-2",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 94.11,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic compound; used as disinfectant and in plastic production"
+  },
+  {
+    "id": 352,
+    "name": "Phenol red",
+    "formula": "C₁₉H₁₄O₅S",
+    "molecularWeight": 354.38,
+    "equivalentWeight": null,
+    "density": 1.5,
+    "meltingPoint": 175.0,
+    "boilingPoint": null,
+    "casNumber": "143-74-8",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "pH indicator; yellow in acid, red in base"
   },
   {
     "id": 169,
@@ -2531,8 +4106,8 @@
     "casNumber": "77-09-8",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 318.32,
-    "note": null
+    "atomicMass": null,
+    "note": "pH indicator; colorless in acid, pink in base"
   },
   {
     "id": 170,
@@ -2546,8 +4121,23 @@
     "casNumber": "2396-01-2",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 77.106,
-    "note": null
+    "atomicMass": null,
+    "note": "Unstable radical; not a stable compound"
+  },
+  {
+    "id": 423,
+    "name": "Phenylalanine",
+    "formula": "C₉H₁₁NO₂",
+    "molecularWeight": 165.19,
+    "equivalentWeight": null,
+    "density": 1.29,
+    "meltingPoint": 283.0,
+    "boilingPoint": null,
+    "casNumber": "63-91-2",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Essential amino acid; building block of proteins"
   },
   {
     "id": 171,
@@ -2561,8 +4151,8 @@
     "casNumber": "14265-44-2",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 94.9714,
-    "note": null
+    "atomicMass": null,
+    "note": "Phosphate ion - trivalent anion (n=3)"
   },
   {
     "id": 172,
@@ -2576,8 +4166,23 @@
     "casNumber": "14265-44-2",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 94.9714,
-    "note": null
+    "atomicMass": null,
+    "note": "Phosphate ion - trivalent anion (n=3)"
+  },
+  {
+    "id": 312,
+    "name": "Phosphine",
+    "formula": "PH₃",
+    "molecularWeight": 34.0,
+    "equivalentWeight": null,
+    "density": 0.00153,
+    "meltingPoint": -132.8,
+    "boilingPoint": -87.7,
+    "casNumber": "7803-51-2",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Toxic gas; used in fumigation and semiconductor manufacturing"
   },
   {
     "id": 173,
@@ -2591,14 +4196,14 @@
     "casNumber": "7664-38-2",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 97.994,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=3); used in fertilizers and as food additive"
   },
   {
     "id": 174,
     "name": "Phosphorous Acid",
     "formula": "H₃PO₃",
-    "molecularWeight": 108.01,
+    "molecularWeight": 82.0,
     "equivalentWeight": 41.0,
     "density": 1.651,
     "meltingPoint": 73.6,
@@ -2606,8 +4211,23 @@
     "casNumber": "13598-36-2",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 82.0,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=2); used as reducing agent"
+  },
+  {
+    "id": 295,
+    "name": "Phosphorus (white)",
+    "formula": "P₄",
+    "molecularWeight": 123.895,
+    "equivalentWeight": null,
+    "density": 1.823,
+    "meltingPoint": 44.15,
+    "boilingPoint": 280.5,
+    "casNumber": "7723-14-0",
+    "category": "Element",
+    "atomicNumber": 15,
+    "atomicMass": 30.974,
+    "note": "Non-metal; used in matches and as fertilizer"
   },
   {
     "id": 175,
@@ -2621,8 +4241,8 @@
     "casNumber": "10026-13-8",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 208.24,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=5); used as chlorinating agent"
   },
   {
     "id": 176,
@@ -2636,8 +4256,8 @@
     "casNumber": "7719-12-2",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 137.33,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=3); used as chlorinating agent"
   },
   {
     "id": 177,
@@ -2651,8 +4271,53 @@
     "casNumber": "13455-01-1",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 411.6872,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=3); used as reducing agent"
+  },
+  {
+    "id": 377,
+    "name": "Phthalic acid",
+    "formula": "C₈H₆O₄",
+    "molecularWeight": 166.13,
+    "equivalentWeight": 83.065,
+    "density": 1.593,
+    "meltingPoint": 210.5,
+    "boilingPoint": null,
+    "casNumber": "88-99-3",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Dicarboxylic acid (n=2); used in plastics (phthalates)"
+  },
+  {
+    "id": 368,
+    "name": "Piperidine",
+    "formula": "C₅H₁₁N",
+    "molecularWeight": 85.15,
+    "equivalentWeight": null,
+    "density": 0.862,
+    "meltingPoint": -11.0,
+    "boilingPoint": 106.4,
+    "casNumber": "110-89-4",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Heterocyclic compound; used in pharmaceuticals"
+  },
+  {
+    "id": 301,
+    "name": "Platinum",
+    "formula": "Pt",
+    "molecularWeight": 195.084,
+    "equivalentWeight": null,
+    "density": 21.45,
+    "meltingPoint": 1768.3,
+    "boilingPoint": 3825.0,
+    "casNumber": "7440-06-4",
+    "category": "Element",
+    "atomicNumber": 78,
+    "atomicMass": 195.084,
+    "note": "Noble metal; used in catalysis and in jewelry"
   },
   {
     "id": 178,
@@ -2666,8 +4331,8 @@
     "casNumber": "9003-53-6",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 104.1,
-    "note": null
+    "atomicMass": null,
+    "note": "Polymer; used in plastic packaging and insulation"
   },
   {
     "id": 179,
@@ -2678,11 +4343,26 @@
     "density": null,
     "meltingPoint": null,
     "boilingPoint": null,
-    "casNumber": null,
+    "casNumber": "9009-54-5",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 548.589,
-    "note": null
+    "atomicMass": null,
+    "note": "Polymer; used in insulation and foam products"
+  },
+  {
+    "id": 278,
+    "name": "Potassium",
+    "formula": "K",
+    "molecularWeight": 39.098,
+    "equivalentWeight": null,
+    "density": 0.862,
+    "meltingPoint": 63.5,
+    "boilingPoint": 759.0,
+    "casNumber": "7440-09-7",
+    "category": "Element",
+    "atomicNumber": 19,
+    "atomicMass": 39.098,
+    "note": "Alkali metal; essential for life; used in fertilizers"
   },
   {
     "id": 180,
@@ -2696,8 +4376,8 @@
     "casNumber": "127-08-2",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 98.142,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as de-icer and as preservative"
   },
   {
     "id": 181,
@@ -2711,8 +4391,8 @@
     "casNumber": "298-14-6",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 100.114,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used in baking and as buffer"
   },
   {
     "id": 182,
@@ -2726,8 +4406,8 @@
     "casNumber": "7758-02-3",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 119.002,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as anticonvulsant and in photography"
   },
   {
     "id": 183,
@@ -2741,8 +4421,8 @@
     "casNumber": "584-08-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 138.205,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in glass and soap production"
   },
   {
     "id": 184,
@@ -2756,8 +4436,8 @@
     "casNumber": "3811-04-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 122.545,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); strong oxidizer; used in matches and fireworks"
   },
   {
     "id": 185,
@@ -2771,8 +4451,8 @@
     "casNumber": "7447-40-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 74.5513,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as fertilizer and salt substitute"
   },
   {
     "id": 186,
@@ -2786,8 +4466,8 @@
     "casNumber": "7789-00-6",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 194.189,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as indicator and in pigments"
   },
   {
     "id": 187,
@@ -2801,8 +4481,8 @@
     "casNumber": "151-50-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 65.12,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); highly toxic; used in gold mining"
   },
   {
     "id": 188,
@@ -2816,8 +4496,8 @@
     "casNumber": "7778-50-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 294.185,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); strong oxidizer; used in cleaning glassware"
   },
   {
     "id": 189,
@@ -2831,8 +4511,8 @@
     "casNumber": "13943-58-3",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 368.35,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=4); used as anti-caking agent"
   },
   {
     "id": 190,
@@ -2846,8 +4526,38 @@
     "casNumber": "7789-23-3",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 58.0967,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used in fluorination reactions"
+  },
+  {
+    "id": 334,
+    "name": "Potassium hexacyanoferrate(III)",
+    "formula": "K₃[Fe(CN)₆]",
+    "molecularWeight": 329.25,
+    "equivalentWeight": 329.25,
+    "density": 1.89,
+    "meltingPoint": 300.0,
+    "boilingPoint": null,
+    "casNumber": "13746-66-2",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=3); used as oxidizing agent"
+  },
+  {
+    "id": 335,
+    "name": "Potassium hydrogen phthalate",
+    "formula": "C₈H₅KO₄",
+    "molecularWeight": 204.22,
+    "equivalentWeight": 204.22,
+    "density": 1.636,
+    "meltingPoint": 295.0,
+    "boilingPoint": null,
+    "casNumber": "877-24-7",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=1); used as primary standard for pH"
   },
   {
     "id": 191,
@@ -2861,8 +4571,8 @@
     "casNumber": "1310-58-3",
     "category": "Base",
     "atomicNumber": null,
-    "atomicMass": 56.11,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=1); strong base; used in soap and biodiesel production"
   },
   {
     "id": 192,
@@ -2876,8 +4586,8 @@
     "casNumber": "7778-66-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 90.55,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as disinfectant"
   },
   {
     "id": 193,
@@ -2891,8 +4601,8 @@
     "casNumber": "7758-05-6",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 214.001,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as oxidizing agent"
   },
   {
     "id": 194,
@@ -2906,8 +4616,8 @@
     "casNumber": "7681-11-0",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 166.0028,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used in photography and as supplement"
   },
   {
     "id": 195,
@@ -2921,7 +4631,7 @@
     "casNumber": "7757-79-1",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 101.102,
+    "atomicMass": null,
     "note": "Classic oxidizer and component of gunpowder; decomposes thermally releasing O2 • MP: 334°C; lower than other nitrates due to large cation size • No true BP; decomposes at ~400°C releasing O2 (2KNO3 → 2KNO2 + O2) • Strong oxidizer; forms gunpowder mixture with charcoal and sulfur (75% KNO3, 15% C, 10% S) • Fertilizer (source of N and K); used in fireworks, rocket propellants, and food preservation (curing meats)"
   },
   {
@@ -2936,8 +4646,8 @@
     "casNumber": "7758-09-0",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 85.103,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as food preservative"
   },
   {
     "id": 197,
@@ -2951,8 +4661,8 @@
     "casNumber": "12136-45-7",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 94.2,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=2); used in glass production"
   },
   {
     "id": 198,
@@ -2966,8 +4676,8 @@
     "casNumber": "7722-64-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 158.034,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); strong oxidizer; used in water treatment and as disinfectant"
   },
   {
     "id": 199,
@@ -2981,8 +4691,8 @@
     "casNumber": "10117-38-1",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 158.26,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as preservative and as antioxidant"
   },
   {
     "id": 200,
@@ -2996,8 +4706,23 @@
     "casNumber": "333-20-0",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 97.181,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as reagent in analytical chemistry"
+  },
+  {
+    "id": 426,
+    "name": "Proline",
+    "formula": "C₅H₉NO₂",
+    "molecularWeight": 115.13,
+    "equivalentWeight": null,
+    "density": 1.35,
+    "meltingPoint": 221.0,
+    "boilingPoint": null,
+    "casNumber": "147-85-3",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of proteins; unique cyclic structure"
   },
   {
     "id": 201,
@@ -3011,8 +4736,23 @@
     "casNumber": "74-98-6",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 44.097,
-    "note": null
+    "atomicMass": null,
+    "note": "Alkane gas; used as fuel (LPG) and as refrigerant"
+  },
+  {
+    "id": 398,
+    "name": "Propionic acid",
+    "formula": "C₃H₆O₂",
+    "molecularWeight": 74.08,
+    "equivalentWeight": 74.08,
+    "density": 0.988,
+    "meltingPoint": -20.8,
+    "boilingPoint": 141.15,
+    "casNumber": "79-09-4",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Acid (n=1); used as preservative"
   },
   {
     "id": 202,
@@ -3026,8 +4766,38 @@
     "casNumber": "110-86-1",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 79.1,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic solvent; used in organic synthesis and as base"
+  },
+  {
+    "id": 362,
+    "name": "Pyrrole",
+    "formula": "C₄H₅N",
+    "molecularWeight": 67.09,
+    "equivalentWeight": null,
+    "density": 0.9691,
+    "meltingPoint": -23.0,
+    "boilingPoint": 129.8,
+    "casNumber": "109-97-7",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Heterocyclic compound; used in pharmaceuticals"
+  },
+  {
+    "id": 366,
+    "name": "Quinoline",
+    "formula": "C₉H₇N",
+    "molecularWeight": 129.16,
+    "equivalentWeight": null,
+    "density": 1.093,
+    "meltingPoint": -15.6,
+    "boilingPoint": 237.7,
+    "casNumber": "91-22-5",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Heterocyclic compound; used in anti-malarial drugs"
   },
   {
     "id": 203,
@@ -3041,8 +4811,53 @@
     "casNumber": "108-46-3",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 110.1,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic compound; used in medicine and in dyes"
+  },
+  {
+    "id": 404,
+    "name": "Ribose",
+    "formula": "C₅H₁₀O₅",
+    "molecularWeight": 150.13,
+    "equivalentWeight": null,
+    "density": 1.65,
+    "meltingPoint": 95.0,
+    "boilingPoint": null,
+    "casNumber": "50-69-1",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Simple sugar; used in RNA synthesis"
+  },
+  {
+    "id": 303,
+    "name": "Rubidium",
+    "formula": "Rb",
+    "molecularWeight": 85.468,
+    "equivalentWeight": null,
+    "density": 1.532,
+    "meltingPoint": 39.31,
+    "boilingPoint": 688.0,
+    "casNumber": "7440-17-7",
+    "category": "Element",
+    "atomicNumber": 37,
+    "atomicMass": 85.468,
+    "note": "Alkali metal; used in atomic clocks and in electronics"
+  },
+  {
+    "id": 379,
+    "name": "Salicylaldehyde",
+    "formula": "C₇H₆O₂",
+    "molecularWeight": 122.12,
+    "equivalentWeight": null,
+    "density": 1.146,
+    "meltingPoint": -7.0,
+    "boilingPoint": 197.0,
+    "casNumber": "90-02-8",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used in organic synthesis"
   },
   {
     "id": 204,
@@ -3056,8 +4871,98 @@
     "casNumber": "69-72-7",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 138.121,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); used as precursor to aspirin"
+  },
+  {
+    "id": 309,
+    "name": "Selenium",
+    "formula": "Se",
+    "molecularWeight": 78.971,
+    "equivalentWeight": null,
+    "density": 4.81,
+    "meltingPoint": 221.0,
+    "boilingPoint": 685.0,
+    "casNumber": "7782-49-2",
+    "category": "Element",
+    "atomicNumber": 34,
+    "atomicMass": 78.971,
+    "note": "Non-metal; used in glass and in electronics"
+  },
+  {
+    "id": 346,
+    "name": "Semicarbazide hydrochloride",
+    "formula": "CH₅N₃O·HCl",
+    "molecularWeight": 111.53,
+    "equivalentWeight": null,
+    "density": 1.51,
+    "meltingPoint": 174.0,
+    "boilingPoint": null,
+    "casNumber": "563-41-7",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=1); used to identify carbonyls"
+  },
+  {
+    "id": 413,
+    "name": "Serine",
+    "formula": "C₃H₇NO₃",
+    "molecularWeight": 105.09,
+    "equivalentWeight": null,
+    "density": 1.537,
+    "meltingPoint": 228.0,
+    "boilingPoint": null,
+    "casNumber": "56-45-1",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of proteins"
+  },
+  {
+    "id": 313,
+    "name": "Silane",
+    "formula": "SiH₄",
+    "molecularWeight": 32.12,
+    "equivalentWeight": null,
+    "density": 0.0013,
+    "meltingPoint": -185.0,
+    "boilingPoint": -111.8,
+    "casNumber": "7803-62-5",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Pyrophoric gas; used in semiconductor manufacturing"
+  },
+  {
+    "id": 293,
+    "name": "Silicon",
+    "formula": "Si",
+    "molecularWeight": 28.085,
+    "equivalentWeight": null,
+    "density": 2.33,
+    "meltingPoint": 1414.0,
+    "boilingPoint": 3265.0,
+    "casNumber": "7440-21-3",
+    "category": "Element",
+    "atomicNumber": 14,
+    "atomicMass": 28.085,
+    "note": "Semiconductor; used in electronics and in solar cells"
+  },
+  {
+    "id": 317,
+    "name": "Silicon carbide",
+    "formula": "SiC",
+    "molecularWeight": 40.1,
+    "equivalentWeight": null,
+    "density": 3.21,
+    "meltingPoint": 2730.0,
+    "boilingPoint": null,
+    "casNumber": "409-21-2",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Extremely hard; used as abrasive and in semiconductors"
   },
   {
     "id": 205,
@@ -3071,8 +4976,38 @@
     "casNumber": "7631-86-9",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 60.083,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=4); main component of sand and glass"
+  },
+  {
+    "id": 316,
+    "name": "Silicon tetrachloride",
+    "formula": "SiCl₄",
+    "molecularWeight": 169.9,
+    "equivalentWeight": null,
+    "density": 1.483,
+    "meltingPoint": -68.8,
+    "boilingPoint": 57.6,
+    "casNumber": "10026-04-7",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Used as precursor to pure silicon"
+  },
+  {
+    "id": 284,
+    "name": "Silver",
+    "formula": "Ag",
+    "molecularWeight": 107.868,
+    "equivalentWeight": null,
+    "density": 10.49,
+    "meltingPoint": 961.78,
+    "boilingPoint": 2162.0,
+    "casNumber": "7440-22-4",
+    "category": "Element",
+    "atomicNumber": 47,
+    "atomicMass": 107.868,
+    "note": "Noble metal; used in jewelry and in electronics"
   },
   {
     "id": 206,
@@ -3086,8 +5021,8 @@
     "casNumber": "563-63-3",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 166.91,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as laboratory reagent"
   },
   {
     "id": 207,
@@ -3101,8 +5036,8 @@
     "casNumber": "534-16-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 275.7453,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as catalyst"
   },
   {
     "id": 208,
@@ -3116,8 +5051,8 @@
     "casNumber": "7783-90-6",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 143.318,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used in photography and as antimicrobial"
   },
   {
     "id": 209,
@@ -3131,7 +5066,7 @@
     "casNumber": "7761-88-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 169.872,
+    "atomicMass": null,
     "note": "Classic example of photochemical decomposition; light-sensitive ionic compound • MP: 212°C; relatively low for a nitrate salt (large Ag+ cation weakens ionic lattice) • No true BP; decomposes at ~440°C to Ag + NO2 + O2 • Light-sensitive: 2AgNO3 → 2Ag + 2NO2 + O2 (photodecomposition; stains black) • Widely used in analytical chemistry (halide precipitation); precursor to AgCl, AgBr, and AgI; used in photography and as antimicrobial agent"
   },
   {
@@ -3146,8 +5081,8 @@
     "casNumber": "20667-12-3",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 231.735,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in batteries and as catalyst"
   },
   {
     "id": 211,
@@ -3161,8 +5096,23 @@
     "casNumber": "7784-09-0",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 418.58,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=3); used as photosensitive material"
+  },
+  {
+    "id": 277,
+    "name": "Sodium",
+    "formula": "Na",
+    "molecularWeight": 22.99,
+    "equivalentWeight": null,
+    "density": 0.971,
+    "meltingPoint": 97.72,
+    "boilingPoint": 883.0,
+    "casNumber": "7440-23-5",
+    "category": "Element",
+    "atomicNumber": 11,
+    "atomicMass": 22.99,
+    "note": "Alkali metal; essential for life; used in batteries"
   },
   {
     "id": 212,
@@ -3176,8 +5126,8 @@
     "casNumber": "127-09-3",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 82.0343,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as buffer and in food preservation"
   },
   {
     "id": 213,
@@ -3191,7 +5141,7 @@
     "casNumber": "144-55-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 84.0066,
+    "atomicMass": null,
     "note": "Most thermally labile common carbonate; decomposes at low temperature to Na2CO3 + CO2 + H2O • Decomposes at ~50-100°C (no true MP); loses H2O and CO2 sequentially • No true BP; decomposes chemically before melting • Amphoteric; reacts with both acids (releasing CO2) and bases • Key leavening agent in baking; used as antacid, fire extinguisher, and in photography; precursor to Na2CO3"
   },
   {
@@ -3206,8 +5156,8 @@
     "casNumber": "7681-38-1",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 120.06,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as pH adjuster and cleaning agent"
   },
   {
     "id": 215,
@@ -3221,8 +5171,23 @@
     "casNumber": "1330-43-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 201.22,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in detergents and as fire retardant"
+  },
+  {
+    "id": 341,
+    "name": "Sodium borohydride",
+    "formula": "NaBH₄",
+    "molecularWeight": 37.83,
+    "equivalentWeight": null,
+    "density": 1.07,
+    "meltingPoint": 400.0,
+    "boilingPoint": null,
+    "casNumber": "16940-66-2",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Reducing agent; used in organic synthesis"
   },
   {
     "id": 216,
@@ -3236,8 +5201,8 @@
     "casNumber": "7647-15-6",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 102.894,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used in photography and as sedative"
   },
   {
     "id": 217,
@@ -3251,7 +5216,7 @@
     "casNumber": "497-19-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 105.988,
+    "atomicMass": null,
     "note": "Classic salt that decomposes before boiling; illustrates difference between physical and chemical change • MP: 851°C; decomposes at 851°C to Na2O + CO2 • No true BP; undergoes thermal decomposition before reaching boiling point • Highly hygroscopic; forms hydrates (Na2CO3·10H2O = washing soda) • Major industrial chemical (glass production); used in water softening, detergent, and pH adjustment in paper industry"
   },
   {
@@ -3266,8 +5231,8 @@
     "casNumber": "7775-09-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 106.44,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as herbicide and in paper production"
   },
   {
     "id": 219,
@@ -3281,8 +5246,8 @@
     "casNumber": "7647-14-5",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 58.44,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); common table salt; used in food and water treatment"
   },
   {
     "id": 220,
@@ -3296,8 +5261,8 @@
     "casNumber": "7775-11-3",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 161.97,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as corrosion inhibitor"
   },
   {
     "id": 221,
@@ -3311,8 +5276,8 @@
     "casNumber": "68-04-2",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 258.06,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=3); used as food additive and as anticoagulant"
   },
   {
     "id": 222,
@@ -3326,8 +5291,8 @@
     "casNumber": "143-33-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 49.0072,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used in gold mining and electroplating"
   },
   {
     "id": 223,
@@ -3341,8 +5306,8 @@
     "casNumber": "10588-01-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 261.97,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as oxidizer and in tanning"
   },
   {
     "id": 224,
@@ -3356,8 +5321,8 @@
     "casNumber": "7681-49-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 41.98817,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used in toothpaste and water fluoridation"
   },
   {
     "id": 225,
@@ -3371,8 +5336,8 @@
     "casNumber": "1310-73-2",
     "category": "Base",
     "atomicNumber": null,
-    "atomicMass": 39.997,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=1); strong base; used in soap and paper production"
   },
   {
     "id": 226,
@@ -3386,8 +5351,8 @@
     "casNumber": "7681-52-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 74.439,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as disinfectant and bleaching agent"
   },
   {
     "id": 227,
@@ -3401,8 +5366,8 @@
     "casNumber": "7681-82-5",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 149.894,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as supplement and in photography"
   },
   {
     "id": 228,
@@ -3416,8 +5381,8 @@
     "casNumber": "7681-57-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 190.107,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as antioxidant and in food preservation"
   },
   {
     "id": 229,
@@ -3431,7 +5396,7 @@
     "casNumber": "7631-99-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 84.994,
+    "atomicMass": null,
     "note": "Another classic nitrate salt; decomposition path differs from KNO3 and releases NOx gases • MP: 307°C; higher than KNO3 due to smaller Na+ cation (stronger ionic bonding) • No true BP; decomposes at ~380°C: 2NaNO3 → 2NaNO2 + O2 (continues to Na2O + NOx at higher T) • Strong oxidizer; hygroscopic (requires careful storage) • Major fertilizer (Chile saltpeter); used in glass production, explosives, and as food preservative"
   },
   {
@@ -3446,8 +5411,8 @@
     "casNumber": "12136-83-3",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 82.976,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=3); used as laboratory reagent"
   },
   {
     "id": 231,
@@ -3461,8 +5426,23 @@
     "casNumber": "7632-00-0",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 68.9953,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=1); used as food preservative and in medicine"
+  },
+  {
+    "id": 336,
+    "name": "Sodium oxalate",
+    "formula": "Na₂C₂O₄",
+    "molecularWeight": 134.0,
+    "equivalentWeight": 67.0,
+    "density": 2.34,
+    "meltingPoint": 250.0,
+    "boilingPoint": null,
+    "casNumber": "62-24-8",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Salt (n=2); used as reducing agent"
   },
   {
     "id": 232,
@@ -3476,13 +5456,13 @@
     "casNumber": "1313-59-3",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 61.9789,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=2); used in glass production"
   },
   {
     "id": 233,
     "name": "Sodium Percarbonate",
-    "formula": "C₂H₆Na₄O₁₂",
+    "formula": "Na₂CO₃·1.5H₂O₂",
     "molecularWeight": 157.01,
     "equivalentWeight": 39.2525,
     "density": 2.14,
@@ -3491,8 +5471,8 @@
     "casNumber": "15630-89-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 157.01,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=4); used as bleaching agent"
   },
   {
     "id": 234,
@@ -3506,8 +5486,8 @@
     "casNumber": "1313-60-6",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 77.98,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as oxidizing agent and in oxygen generation"
   },
   {
     "id": 235,
@@ -3521,8 +5501,8 @@
     "casNumber": "7601-54-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 119.976,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=3); used as buffering agent and in food industry"
   },
   {
     "id": 236,
@@ -3536,8 +5516,8 @@
     "casNumber": "304-59-6",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 282.1,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=4); used as reagent and in buffer solutions"
   },
   {
     "id": 237,
@@ -3551,8 +5531,8 @@
     "casNumber": "6834-92-0",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 122.062,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in detergents and as adhesive"
   },
   {
     "id": 238,
@@ -3566,8 +5546,8 @@
     "casNumber": "7757-82-6",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 142.036,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in detergents and in glass production"
   },
   {
     "id": 239,
@@ -3581,8 +5561,8 @@
     "casNumber": "1313-82-2",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 78.0452,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in paper production and as reducing agent"
   },
   {
     "id": 240,
@@ -3596,14 +5576,14 @@
     "casNumber": "7757-83-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 126.043,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as preservative and as antioxidant"
   },
   {
     "id": 241,
     "name": "Sodium Thiosulfate",
     "formula": "Na₂S₂O₃",
-    "molecularWeight": 176.78,
+    "molecularWeight": 158.11,
     "equivalentWeight": 158.11,
     "density": 1.667,
     "meltingPoint": 48.0,
@@ -3611,8 +5591,38 @@
     "casNumber": "7772-98-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 158.11,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as fixer in photography and as reducing agent"
+  },
+  {
+    "id": 403,
+    "name": "Sorbitol",
+    "formula": "C₆H₁₄O₆",
+    "molecularWeight": 182.17,
+    "equivalentWeight": null,
+    "density": 1.489,
+    "meltingPoint": 95.0,
+    "boilingPoint": null,
+    "casNumber": "50-70-4",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Sugar alcohol; used as sweetener and humectant"
+  },
+  {
+    "id": 351,
+    "name": "Starch",
+    "formula": "(C₆H₁₀O₅)ₙ",
+    "molecularWeight": 162.14,
+    "equivalentWeight": null,
+    "density": 1.5,
+    "meltingPoint": 257.0,
+    "boilingPoint": null,
+    "casNumber": "9005-25-8",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Polymer; used in food and in iodine indicator"
   },
   {
     "id": 242,
@@ -3626,8 +5636,23 @@
     "casNumber": "57-11-4",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 284.484,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); used in soap and cosmetics"
+  },
+  {
+    "id": 304,
+    "name": "Strontium",
+    "formula": "Sr",
+    "molecularWeight": 87.62,
+    "equivalentWeight": null,
+    "density": 2.64,
+    "meltingPoint": 777.0,
+    "boilingPoint": 1382.0,
+    "casNumber": "7440-24-6",
+    "category": "Element",
+    "atomicNumber": 38,
+    "atomicMass": 87.62,
+    "note": "Alkaline earth metal; used in fireworks and in glass"
   },
   {
     "id": 243,
@@ -3641,8 +5666,8 @@
     "casNumber": "10476-85-4",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 158.52,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in fireworks (red color)"
   },
   {
     "id": 244,
@@ -3656,8 +5681,38 @@
     "casNumber": "10042-76-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 211.628,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in fireworks (red color) and as oxidizer"
+  },
+  {
+    "id": 395,
+    "name": "Styrene",
+    "formula": "C₈H₈",
+    "molecularWeight": 104.15,
+    "equivalentWeight": null,
+    "density": 0.906,
+    "meltingPoint": -30.6,
+    "boilingPoint": 145.0,
+    "casNumber": "100-42-5",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used in polystyrene production"
+  },
+  {
+    "id": 374,
+    "name": "Succinic acid",
+    "formula": "C₄H₆O₄",
+    "molecularWeight": 118.09,
+    "equivalentWeight": 59.045,
+    "density": 1.56,
+    "meltingPoint": 185.0,
+    "boilingPoint": 235.0,
+    "casNumber": "110-15-6",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Dicarboxylic acid (n=2); used in food and pharmaceuticals"
   },
   {
     "id": 245,
@@ -3671,8 +5726,8 @@
     "casNumber": "57-50-1",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 342.2965,
-    "note": null
+    "atomicMass": null,
+    "note": "Disaccharide; common table sugar"
   },
   {
     "id": 246,
@@ -3686,8 +5741,23 @@
     "casNumber": "14808-79-8",
     "category": "Ion",
     "atomicNumber": null,
-    "atomicMass": 96.06,
-    "note": null
+    "atomicMass": null,
+    "note": "Sulfate ion - divalent anion (n=2)"
+  },
+  {
+    "id": 294,
+    "name": "Sulfur",
+    "formula": "S",
+    "molecularWeight": 32.06,
+    "equivalentWeight": null,
+    "density": 2.07,
+    "meltingPoint": 115.21,
+    "boilingPoint": 444.6,
+    "casNumber": "7704-34-9",
+    "category": "Element",
+    "atomicNumber": 16,
+    "atomicMass": 32.06,
+    "note": "Non-metal; used in fertilizers and in vulcanization"
   },
   {
     "id": 247,
@@ -3701,8 +5771,8 @@
     "casNumber": "7446-09-5",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 64.066,
-    "note": null
+    "atomicMass": null,
+    "note": "Used as preservative and in wine making"
   },
   {
     "id": 248,
@@ -3716,8 +5786,8 @@
     "casNumber": "2551-62-4",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 146.06,
-    "note": null
+    "atomicMass": null,
+    "note": "Noble gas compound; used as electrical insulator"
   },
   {
     "id": 249,
@@ -3731,8 +5801,8 @@
     "casNumber": "7446-11-9",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 80.057,
-    "note": null
+    "atomicMass": null,
+    "note": "Used to make sulfuric acid"
   },
   {
     "id": 250,
@@ -3746,8 +5816,8 @@
     "casNumber": "7664-93-9",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 98.072,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=2); most widely used industrial chemical"
   },
   {
     "id": 251,
@@ -3761,8 +5831,8 @@
     "casNumber": "7782-99-2",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 82.073,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=2); weak acid; used as reducing agent"
   },
   {
     "id": 252,
@@ -3776,8 +5846,8 @@
     "casNumber": "1401-55-4",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 1701.19,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=10); used as mordant in dyeing"
   },
   {
     "id": 253,
@@ -3791,8 +5861,38 @@
     "casNumber": "87-69-4",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 150.087,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=2); found in grapes; used in baking and winemaking"
+  },
+  {
+    "id": 378,
+    "name": "Terephthalic acid",
+    "formula": "C₈H₆O₄",
+    "molecularWeight": 166.13,
+    "equivalentWeight": 83.065,
+    "density": 1.522,
+    "meltingPoint": 402.0,
+    "boilingPoint": null,
+    "casNumber": "100-21-0",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Dicarboxylic acid (n=2); used in PET plastic production"
+  },
+  {
+    "id": 333,
+    "name": "Tetraamminecopper(II) sulfate",
+    "formula": "[Cu(NH₃)₄]SO₄·H₂O",
+    "molecularWeight": 245.75,
+    "equivalentWeight": null,
+    "density": 1.81,
+    "meltingPoint": null,
+    "boilingPoint": null,
+    "casNumber": "10380-29-7",
+    "category": "Salt",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Complex compound; used in copper plating"
   },
   {
     "id": 254,
@@ -3806,8 +5906,98 @@
     "casNumber": "127-18-4",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 165.83,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic solvent; used in dry cleaning"
+  },
+  {
+    "id": 389,
+    "name": "Tetrahydrofuran",
+    "formula": "C₄H₈O",
+    "molecularWeight": 72.11,
+    "equivalentWeight": null,
+    "density": 0.8892,
+    "meltingPoint": -108.4,
+    "boilingPoint": 66.0,
+    "casNumber": "109-99-9",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic solvent; used in polymer synthesis"
+  },
+  {
+    "id": 364,
+    "name": "Thiophene",
+    "formula": "C₄H₄S",
+    "molecularWeight": 84.14,
+    "equivalentWeight": null,
+    "density": 1.051,
+    "meltingPoint": -38.3,
+    "boilingPoint": 84.0,
+    "casNumber": "110-02-1",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Heterocyclic compound; used in pharmaceuticals and agrochemicals"
+  },
+  {
+    "id": 347,
+    "name": "Thiourea",
+    "formula": "CH₄N₂S",
+    "molecularWeight": 76.12,
+    "equivalentWeight": null,
+    "density": 1.405,
+    "meltingPoint": 182.0,
+    "boilingPoint": null,
+    "casNumber": "62-56-6",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used in photography"
+  },
+  {
+    "id": 414,
+    "name": "Threonine",
+    "formula": "C₄H₉NO₃",
+    "molecularWeight": 119.12,
+    "equivalentWeight": null,
+    "density": 1.35,
+    "meltingPoint": 256.0,
+    "boilingPoint": null,
+    "casNumber": "72-19-5",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Essential amino acid; building block of proteins"
+  },
+  {
+    "id": 431,
+    "name": "Thymine",
+    "formula": "C₅H₆N₂O₂",
+    "molecularWeight": 126.11,
+    "equivalentWeight": null,
+    "density": 1.223,
+    "meltingPoint": 316.0,
+    "boilingPoint": null,
+    "casNumber": "65-71-4",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of nucleic acids"
+  },
+  {
+    "id": 288,
+    "name": "Tin",
+    "formula": "Sn",
+    "molecularWeight": 118.71,
+    "equivalentWeight": null,
+    "density": 7.31,
+    "meltingPoint": 231.93,
+    "boilingPoint": 2602.0,
+    "casNumber": "7440-31-5",
+    "category": "Element",
+    "atomicNumber": 50,
+    "atomicMass": 118.71,
+    "note": "Used in alloys (bronze, solder) and in coatings"
   },
   {
     "id": 255,
@@ -3821,8 +6011,8 @@
     "casNumber": "18282-10-5",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 150.71,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=4); used in ceramics and as opacifier"
   },
   {
     "id": 256,
@@ -3836,8 +6026,23 @@
     "casNumber": "7772-99-8",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 189.6,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as reducing agent and in soldering"
+  },
+  {
+    "id": 292,
+    "name": "Titanium",
+    "formula": "Ti",
+    "molecularWeight": 47.867,
+    "equivalentWeight": null,
+    "density": 4.506,
+    "meltingPoint": 1668.0,
+    "boilingPoint": 3287.0,
+    "casNumber": "7440-32-6",
+    "category": "Element",
+    "atomicNumber": 22,
+    "atomicMass": 47.867,
+    "note": "Lightweight metal; used in aerospace and in biomedical"
   },
   {
     "id": 257,
@@ -3851,8 +6056,8 @@
     "casNumber": "13463-67-7",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 79.866,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=4); used as white pigment"
   },
   {
     "id": 258,
@@ -3866,7 +6071,7 @@
     "casNumber": "108-88-3",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 92.14,
+    "atomicMass": null,
     "note": "Methyl-substituted benzene; demonstrates effect of substituents on aromatic ring properties • MP: -95.0°C; methyl group disrupts π-π stacking (lower MP than benzene) • BP: 110.6°C; methyl group adds van der Waals interactions (higher BP than benzene) • Classified as neurotoxin; metabolized to hippuric acid (biomarker for exposure) • Precursor to TNT, benzoic acid, and polyurethanes; widely used as solvent and paint thinner"
   },
   {
@@ -3881,8 +6086,83 @@
     "casNumber": "76-03-9",
     "category": "Acid",
     "atomicNumber": null,
-    "atomicMass": 163.38,
-    "note": null
+    "atomicMass": null,
+    "note": "Acid (n=1); used in organic synthesis"
+  },
+  {
+    "id": 343,
+    "name": "Triphenylphosphine",
+    "formula": "C₁₈H₁₅P",
+    "molecularWeight": 262.29,
+    "equivalentWeight": null,
+    "density": 1.194,
+    "meltingPoint": 80.0,
+    "boilingPoint": 377.0,
+    "casNumber": "603-35-0",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used as ligand in catalysis"
+  },
+  {
+    "id": 425,
+    "name": "Tryptophan",
+    "formula": "C₁₁H₁₂N₂O₂",
+    "molecularWeight": 204.23,
+    "equivalentWeight": null,
+    "density": 1.34,
+    "meltingPoint": 289.0,
+    "boilingPoint": null,
+    "casNumber": "73-22-3",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Essential amino acid; building block of proteins"
+  },
+  {
+    "id": 320,
+    "name": "Tungsten trioxide",
+    "formula": "WO₃",
+    "molecularWeight": 231.84,
+    "equivalentWeight": null,
+    "density": 7.16,
+    "meltingPoint": 1473.0,
+    "boilingPoint": 1700.0,
+    "casNumber": "1314-35-8",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Used in smart windows and as pigment"
+  },
+  {
+    "id": 424,
+    "name": "Tyrosine",
+    "formula": "C₉H₁₁NO₃",
+    "molecularWeight": 181.19,
+    "equivalentWeight": null,
+    "density": 1.456,
+    "meltingPoint": 343.0,
+    "boilingPoint": null,
+    "casNumber": "60-18-4",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of proteins; neurotransmitter precursor"
+  },
+  {
+    "id": 432,
+    "name": "Uracil",
+    "formula": "C₄H₄N₂O₂",
+    "molecularWeight": 112.09,
+    "equivalentWeight": null,
+    "density": 1.32,
+    "meltingPoint": 335.0,
+    "boilingPoint": null,
+    "casNumber": "66-22-8",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Building block of nucleic acids"
   },
   {
     "id": 260,
@@ -3896,8 +6176,8 @@
     "casNumber": "57-13-6",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 60.056,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic compound; used as fertilizer and in cosmetics"
   },
   {
     "id": 261,
@@ -3911,8 +6191,83 @@
     "casNumber": "51-79-6",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 89.09,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic compound; used in pesticides and in medicine"
+  },
+  {
+    "id": 399,
+    "name": "Valeric acid",
+    "formula": "C₅H₁₀O₂",
+    "molecularWeight": 102.13,
+    "equivalentWeight": 102.13,
+    "density": 0.939,
+    "meltingPoint": -34.5,
+    "boilingPoint": 186.1,
+    "casNumber": "109-52-4",
+    "category": "Acid",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Acid (n=1); used in flavorings"
+  },
+  {
+    "id": 410,
+    "name": "Valine",
+    "formula": "C₅H₁₁NO₂",
+    "molecularWeight": 117.146,
+    "equivalentWeight": null,
+    "density": 1.316,
+    "meltingPoint": 298.0,
+    "boilingPoint": null,
+    "casNumber": "72-18-4",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Essential amino acid; building block of proteins"
+  },
+  {
+    "id": 318,
+    "name": "Vanadium pentoxide",
+    "formula": "V₂O₅",
+    "molecularWeight": 181.88,
+    "equivalentWeight": null,
+    "density": 3.357,
+    "meltingPoint": 690.0,
+    "boilingPoint": 1750.0,
+    "casNumber": "1314-62-1",
+    "category": "Inorganic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Used as catalyst in sulfuric acid production"
+  },
+  {
+    "id": 380,
+    "name": "Vanillin",
+    "formula": "C₈H₈O₃",
+    "molecularWeight": 152.15,
+    "equivalentWeight": null,
+    "density": 1.06,
+    "meltingPoint": 82.0,
+    "boilingPoint": 285.0,
+    "casNumber": "121-33-5",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used as flavoring"
+  },
+  {
+    "id": 394,
+    "name": "Vinyl chloride",
+    "formula": "C₂H₃Cl",
+    "molecularWeight": 62.5,
+    "equivalentWeight": null,
+    "density": 0.911,
+    "meltingPoint": -153.8,
+    "boilingPoint": -13.4,
+    "casNumber": "75-01-4",
+    "category": "Organic Compound",
+    "atomicNumber": null,
+    "atomicMass": null,
+    "note": "Organic compound; used in PVC production"
   },
   {
     "id": 262,
@@ -3926,8 +6281,23 @@
     "casNumber": "7732-18-5",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 18.015,
+    "atomicMass": null,
     "note": "The universal solvent; exhibits anomalous physical properties due to extensive hydrogen bonding network • MP: 0.0°C; abnormally high for a hydride of Group 16 due to H-bonding • BP: 100.0°C; extremely high for a small molecule (compare H2S = -60°C) • Highest heat capacity of any common liquid (4.18 J/g·K); maximum density at 4°C • Essential for all known life; primary solvent in biological and chemical systems; standard reference point for thermodynamics"
+  },
+  {
+    "id": 299,
+    "name": "Xenon",
+    "formula": "Xe",
+    "molecularWeight": 131.293,
+    "equivalentWeight": null,
+    "density": 0.005894,
+    "meltingPoint": -111.75,
+    "boilingPoint": -108.12,
+    "casNumber": "7440-63-3",
+    "category": "Element",
+    "atomicNumber": 54,
+    "atomicMass": 131.293,
+    "note": "Noble gas; used in lighting and as anesthetic"
   },
   {
     "id": 263,
@@ -3941,8 +6311,8 @@
     "casNumber": "13709-36-9",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 169.29,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as fluorinating agent"
   },
   {
     "id": 264,
@@ -3956,8 +6326,23 @@
     "casNumber": "1330-20-7",
     "category": "Organic Compound",
     "atomicNumber": null,
-    "atomicMass": 106.16,
-    "note": null
+    "atomicMass": null,
+    "note": "Organic solvent; used in paint thinners and in printing industry"
+  },
+  {
+    "id": 283,
+    "name": "Zinc",
+    "formula": "Zn",
+    "molecularWeight": 65.38,
+    "equivalentWeight": null,
+    "density": 7.14,
+    "meltingPoint": 419.53,
+    "boilingPoint": 907.0,
+    "casNumber": "7440-66-6",
+    "category": "Element",
+    "atomicNumber": 30,
+    "atomicMass": 65.38,
+    "note": "Transition metal; used in galvanization and in batteries"
   },
   {
     "id": 265,
@@ -3971,8 +6356,8 @@
     "casNumber": "5970-45-6",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 183.48,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in medicine and as catalyst"
   },
   {
     "id": 266,
@@ -3986,14 +6371,14 @@
     "casNumber": "3486-35-9",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 125.388,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as pigment and in ceramics"
   },
   {
     "id": 267,
     "name": "Zinc chloride",
     "formula": "ZnCl₂",
-    "molecularWeight": 219.5,
+    "molecularWeight": 136.286,
     "equivalentWeight": 68.143,
     "density": 2.907,
     "meltingPoint": 293.0,
@@ -4001,8 +6386,8 @@
     "casNumber": "7646-85-7",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 136.286,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in soldering and as catalyst"
   },
   {
     "id": 268,
@@ -4016,8 +6401,8 @@
     "casNumber": "20427-58-1",
     "category": "Base",
     "atomicNumber": null,
-    "atomicMass": 99.424,
-    "note": null
+    "atomicMass": null,
+    "note": "Base (n=2); used as adsorbent and in medicine"
   },
   {
     "id": 269,
@@ -4031,8 +6416,8 @@
     "casNumber": "10139-47-6",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 319.22,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as catalyst and in organic synthesis"
   },
   {
     "id": 270,
@@ -4046,8 +6431,8 @@
     "casNumber": "7779-88-6",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 189.388,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used as fertilizer and as oxidizer"
   },
   {
     "id": 271,
@@ -4061,8 +6446,8 @@
     "casNumber": "7779-90-0",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 386.11,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=6); used in anti-corrosion coatings"
   },
   {
     "id": 272,
@@ -4076,8 +6461,8 @@
     "casNumber": "7733-02-0",
     "category": "Salt",
     "atomicNumber": null,
-    "atomicMass": 161.436,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in fertilizers and as dietary supplement"
   },
   {
     "id": 273,
@@ -4091,7 +6476,7 @@
     "casNumber": "1314-98-3",
     "category": "Inorganic Compound",
     "atomicNumber": null,
-    "atomicMass": 97.474,
-    "note": null
+    "atomicMass": null,
+    "note": "Salt (n=2); used in pigments and in phosphors"
   }
 ]
