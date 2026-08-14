@@ -168,6 +168,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
                     elementsMap: _elementsMap,
                     matchingAtomicNumbers: matchingNums,
                     hasActiveFilter: hasActiveFilter,
+                    selectedCategory: _controller.selectedCategory,
                     onElementSelected: (element) {
                       ElementDetailScreen.show(context, element, isLandscape: _isLandscape);
                     },
