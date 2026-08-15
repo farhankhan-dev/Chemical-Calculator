@@ -48,7 +48,7 @@ class _ChemicalSelectionSheetState extends State<_ChemicalSelectionSheet> {
     }
   }
 
-  void _onSearchChanged(String query) {
+  void _onSearchChanged(String query) async {
     if (query.trim().isEmpty) {
       setState(() {
         _filteredChemicals = _allChemicals;
@@ -56,13 +56,12 @@ class _ChemicalSelectionSheetState extends State<_ChemicalSelectionSheet> {
       return;
     }
 
-    final q = query.trim().toLowerCase();
-    setState(() {
-      _filteredChemicals = _allChemicals.where((c) {
-        return c.name.toLowerCase().contains(q) || 
-               c.formula.toLowerCase().contains(q);
-      }).toList();
-    });
+    final results = await _datasource.search(query);
+    if (mounted) {
+      setState(() {
+        _filteredChemicals = results;
+      });
+    }
   }
 
   @override

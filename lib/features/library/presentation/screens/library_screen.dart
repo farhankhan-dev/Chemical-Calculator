@@ -48,31 +48,18 @@ class _LibraryScreenState extends State<LibraryScreen> {
     }
   }
 
-  void _onSearchChanged(String query) {
+  void _onSearchChanged(String query) async {
     if (query.isEmpty) {
       setState(() => _filteredChemicals = _allChemicals);
       return;
     }
-    final q = query.toLowerCase();
-    setState(() {
-      final matches = _allChemicals.where((c) {
-        return c.name.toLowerCase().contains(q) || c.formula.toLowerCase().contains(q);
-      }).toList();
-
-      matches.sort((a, b) {
-        int getScore(ChemicalModel c) {
-          final n = c.name.toLowerCase();
-          final f = c.formula.toLowerCase();
-          if (n.startsWith(q)) return 1;
-          if (f.startsWith(q)) return 2;
-          if (n.contains(q)) return 3;
-          return 4;
-        }
-        final diff = getScore(a) - getScore(b);
-        return diff != 0 ? diff : a.name.compareTo(b.name);
+    
+    final results = await _datasource.search(query);
+    if (mounted) {
+      setState(() {
+        _filteredChemicals = results;
       });
-      _filteredChemicals = matches;
-    });
+    }
   }
 
   void _scrollToLetter(String letter) {
@@ -125,21 +112,34 @@ class _LibraryScreenState extends State<LibraryScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: AppSpacing.sm),
-              Text(
-                'Chemical Library',
-                style: AppTextStyles.h1.copyWith(
-                  color: AppColors.primary,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Browse all chemicals alphabetically',
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textSecondary,
-                  fontSize: 14,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Chemical Library',
+                          style: AppTextStyles.h1.copyWith(
+                            color: AppColors.primary,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Browse all chemicals alphabetically',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: AppSpacing.md),
 
@@ -339,14 +339,17 @@ class _LibraryScreenState extends State<LibraryScreen> {
           ),
           trailing: const Icon(Icons.chevron_right,
               color: AppColors.textTertiary, size: 20),
-          onTap: () {
+          onTap: () async {
             FocusManager.instance.primaryFocus?.unfocus();
-            Navigator.push(
+            final result = await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => ChemicalDetailScreen(chemical: chemical),
               ),
             );
+            if (result == true && mounted) {
+              _loadChemicals();
+            }
           },
         ),
       ),

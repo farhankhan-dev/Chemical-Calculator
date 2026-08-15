@@ -3,6 +3,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../data/models/chemical_model.dart';
+import '../../../../data/datasources/chemical_local_datasource.dart';
 
 class ChemicalDetailScreen extends StatelessWidget {
   final ChemicalModel chemical;
@@ -18,6 +19,39 @@ class ChemicalDetailScreen extends StatelessWidget {
         backgroundColor: AppColors.surface,
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
+        actions: [
+          if (chemical.id > 273)
+            IconButton(
+              icon: const Icon(Icons.delete_outline, color: Colors.red),
+              onPressed: () async {
+                final confirm = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Delete Chemical'),
+                    content: const Text('Are you sure you want to delete this custom chemical?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                      ),
+                    ],
+                  ),
+                );
+
+                if (confirm == true && context.mounted) {
+                  final datasource = ChemicalLocalDatasource();
+                  await datasource.deleteChemical(chemical.id);
+                  if (context.mounted) {
+                    Navigator.pop(context, true); 
+                  }
+                }
+              },
+            ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: AppSpacing.screenPadding,

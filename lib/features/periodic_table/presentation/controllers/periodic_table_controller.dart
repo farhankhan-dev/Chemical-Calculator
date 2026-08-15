@@ -27,8 +27,8 @@ class PeriodicTableController extends ChangeNotifier {
         final q = _searchQuery.trim().toLowerCase();
         final atomicMatch = int.tryParse(q);
         matchesSearch = (atomicMatch != null && element.atomicNumber == atomicMatch) ||
-            element.name.toLowerCase().contains(q) ||
-            element.symbol.toLowerCase().contains(q) ||
+            element.name.toLowerCase().startsWith(q) ||
+            element.symbol.toLowerCase().startsWith(q) ||
             element.atomicNumber.toString() == q;
       }
 

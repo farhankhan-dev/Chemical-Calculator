@@ -3,7 +3,6 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
 
-import '../../../periodic_table/presentation/screens/periodic_table_screen.dart';
 import '../../../dilution_calculator/presentation/screens/dilution_calculator_screen.dart';
 import '../../../molarity_calculator/presentation/screens/molarity_calculator_screen.dart';
 import '../../../mass_calculator/presentation/screens/mass_calculator_screen.dart';
@@ -25,36 +24,40 @@ class CalculatorsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                'Calculators',
-                style: AppTextStyles.h1.copyWith(
-                  color: AppColors.primary,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Choose a calculator or tool to get started',
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textSecondary,
-                  fontSize: 14,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Calculators',
+                          style: AppTextStyles.h1.copyWith(
+                            color: AppColors.primary,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Choose a calculator or tool to get started',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.textSecondary,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                ],
               ),
               const SizedBox(height: AppSpacing.lg),
               Expanded(
                 child: ListView(
                   children: [
-                    _buildCalculatorCard(
-                      context,
-                      title: 'Interactive Periodic Table',
-                      subtitle: 'Explore all 118 chemical elements in landscape mode.',
-                      icon: Icons.grid_on,
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const PeriodicTableScreen()));
-                      },
-                    ),
                     _buildCalculatorCard(
                       context,
                       title: 'Molarity Calculator',
