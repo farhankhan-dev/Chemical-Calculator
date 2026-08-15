@@ -127,7 +127,6 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
     const headerH = 16.0;             // group number row height estimate
     const padding = 4.0;
 
-    // Compute the Y offset where the f-block starts
     final mainGridH = 7 * rowStep;
 
     double targetX;
@@ -136,11 +135,9 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
     double regionH;
 
     if (region.isFBlock) {
-      // f-block rows sit below the main grid
-      // fBlockStartY = padding + headerH + 3 (gap) + mainGridH + 10 (gap)
       final fBlockY = padding + headerH + 3 + mainGridH + 10;
       final fRow = region.row; // 0 = lanthanides, 1 = actinides
-      final leftOffset = _tileWidth * 2 + 6; // label column
+      final leftOffset = _tileWidth * 2 + 6;
 
       targetX = leftOffset + region.col * colStep;
       targetY = fBlockY + fRow * (rowStep + 3);
@@ -153,12 +150,11 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
       regionH = (region.endRow - region.row + 1) * rowStep;
     }
 
-    // Choose a scale that fits the region with some margin
-    final scaleX = (_viewportWidth * 0.80) / regionW.clamp(colStep, double.infinity);
-    final scaleY = (_viewportHeight * 0.70) / regionH.clamp(rowStep, double.infinity);
-    final scale = (scaleX < scaleY ? scaleX : scaleY).clamp(0.4, 3.5);
+    // Use a fixed, consistent zoom level for all categories.
+    // 1.2 keeps the table readable without extreme zoom-in or zoom-out.
+    const double scale = 1.2;
 
-    // Center the region in the viewport
+    // Pan so the center of the region is centered in the viewport
     final regionCenterX = targetX + regionW / 2;
     final regionCenterY = targetY + regionH / 2;
     final tx = _viewportWidth / 2 - regionCenterX * scale;
@@ -171,14 +167,15 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
   }
 
   void _animateTo(Matrix4 target) {
+    // 1. Capture the current transform BEFORE any reset.
+    final Matrix4 begin = _transformController.value.clone();
+    // 2. Null out _animation so the listener is a no-op during reset().
+    _animation = null;
     _animController.reset();
-    _animation = Matrix4Tween(
-      begin: _transformController.value,
-      end: target,
-    ).animate(CurvedAnimation(
-      parent: _animController,
-      curve: Curves.easeInOutCubic,
-    ));
+    // 3. Build the new tween from the captured position → target.
+    _animation = Matrix4Tween(begin: begin, end: target).animate(
+      CurvedAnimation(parent: _animController, curve: Curves.easeInOutCubic),
+    );
     _animController.forward();
   }
 
