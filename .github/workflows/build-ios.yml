@@ -1,0 +1,43 @@
+name: Build iOS (Unsigned)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch: # Allows you to manually trigger the build from the GitHub UI
+
+jobs:
+  build-ios:
+    name: Build iOS App
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          # You can specify a flutter version here if needed, e.g., flutter-version: '3.19.0'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build iOS (Unsigned)
+        # We use --no-codesign because building a signed .ipa requires an Apple Developer Account and certificates.
+        run: flutter build ios --release --no-codesign
+
+      - name: Compress iOS .app to .ipa
+        # An unsigned build creates an .app file. We can compress it into a .zip/.ipa for download.
+        run: |
+          mkdir -p Payload
+          mv build/ios/iphoneos/Runner.app Payload/
+          zip -qq -r unsigned-ios-app.ipa Payload
+          
+      - name: Upload iOS Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-ios-app
+          path: unsigned-ios-app.ipa
