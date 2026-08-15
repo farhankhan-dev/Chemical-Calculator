@@ -111,27 +111,7 @@ class _SplashScreenState extends State<SplashScreen>
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(28),
                       child: Image.asset(
-                        'assets/icons/logo.png',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // "ChemiCalc" text with fade animation
-                Opacity(
-                  opacity: _textFade.value,
-                  child: Text(
-                    'ChemiCalc',
-                    style: AppTextStyles.splashTitle.copyWith(
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 8),
+                        'assets/icons/logo 2),
 
                 Opacity(
                   opacity: _textFade.value,
