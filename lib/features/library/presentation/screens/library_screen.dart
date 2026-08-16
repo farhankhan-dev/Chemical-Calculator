@@ -24,42 +24,73 @@ class _LibraryScreenState extends State<LibraryScreen> {
   bool _isLoading = true;
   String? _activeLetter;
 
-  final Map<String, GlobalKey> _letterKeys = {};
+  final Map<String, GlobalKey> _letterKeys = {}; // keeping to avoid large diffs, but unused now
   final List<String> _alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  
+  final List<_LibraryItem> _flattenedList = [];
+  final List<double> _offsets = [];
+  List<String> _sortedKeys = [];
 
   @override
   void initState() {
     super.initState();
-    for (var letter in _alphabets) {
-      _letterKeys[letter] = GlobalKey();
-    }
     _loadChemicals();
     _scrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
-    if (!mounted) return;
+    if (!mounted || _offsets.isEmpty || _flattenedList.isEmpty) return;
 
-    String? currentLetter;
-    for (var letter in _alphabets) {
-      final key = _letterKeys[letter];
-      if (key?.currentContext != null) {
-        final box = key!.currentContext!.findRenderObject() as RenderBox;
-        final position = box.localToGlobal(Offset.zero).dy;
-        // 250 is an approximate threshold for the top of the list
-        // accounting for SafeArea, padding, header, and search bar.
-        if (position <= 250) {
-          currentLetter = letter;
-        } else {
-          break;
-        }
+    final offset = _scrollController.offset;
+    int activeIndex = 0;
+    
+    // Find the item corresponding to current scroll offset
+    // 50 is an approximate buffer for the header height/safe area
+    for (int i = 0; i < _offsets.length; i++) {
+      if (_offsets[i] > offset + 50) {
+        activeIndex = i == 0 ? 0 : i - 1;
+        break;
+      }
+      if (i == _offsets.length - 1) {
+        activeIndex = i;
       }
     }
 
-    if (currentLetter != null && currentLetter != _activeLetter) {
+    final currentLetter = _flattenedList[activeIndex].letter;
+
+    if (currentLetter != _activeLetter) {
       setState(() {
         _activeLetter = currentLetter;
       });
+    }
+  }
+
+  void _processFlattenedData() {
+    _flattenedList.clear();
+    _offsets.clear();
+    
+    final Map<String, List<ChemicalModel>> grouped = {};
+    for (var c in _filteredChemicals) {
+      final letter = c.name[0].toUpperCase();
+      grouped.putIfAbsent(letter, () => []).add(c);
+    }
+    _sortedKeys = grouped.keys.toList()..sort();
+
+    double currentOffset = 0;
+    for (var letter in _sortedKeys) {
+      _flattenedList.add(_LibraryItem(isHeader: true, letter: letter));
+      _offsets.add(currentOffset);
+      currentOffset += 38.0; // Header approximate height
+
+      for (var c in grouped[letter]!) {
+        _flattenedList.add(_LibraryItem(isHeader: false, letter: letter, chemical: c));
+        _offsets.add(currentOffset);
+        currentOffset += 84.0; // Tile approximate height (76 + 8 margin)
+      }
+    }
+    
+    if (_sortedKeys.isNotEmpty) {
+      _activeLetter = _sortedKeys.first;
     }
   }
 
@@ -67,9 +98,10 @@ class _LibraryScreenState extends State<LibraryScreen> {
     final chemicals = await _datasource.getAllChemicals();
     chemicals.sort((a, b) => a.name.compareTo(b.name));
     if (mounted) {
+      _filteredChemicals = chemicals;
+      _processFlattenedData();
       setState(() {
         _allChemicals = chemicals;
-        _filteredChemicals = chemicals;
         _isLoading = false;
       });
     }
@@ -77,24 +109,26 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   void _onSearchChanged(String query) async {
     if (query.isEmpty) {
-      setState(() => _filteredChemicals = _allChemicals);
+      _filteredChemicals = _allChemicals;
+      _processFlattenedData();
+      setState(() {});
       return;
     }
     
     final results = await _datasource.search(query);
     if (mounted) {
-      setState(() {
-        _filteredChemicals = results;
-      });
+      _filteredChemicals = results;
+      _processFlattenedData();
+      setState(() {});
     }
   }
 
   void _scrollToLetter(String letter) {
-    final key = _letterKeys[letter];
-    if (key?.currentContext != null) {
+    final index = _flattenedList.indexWhere((item) => item.isHeader && item.letter == letter);
+    if (index != -1) {
       setState(() => _activeLetter = letter);
-      Scrollable.ensureVisible(
-        key!.currentContext!,
+      _scrollController.animateTo(
+        _offsets[index],
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeOut,
       );
@@ -235,45 +269,32 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   Widget _buildGroupedList() {
-    // Group by first letter
-    final Map<String, List<ChemicalModel>> grouped = {};
-    for (var c in _filteredChemicals) {
-      final letter = c.name[0].toUpperCase();
-      grouped.putIfAbsent(letter, () => []).add(c);
-    }
-    final sortedKeys = grouped.keys.toList()..sort();
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // ── Main scrollable list ──────────────────────────────────────────
         Expanded(
-          child: SingleChildScrollView(
+          child: ListView.builder(
             controller: _scrollController,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: sortedKeys.map((letter) {
-                final items = grouped[letter]!;
-                return Column(
-                  key: _letterKeys[letter],
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8, bottom: 4, left: 4),
-                      child: Text(
-                        letter,
-                        style: AppTextStyles.h3.copyWith(
-                          color: AppColors.primary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+            itemCount: _flattenedList.length,
+            itemBuilder: (context, index) {
+              final item = _flattenedList[index];
+              if (item.isHeader) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 4, left: 4),
+                  child: Text(
+                    item.letter,
+                    style: AppTextStyles.h3.copyWith(
+                      color: AppColors.primary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    ...items.map(_buildChemicalTile),
-                  ],
+                  ),
                 );
-              }).toList(),
-            ),
+              } else {
+                return _buildChemicalTile(item.chemical!);
+              }
+            },
           ),
         ),
 
@@ -281,9 +302,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
         // ── Contacts-style side index bar ─────────────────────────────────
         GestureDetector(
-          onTapDown: (d) => _handleSidePosition(d.localPosition, sortedKeys),
+          onTapDown: (d) => _handleSidePosition(d.localPosition, _sortedKeys),
           onVerticalDragUpdate: (d) =>
-              _handleSidePosition(d.localPosition, sortedKeys),
+              _handleSidePosition(d.localPosition, _sortedKeys),
           behavior: HitTestBehavior.opaque,
           child: Container(
             key: _sidebarKey,
@@ -295,7 +316,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
-              children: sortedKeys.map((letter) {
+              children: _sortedKeys.map((letter) {
                 final isSelected = _activeLetter == letter;
                 return Flexible(
                   child: Center(
@@ -383,4 +404,12 @@ class _LibraryScreenState extends State<LibraryScreen> {
       ),
     );
   }
+}
+
+class _LibraryItem {
+  final bool isHeader;
+  final String letter;
+  final ChemicalModel? chemical;
+
+  _LibraryItem({required this.isHeader, required this.letter, this.chemical});
 }
