@@ -24,11 +24,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
   bool _isLoading = true;
   String? _activeLetter;
 
-  final Map<String, GlobalKey> _letterKeys = {}; // keeping to avoid large diffs, but unused now
-  final List<String> _alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
   
   final List<_LibraryItem> _flattenedList = [];
-  final List<double> _offsets = [];
   List<String> _sortedKeys = [];
 
   @override
@@ -39,22 +37,13 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   void _onScroll() {
-    if (!mounted || _offsets.isEmpty || _flattenedList.isEmpty) return;
+    if (!mounted || _flattenedList.isEmpty) return;
 
     final offset = _scrollController.offset;
-    int activeIndex = 0;
     
-    // Find the item corresponding to current scroll offset
-    // 50 is an approximate buffer for the header height/safe area
-    for (int i = 0; i < _offsets.length; i++) {
-      if (_offsets[i] > offset + 50) {
-        activeIndex = i == 0 ? 0 : i - 1;
-        break;
-      }
-      if (i == _offsets.length - 1) {
-        activeIndex = i;
-      }
-    }
+    // With a fixed itemExtent of 84.0, we can find the top visible item instantly
+    int activeIndex = ((offset + 42.0) / 84.0).floor(); // 42.0 is half item buffer
+    activeIndex = activeIndex.clamp(0, _flattenedList.length - 1);
 
     final currentLetter = _flattenedList[activeIndex].letter;
 
@@ -67,7 +56,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   void _processFlattenedData() {
     _flattenedList.clear();
-    _offsets.clear();
     
     final Map<String, List<ChemicalModel>> grouped = {};
     for (var c in _filteredChemicals) {
@@ -76,16 +64,11 @@ class _LibraryScreenState extends State<LibraryScreen> {
     }
     _sortedKeys = grouped.keys.toList()..sort();
 
-    double currentOffset = 0;
     for (var letter in _sortedKeys) {
       _flattenedList.add(_LibraryItem(isHeader: true, letter: letter));
-      _offsets.add(currentOffset);
-      currentOffset += 38.0; // Header approximate height
 
       for (var c in grouped[letter]!) {
         _flattenedList.add(_LibraryItem(isHeader: false, letter: letter, chemical: c));
-        _offsets.add(currentOffset);
-        currentOffset += 84.0; // Tile approximate height (76 + 8 margin)
       }
     }
     
@@ -124,11 +107,13 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   void _scrollToLetter(String letter) {
+    if (_activeLetter == letter) return; // Prevent animation spam on drag
+    
     final index = _flattenedList.indexWhere((item) => item.isHeader && item.letter == letter);
     if (index != -1) {
       setState(() => _activeLetter = letter);
       _scrollController.animateTo(
-        _offsets[index],
+        index * 84.0, // Exact mathematically perfect offset
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeOut,
       );
@@ -277,17 +262,21 @@ class _LibraryScreenState extends State<LibraryScreen> {
           child: ListView.builder(
             controller: _scrollController,
             itemCount: _flattenedList.length,
+            itemExtent: 84.0, // Fixed height makes ListView insanely fast and math perfect
             itemBuilder: (context, index) {
               final item = _flattenedList[index];
               if (item.isHeader) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 4, left: 4),
-                  child: Text(
-                    item.letter,
-                    style: AppTextStyles.h3.copyWith(
-                      color: AppColors.primary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                return SizedBox(
+                  height: 84.0,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 46, bottom: 4, left: 4),
+                    child: Text(
+                      item.letter,
+                      style: AppTextStyles.h3.copyWith(
+                        color: AppColors.primary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 );
@@ -352,26 +341,28 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   Widget _buildChemicalTile(ChemicalModel chemical) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.borderLight),
-      ),
-      child: Material(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        clipBehavior: Clip.antiAlias,
-        child: ListTile(
-          leading: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppColors.primarySurface,
-              borderRadius: BorderRadius.circular(8),
+    return SizedBox(
+      height: 84.0,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.borderLight),
+        ),
+        child: Material(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(12),
+          clipBehavior: Clip.antiAlias,
+          child: ListTile(
+            leading: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.primarySurface,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(Icons.science_outlined,
+                  color: AppColors.primary, size: 20),
             ),
-            child: const Icon(Icons.science_outlined,
-                color: AppColors.primary, size: 20),
-          ),
           title: Text(
             chemical.name,
             style: AppTextStyles.h3.copyWith(
@@ -401,6 +392,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
             }
           },
         ),
+      ),
       ),
     );
   }

@@ -84,7 +84,7 @@ class AppTextStyles {
   static TextStyle get splashTitle => GoogleFonts.poppins(
         fontSize: 36,
         fontWeight: FontWeight.w700,
-        color: Colors.white,
+        color: AppColors.primary,
         letterSpacing: 1.5,
       );
 

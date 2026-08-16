@@ -150,9 +150,9 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
       regionH = (region.endRow - region.row + 1) * rowStep;
     }
 
-    // Use a fixed, consistent zoom level for all categories.
-    // 1.2 keeps the table readable without extreme zoom-in or zoom-out.
-    const double scale = 1.2;
+    // Use a standard size zoom level for all categories.
+    // 1.0 keeps the table readable without extreme zoom-in or zoom-out.
+    const double scale = 1.0;
 
     // Pan so the center of the region is centered in the viewport
     final regionCenterX = targetX + regionW / 2;

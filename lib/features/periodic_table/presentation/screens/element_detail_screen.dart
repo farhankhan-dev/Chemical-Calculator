@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
-import 'package:flutter/services.dart';
+
 import '../../models/element_model.dart';
 class ElementDetailScreen extends StatelessWidget {
   final ElementModel element;
