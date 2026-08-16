@@ -56,17 +56,7 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
   @override
   void didUpdateWidget(PeriodicTableGrid oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final newCat = widget.selectedCategory;
-    final oldCat = oldWidget.selectedCategory;
-    if (newCat != oldCat) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (newCat != null) {
-          _scrollToCategory(newCat);
-        } else {
-          _animateTo(Matrix4.identity());
-        }
-      });
-    }
+    // We no longer pan/zoom to the category. Highlighting is handled by the tiles themselves.
   }
 
   @override
@@ -186,10 +176,23 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Compute tile dimensions from available width
+        // Compute tile dimensions to perfectly fit available width AND height
         final availableWidth = constraints.maxWidth;
-        final computedTileWidth = (availableWidth - (17 * 3.0)) / 18;
-        _tileWidth = computedTileWidth.clamp(36.0, 56.0);
+        final availableHeight = constraints.maxHeight;
+
+        // Width required: 18 columns + 17 gaps (3.0) + 8.0 padding
+        final widthBasedTileWidth = (availableWidth - 59.0) / 18.0;
+        
+        // Height required: headers(16) + 9 rows * (tileHeight) + gaps + padding = roughly 61.0 + 9 * tileHeight
+        final heightBasedTileHeight = (availableHeight - 61.0) / 9.0;
+        final heightBasedTileWidth = heightBasedTileHeight / 1.18;
+
+        final computedTileWidth = widthBasedTileWidth < heightBasedTileWidth 
+            ? widthBasedTileWidth 
+            : heightBasedTileWidth;
+
+        // Allow smaller min scale (16.0) so the table can fully fit in landscape mode natively
+        _tileWidth = computedTileWidth.clamp(16.0, 56.0);
         _tileHeight = _tileWidth * 1.18;
         _viewportWidth = constraints.maxWidth;
         _viewportHeight = constraints.maxHeight;
