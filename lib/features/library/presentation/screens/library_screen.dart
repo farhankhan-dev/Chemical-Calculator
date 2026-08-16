@@ -34,6 +34,33 @@ class _LibraryScreenState extends State<LibraryScreen> {
       _letterKeys[letter] = GlobalKey();
     }
     _loadChemicals();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (!mounted) return;
+
+    String? currentLetter;
+    for (var letter in _alphabets) {
+      final key = _letterKeys[letter];
+      if (key?.currentContext != null) {
+        final box = key!.currentContext!.findRenderObject() as RenderBox;
+        final position = box.localToGlobal(Offset.zero).dy;
+        // 250 is an approximate threshold for the top of the list
+        // accounting for SafeArea, padding, header, and search bar.
+        if (position <= 250) {
+          currentLetter = letter;
+        } else {
+          break;
+        }
+      }
+    }
+
+    if (currentLetter != null && currentLetter != _activeLetter) {
+      setState(() {
+        _activeLetter = currentLetter;
+      });
+    }
   }
 
   Future<void> _loadChemicals() async {
@@ -96,6 +123,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
     _searchController.dispose();
     _scrollController.dispose();
     super.dispose();

@@ -33,7 +33,7 @@ class ChemicalSearchBar extends StatelessWidget {
       children: [
         // Label
         Text(
-          ' Enter Chemical Formula to get results',
+          ' Enter Chemical Formula To Get Details',
           style: AppTextStyles.label.copyWith(
             fontWeight: FontWeight.w600,
           ),
@@ -70,6 +70,15 @@ class ChemicalSearchBar extends StatelessWidget {
         if (suggestions.isNotEmpty) ...[
           const SizedBox(height: 4),
           _buildSuggestionsList(),
+        ] else if (controller.text.trim().isNotEmpty) ...[
+          const SizedBox(height: 4),
+          Padding(
+            padding: const EdgeInsets.only(left: 4, top: 4),
+            child: Text(
+              'Element not found...',
+              style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
+            ),
+          ),
         ],
       ],
     );
