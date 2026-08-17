@@ -28,23 +28,9 @@ class PeriodicTableGrid extends StatefulWidget {
 }
 
 class _PeriodicTableGridState extends State<PeriodicTableGrid> {
-  late final TransformationController _transformController;
-
   // Cached layout values, set during build
   double _tileWidth = 44.0;
   double _tileHeight = 52.0;
-
-  @override
-  void initState() {
-    super.initState();
-    _transformController = TransformationController();
-  }
-
-  @override
-  void dispose() {
-    _transformController.dispose();
-    super.dispose();
-  }
 
   // ---------------------------------------------------------------------------
   // Build
@@ -53,24 +39,10 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Compute tile dimensions to perfectly fit available width AND height
-        final availableWidth = constraints.maxWidth;
-        final availableHeight = constraints.maxHeight;
-
-        // Width required: 18 columns + 17 gaps (3.0) + 8.0 padding
-        final widthBasedTileWidth = (availableWidth - 59.0) / 18.0;
-        
-        // Height required: headers(16) + 9 rows * (tileHeight) + gaps + padding = roughly 61.0 + 9 * tileHeight
-        final heightBasedTileHeight = (availableHeight - 61.0) / 9.0;
-        final heightBasedTileWidth = heightBasedTileHeight / 1.18;
-
-        final computedTileWidth = widthBasedTileWidth < heightBasedTileWidth 
-            ? widthBasedTileWidth 
-            : heightBasedTileWidth;
-
-        // Allow smaller min scale (16.0) so the table can fully fit in landscape mode natively
-        _tileWidth = computedTileWidth.clamp(16.0, 56.0);
-        _tileHeight = _tileWidth * 1.18;
+        // Set optimal readable tile dimensions for standard portrait/landscape screens
+        // 18 columns * 44px + gaps = ~843px width
+        _tileWidth = 44.0;
+        _tileHeight = 52.0;
 
         final Widget gridContent = Padding(
           padding: const EdgeInsets.all(4.0),
@@ -92,13 +64,12 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid> {
           ),
         );
 
-        return InteractiveViewer(
-          transformationController: _transformController,
-          minScale: 0.05,
-          maxScale: 6.0,
-          constrained: false,
-          boundaryMargin: const EdgeInsets.all(100),
-          child: RepaintBoundary(child: gridContent),
+        return SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: RepaintBoundary(child: gridContent),
+          ),
         );
       },
     );

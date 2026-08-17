@@ -185,12 +185,10 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
                     ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
                     : _chemicals.isEmpty
                         ? _buildEmptyState(context, isSearching)
-                        : SingleChildScrollView(
-                            child: CustomChemicalTable(
-                              chemicals: _chemicals,
-                              onEdit: _openEditDialog,
-                              onDelete: _deleteChemical,
-                            ),
+                        : CustomChemicalTable(
+                            chemicals: _chemicals,
+                            onEdit: _openEditDialog,
+                            onDelete: _deleteChemical,
                           ),
               ),
             ],

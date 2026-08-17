@@ -59,160 +59,149 @@ class CustomChemicalTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minWidth: constraints.maxWidth),
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.border),
-                boxShadow: const [
-                  BoxShadow(
-                    color: AppColors.shadowLight,
-                    blurRadius: 8,
-                    offset: Offset(0, 2),
-                  ),
-                ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: AppColors.border),
+            boxShadow: const [
+              BoxShadow(
+                color: AppColors.shadowLight,
+                blurRadius: 8,
+                offset: Offset(0, 2),
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: DataTable(
-                  headingRowColor: WidgetStateProperty.all(
-                    AppColors.primarySurface,
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: DataTable(
+              headingRowColor: WidgetStateProperty.all(
+                AppColors.primarySurface,
+              ),
+              headingRowHeight: 48,
+              dataRowMinHeight: 52,
+              dataRowMaxHeight: 64,
+              horizontalMargin: 16,
+              columnSpacing: 20,
+              columns: [
+                DataColumn(
+                  label: Text(
+                    'Chemical Name',
+                    style: AppTextStyles.label.copyWith(
+                      color: AppColors.primaryDark,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                  headingRowHeight: 48,
-                  dataRowMinHeight: 52,
-                  dataRowMaxHeight: 64,
-                  horizontalMargin: 16,
-                  columnSpacing: 20,
-                  columns: [
-                    DataColumn(
-                      label: Text(
-                        'Chemical Name',
-                        style: AppTextStyles.label.copyWith(
-                          color: AppColors.primaryDark,
-                          fontWeight: FontWeight.w700,
+                ),
+                DataColumn(
+                  label: Text(
+                    'Chemical Formula',
+                    style: AppTextStyles.label.copyWith(
+                      color: AppColors.primaryDark,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Molecular Weight',
+                    style: AppTextStyles.label.copyWith(
+                      color: AppColors.primaryDark,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Actions',
+                    style: AppTextStyles.label.copyWith(
+                      color: AppColors.primaryDark,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+              rows: chemicals.map((chem) {
+                return DataRow(
+                  cells: [
+                    DataCell(
+                      InkWell(
+                        onTap: () => onEdit(chem),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Text(
+                            chem.name,
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                    DataColumn(
-                      label: Text(
-                        'Chemical Formula',
-                        style: AppTextStyles.label.copyWith(
-                          color: AppColors.primaryDark,
-                          fontWeight: FontWeight.w700,
+                    DataCell(
+                      InkWell(
+                        onTap: () => onEdit(chem),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.primarySurface.withValues(alpha: 0.5),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            chem.formula,
+                            style: AppTextStyles.mono.copyWith(
+                              fontSize: 13,
+                              color: AppColors.primaryDark,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                    DataColumn(
-                      label: Text(
-                        'Molecular Weight',
-                        style: AppTextStyles.label.copyWith(
-                          color: AppColors.primaryDark,
-                          fontWeight: FontWeight.w700,
+                    DataCell(
+                      InkWell(
+                        onTap: () => onEdit(chem),
+                        child: Text(
+                          '${FormatUtils.format(chem.molecularWeight)} g/mol',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
-                    DataColumn(
-                      label: Text(
-                        'Actions',
-                        style: AppTextStyles.label.copyWith(
-                          color: AppColors.primaryDark,
-                          fontWeight: FontWeight.w700,
-                        ),
+                    DataCell(
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit_outlined, size: 18, color: AppColors.primary),
+                            tooltip: 'Edit Chemical',
+                            onPressed: () => onEdit(chem),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete_outline, size: 18, color: AppColors.error),
+                            tooltip: 'Delete Chemical',
+                            onPressed: () => _confirmDelete(context, chem),
+                          ),
+                        ],
                       ),
                     ),
                   ],
-                  rows: chemicals.map((chem) {
-                    return DataRow(
-                      cells: [
-                        DataCell(
-                          InkWell(
-                            onTap: () => onEdit(chem),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    chem.name,
-                                    style: AppTextStyles.bodyMedium.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textPrimary,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          InkWell(
-                            onTap: () => onEdit(chem),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.primarySurface.withValues(alpha: 0.5),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                chem.formula,
-                                style: AppTextStyles.mono.copyWith(
-                                  fontSize: 13,
-                                  color: AppColors.primaryDark,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          InkWell(
-                            onTap: () => onEdit(chem),
-                            child: Text(
-                              '${FormatUtils.format(chem.molecularWeight)} g/mol',
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.textPrimary,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit_outlined, size: 18, color: AppColors.primary),
-                                tooltip: 'Edit Chemical',
-                                onPressed: () => onEdit(chem),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete_outline, size: 18, color: AppColors.error),
-                                tooltip: 'Delete Chemical',
-                                onPressed: () => _confirmDelete(context, chem),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
-                ),
-              ),
+                );
+              }).toList(),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
