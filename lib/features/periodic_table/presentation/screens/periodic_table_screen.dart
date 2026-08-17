@@ -113,6 +113,19 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
                         ),
                       ),
                     ),
+                    if (_isLandscape && hasActiveFilter) ...[
+                      const SizedBox(width: 8),
+                      TextButton.icon(
+                        onPressed: _controller.clearFilters,
+                        icon: const Icon(Icons.filter_alt_off, size: 14, color: AppColors.error),
+                        label: const Text('Reset', style: TextStyle(fontSize: 11, color: AppColors.error)),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                      ),
+                    ],
                     const Spacer(),
                     IconButton(
                       icon: Icon(
@@ -126,31 +139,34 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElementSearchBar(
-                        query: _controller.searchQuery,
-                        onChanged: _controller.updateSearchQuery,
-                        onClear: () => _controller.updateSearchQuery(''),
-                      ),
-                    ),
-                    if (hasActiveFilter) ...[
-                      const SizedBox(width: 8),
-                      TextButton.icon(
-                        onPressed: _controller.clearFilters,
-                        icon: const Icon(Icons.filter_alt_off, size: 14, color: AppColors.error),
-                        label: const Text('Reset', style: TextStyle(fontSize: 11, color: AppColors.error)),
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                
+                if (!_isLandscape) ...[
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElementSearchBar(
+                          query: _controller.searchQuery,
+                          onChanged: _controller.updateSearchQuery,
+                          onClear: () => _controller.updateSearchQuery(''),
                         ),
                       ),
+                      if (hasActiveFilter) ...[
+                        const SizedBox(width: 8),
+                        TextButton.icon(
+                          onPressed: _controller.clearFilters,
+                          icon: const Icon(Icons.filter_alt_off, size: 14, color: AppColors.error),
+                          label: const Text('Reset', style: TextStyle(fontSize: 11, color: AppColors.error)),
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                        ),
+                      ],
                     ],
-                  ],
-                ),
+                  ),
+                ],
 
                 const SizedBox(height: 6),
 

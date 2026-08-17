@@ -24,25 +24,67 @@ class _LibraryScreenState extends State<LibraryScreen> {
   bool _isLoading = true;
   String? _activeLetter;
 
-  final Map<String, GlobalKey> _letterKeys = {};
-  final List<String> _alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+  
+  final List<_LibraryItem> _flattenedList = [];
+  List<String> _sortedKeys = [];
 
   @override
   void initState() {
     super.initState();
-    for (var letter in _alphabets) {
-      _letterKeys[letter] = GlobalKey();
-    }
     _loadChemicals();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (!mounted || _flattenedList.isEmpty) return;
+
+    final offset = _scrollController.offset;
+    
+    // With a fixed itemExtent of 84.0, we can find the top visible item instantly
+    int activeIndex = ((offset + 42.0) / 84.0).floor(); // 42.0 is half item buffer
+    activeIndex = activeIndex.clamp(0, _flattenedList.length - 1);
+
+    final currentLetter = _flattenedList[activeIndex].letter;
+
+    if (currentLetter != _activeLetter) {
+      setState(() {
+        _activeLetter = currentLetter;
+      });
+    }
+  }
+
+  void _processFlattenedData() {
+    _flattenedList.clear();
+    
+    final Map<String, List<ChemicalModel>> grouped = {};
+    for (var c in _filteredChemicals) {
+      final letter = c.name[0].toUpperCase();
+      grouped.putIfAbsent(letter, () => []).add(c);
+    }
+    _sortedKeys = grouped.keys.toList()..sort();
+
+    for (var letter in _sortedKeys) {
+      _flattenedList.add(_LibraryItem(isHeader: true, letter: letter));
+
+      for (var c in grouped[letter]!) {
+        _flattenedList.add(_LibraryItem(isHeader: false, letter: letter, chemical: c));
+      }
+    }
+    
+    if (_sortedKeys.isNotEmpty) {
+      _activeLetter = _sortedKeys.first;
+    }
   }
 
   Future<void> _loadChemicals() async {
     final chemicals = await _datasource.getAllChemicals();
     chemicals.sort((a, b) => a.name.compareTo(b.name));
     if (mounted) {
+      _filteredChemicals = chemicals;
+      _processFlattenedData();
       setState(() {
         _allChemicals = chemicals;
-        _filteredChemicals = chemicals;
         _isLoading = false;
       });
     }
@@ -50,24 +92,28 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   void _onSearchChanged(String query) async {
     if (query.isEmpty) {
-      setState(() => _filteredChemicals = _allChemicals);
+      _filteredChemicals = _allChemicals;
+      _processFlattenedData();
+      setState(() {});
       return;
     }
     
     final results = await _datasource.search(query);
     if (mounted) {
-      setState(() {
-        _filteredChemicals = results;
-      });
+      _filteredChemicals = results;
+      _processFlattenedData();
+      setState(() {});
     }
   }
 
   void _scrollToLetter(String letter) {
-    final key = _letterKeys[letter];
-    if (key?.currentContext != null) {
+    if (_activeLetter == letter) return; // Prevent animation spam on drag
+    
+    final index = _flattenedList.indexWhere((item) => item.isHeader && item.letter == letter);
+    if (index != -1) {
       setState(() => _activeLetter = letter);
-      Scrollable.ensureVisible(
-        key!.currentContext!,
+      _scrollController.animateTo(
+        index * 84.0, // Exact mathematically perfect offset
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeOut,
       );
@@ -96,6 +142,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
     _searchController.dispose();
     _scrollController.dispose();
     super.dispose();
@@ -207,45 +254,36 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   Widget _buildGroupedList() {
-    // Group by first letter
-    final Map<String, List<ChemicalModel>> grouped = {};
-    for (var c in _filteredChemicals) {
-      final letter = c.name[0].toUpperCase();
-      grouped.putIfAbsent(letter, () => []).add(c);
-    }
-    final sortedKeys = grouped.keys.toList()..sort();
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // ── Main scrollable list ──────────────────────────────────────────
         Expanded(
-          child: SingleChildScrollView(
+          child: ListView.builder(
             controller: _scrollController,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: sortedKeys.map((letter) {
-                final items = grouped[letter]!;
-                return Column(
-                  key: _letterKeys[letter],
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8, bottom: 4, left: 4),
-                      child: Text(
-                        letter,
-                        style: AppTextStyles.h3.copyWith(
-                          color: AppColors.primary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+            itemCount: _flattenedList.length,
+            itemExtent: 84.0, // Fixed height makes ListView insanely fast and math perfect
+            itemBuilder: (context, index) {
+              final item = _flattenedList[index];
+              if (item.isHeader) {
+                return SizedBox(
+                  height: 84.0,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 46, bottom: 4, left: 4),
+                    child: Text(
+                      item.letter,
+                      style: AppTextStyles.h3.copyWith(
+                        color: AppColors.primary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    ...items.map(_buildChemicalTile),
-                  ],
+                  ),
                 );
-              }).toList(),
-            ),
+              } else {
+                return _buildChemicalTile(item.chemical!);
+              }
+            },
           ),
         ),
 
@@ -253,9 +291,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
         // ── Contacts-style side index bar ─────────────────────────────────
         GestureDetector(
-          onTapDown: (d) => _handleSidePosition(d.localPosition, sortedKeys),
+          onTapDown: (d) => _handleSidePosition(d.localPosition, _sortedKeys),
           onVerticalDragUpdate: (d) =>
-              _handleSidePosition(d.localPosition, sortedKeys),
+              _handleSidePosition(d.localPosition, _sortedKeys),
           behavior: HitTestBehavior.opaque,
           child: Container(
             key: _sidebarKey,
@@ -267,7 +305,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
-              children: sortedKeys.map((letter) {
+              children: _sortedKeys.map((letter) {
                 final isSelected = _activeLetter == letter;
                 return Flexible(
                   child: Center(
@@ -303,26 +341,28 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   Widget _buildChemicalTile(ChemicalModel chemical) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.borderLight),
-      ),
-      child: Material(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        clipBehavior: Clip.antiAlias,
-        child: ListTile(
-          leading: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppColors.primarySurface,
-              borderRadius: BorderRadius.circular(8),
+    return SizedBox(
+      height: 84.0,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.borderLight),
+        ),
+        child: Material(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(12),
+          clipBehavior: Clip.antiAlias,
+          child: ListTile(
+            leading: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.primarySurface,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(Icons.science_outlined,
+                  color: AppColors.primary, size: 20),
             ),
-            child: const Icon(Icons.science_outlined,
-                color: AppColors.primary, size: 20),
-          ),
           title: Text(
             chemical.name,
             style: AppTextStyles.h3.copyWith(
@@ -353,6 +393,15 @@ class _LibraryScreenState extends State<LibraryScreen> {
           },
         ),
       ),
+      ),
     );
   }
+}
+
+class _LibraryItem {
+  final bool isHeader;
+  final String letter;
+  final ChemicalModel? chemical;
+
+  _LibraryItem({required this.isHeader, required this.letter, this.chemical});
 }

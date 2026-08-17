@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
-import 'package:flutter/services.dart';
+
 import '../../models/element_model.dart';
 class ElementDetailScreen extends StatelessWidget {
   final ElementModel element;
@@ -10,30 +10,16 @@ class ElementDetailScreen extends StatelessWidget {
   const ElementDetailScreen({super.key, required this.element});
 
   static Future<void> show(BuildContext context, ElementModel element, {bool isLandscape = false}) async {
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-
     if (!context.mounted) return;
 
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      useSafeArea: true,
+      constraints: const BoxConstraints(maxWidth: 600),
       builder: (_) => ElementDetailScreen(element: element),
     );
-
-    if (isLandscape) {
-      await SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight,
-      ]);
-    } else {
-      await SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-      ]);
-    }
   }
 
   @override

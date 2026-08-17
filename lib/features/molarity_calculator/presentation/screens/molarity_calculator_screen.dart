@@ -162,7 +162,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        'Normality Reference Notes',
+                        'Molarity Reference Notes',
                         style: AppTextStyles.label.copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w700,

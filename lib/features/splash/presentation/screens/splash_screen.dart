@@ -1,3 +1,4 @@
+// cspell:ignore Chemicalc Devriz
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
@@ -111,8 +112,20 @@ class _SplashScreenState extends State<SplashScreen>
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(28),
                       child: Image.asset(
-                        'assets/icons/logo 2),
-
+                        'assets/icons/logo 2.png',
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Opacity(
+                  opacity: _textFade.value,
+                  child: Text(
+                    'Chemicalc',
+                    style: AppTextStyles.splashTitle,
+                  ),
+                ),
+                const SizedBox(height: 8),
                 Opacity(
                   opacity: _textFade.value,
                   child: Text(
