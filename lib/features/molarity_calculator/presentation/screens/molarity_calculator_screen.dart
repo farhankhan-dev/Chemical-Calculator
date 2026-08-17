@@ -5,6 +5,7 @@ import '../../../../app/theme/app_text_styles.dart';
 import '../../../../data/models/chemical_model.dart';
 import '../../../../core/widgets/chemical_selector.dart';
 import '../../../../core/utils/format_utils.dart';
+import '../../../../core/utils/formula_parser.dart';
 
 class MolarityCalculatorScreen extends StatefulWidget {
   const MolarityCalculatorScreen({super.key});
@@ -15,7 +16,9 @@ class MolarityCalculatorScreen extends StatefulWidget {
 
 class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
   ChemicalModel? _selectedChemical;
+  final FormulaParser _formulaParser = FormulaParser();
   
+  final TextEditingController _formulaController = TextEditingController();
   final TextEditingController _massController = TextEditingController();
   final TextEditingController _volController = TextEditingController(); 
   final ScrollController _scrollController = ScrollController();
@@ -41,6 +44,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
 
   @override
   void dispose() {
+    _formulaController.dispose();
     _massController.dispose();
     _volController.dispose();
     _scrollController.dispose();
@@ -52,7 +56,30 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
       _validationError = null;
     });
 
-    if (_selectedChemical == null || _massController.text.isEmpty || _volController.text.isEmpty) {
+    final manualFormulaText = _formulaController.text.trim();
+    double? molarMass;
+    double? eqWeight;
+
+    if (manualFormulaText.isNotEmpty) {
+      final parseResult = _formulaParser.parse(manualFormulaText);
+      if (!parseResult.isValid) {
+        setState(() {
+          _validationError = parseResult.error ?? 'Please enter a valid chemical formula.';
+        });
+        return;
+      }
+      molarMass = parseResult.molarMass;
+    } else if (_selectedChemical != null) {
+      molarMass = _selectedChemical!.molecularWeight;
+      eqWeight = _selectedChemical!.equivalentWeight;
+    } else {
+      setState(() {
+        _validationError = 'Please fill all requirements';
+      });
+      return;
+    }
+
+    if (_massController.text.isEmpty || _volController.text.isEmpty) {
       setState(() {
         _validationError = 'Please fill all requirements';
       });
@@ -66,19 +93,18 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
     setState(() {
       final volLiters = _isVolMl ? vol / 1000 : vol;
       
-      final moles = mass / _selectedChemical!.molecularWeight;
+      final moles = mass / molarMass!;
       _molarity = moles / volLiters;
       
-      final eqWeight = _selectedChemical!.equivalentWeight;
       if (eqWeight != null) {
         final equivalents = mass / eqWeight;
         _normality = equivalents / volLiters;
         
-        _calculationString = 'Moles = ${FormatUtils.format(mass)} g / ${FormatUtils.format(_selectedChemical!.molecularWeight)} g/mol = ${FormatUtils.format(moles)}\n'
+        _calculationString = 'Moles = ${FormatUtils.format(mass)} g / ${FormatUtils.format(molarMass)} g/mol = ${FormatUtils.format(moles)}\n'
             'Molarity = ${FormatUtils.format(moles)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_molarity!)} M\n';
       } else {
         _normality = null;
-        _calculationString = 'Moles = ${FormatUtils.format(mass)} g / ${FormatUtils.format(_selectedChemical!.molecularWeight)} g/mol = ${FormatUtils.format(moles)}\n'
+        _calculationString = 'Moles = ${FormatUtils.format(mass)} g / ${FormatUtils.format(molarMass)} g/mol = ${FormatUtils.format(moles)}\n'
             'Molarity = ${FormatUtils.format(moles)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_molarity!)} M\n';
       }
       
@@ -103,14 +129,14 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
           _calculationString = '${_calculationString}Conversion: ${_molarity!} M × 10⁹ = ${_displayedMolarity!} nM\n';
           break;
         case 'ppm (mg/L)':
-          _displayedMolarity = _molarity! * _selectedChemical!.molecularWeight * 1000;
+          _displayedMolarity = _molarity! * molarMass * 1000;
           _displayedUnitLabel = 'mg/L (ppm)';
-          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × ${_selectedChemical!.molecularWeight} g/mol × 1000 = ${_displayedMolarity!} ppm\n';
+          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × ${FormatUtils.format(molarMass)} g/mol × 1000 = ${_displayedMolarity!} ppm\n';
           break;
         case 'ppb (µg/L)':
-          _displayedMolarity = _molarity! * _selectedChemical!.molecularWeight * 1000000;
+          _displayedMolarity = _molarity! * molarMass * 1000000;
           _displayedUnitLabel = 'µg/L (ppb)';
-          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × ${_selectedChemical!.molecularWeight} g/mol × 10⁶ = ${_displayedMolarity!} ppb\n';
+          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × ${FormatUtils.format(molarMass)} g/mol × 10⁶ = ${_displayedMolarity!} ppb\n';
           break;
       }
       
@@ -498,7 +524,10 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
               onTap: () async {
                 final chem = await ChemicalSelector.show(context);
                 if (chem != null) {
-                  setState(() => _selectedChemical = chem);
+                  setState(() {
+                    _selectedChemical = chem;
+                    _formulaController.clear();
+                  });
                 }
               },
               child: Container(
@@ -536,6 +565,63 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                   ],
                 ),
               ),
+            ),
+            const SizedBox(height: 12),
+
+            Row(
+              children: [
+                const Expanded(child: Divider(color: AppColors.border)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    'OR',
+                    style: AppTextStyles.labelSmall.copyWith(
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                const Expanded(child: Divider(color: AppColors.border)),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            Text('Write Formula', style: AppTextStyles.label),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _formulaController,
+              decoration: InputDecoration(
+                hintText: 'Enter chemical formula (e.g. H2O, NaCl)...',
+                hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                prefixIcon: const Icon(Icons.edit_note_outlined, color: AppColors.primary),
+                suffixIcon: _formulaController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear, color: AppColors.textSecondary, size: 20),
+                        onPressed: () {
+                          _formulaController.clear();
+                          setState(() {});
+                        },
+                      )
+                    : null,
+                filled: true,
+                fillColor: AppColors.surface,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.border),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.border),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+                ),
+              ),
+              onChanged: (val) {
+                setState(() {});
+              },
             ),
             const SizedBox(height: AppSpacing.lg),
 

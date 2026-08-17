@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/chemical_model.dart';
 
@@ -18,14 +19,25 @@ class ChemicalLocalDatasource {
 
   bool get hasCache => _cache != null;
 
+  @visibleForTesting
+  void setCacheForTesting(List<ChemicalModel> chemicals) {
+    _cache = chemicals;
+  }
+
   /// Loads all chemicals from the JSON asset. Results are cached after
   /// the first call.
   Future<List<ChemicalModel>> getAllChemicals() async {
     if (_cache != null) return _cache!;
 
     // 1. Load built-in chemicals
-    final jsonString =
-        await rootBundle.loadString('assets/data/chemicals.json');
+    String jsonString;
+    try {
+      jsonString = await rootBundle
+          .loadString('assets/data/chemicals.json')
+          .timeout(const Duration(milliseconds: 1000));
+    } catch (e) {
+      jsonString = '[]';
+    }
     final List<dynamic> jsonList = json.decode(jsonString) as List<dynamic>;
 
     final baseChemicals = jsonList
