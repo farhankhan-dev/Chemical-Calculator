@@ -27,147 +27,10 @@ class PeriodicTableGrid extends StatefulWidget {
   State<PeriodicTableGrid> createState() => _PeriodicTableGridState();
 }
 
-class _PeriodicTableGridState extends State<PeriodicTableGrid>
-    with SingleTickerProviderStateMixin {
-  late final TransformationController _transformController;
-  late final AnimationController _animController;
-  Animation<Matrix4>? _animation;
-
+class _PeriodicTableGridState extends State<PeriodicTableGrid> {
   // Cached layout values, set during build
   double _tileWidth = 44.0;
   double _tileHeight = 52.0;
-  double _viewportWidth = 0;
-  double _viewportHeight = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _transformController = TransformationController();
-    _animController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 550),
-    )..addListener(() {
-        if (_animation != null) {
-          _transformController.value = _animation!.value;
-        }
-      });
-  }
-
-  @override
-  void didUpdateWidget(PeriodicTableGrid oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // We no longer pan/zoom to the category. Highlighting is handled by the tiles themselves.
-  }
-
-  @override
-  void dispose() {
-    _transformController.dispose();
-    _animController.dispose();
-    super.dispose();
-  }
-
-  // ---------------------------------------------------------------------------
-  // Region mapping: each category maps to a rectangle in the grid
-  // col/row are 0-indexed; isFBlock = true for lanthanide / actinide rows
-  // ---------------------------------------------------------------------------
-  _GridRegion _regionForCategory(ElementCategory cat) {
-    switch (cat) {
-      case ElementCategory.alkaliMetal:
-        // Group 1 (col 0), periods 2-7 (rows 1-6)
-        return const _GridRegion(col: 0, endCol: 0, row: 1, endRow: 6);
-      case ElementCategory.alkalineEarthMetal:
-        // Group 2 (col 1), periods 2-7
-        return const _GridRegion(col: 1, endCol: 1, row: 1, endRow: 6);
-      case ElementCategory.transitionMetal:
-        // Groups 3-12 (cols 2-11), periods 4-7
-        return const _GridRegion(col: 2, endCol: 11, row: 3, endRow: 6);
-      case ElementCategory.postTransitionMetal:
-        // Groups 13-16 (cols 12-15), periods 4-6
-        return const _GridRegion(col: 12, endCol: 15, row: 3, endRow: 5);
-      case ElementCategory.metalloid:
-        // Groups 13-17 (cols 12-16), periods 2-5
-        return const _GridRegion(col: 12, endCol: 16, row: 1, endRow: 5);
-      case ElementCategory.reactiveNonmetal:
-        // Groups 14-17 (cols 13-16), periods 2-4
-        return const _GridRegion(col: 13, endCol: 16, row: 1, endRow: 3);
-      case ElementCategory.halogen:
-        // Group 17 (col 16), periods 2-6
-        return const _GridRegion(col: 16, endCol: 16, row: 1, endRow: 5);
-      case ElementCategory.nobleGas:
-        // Group 18 (col 17), periods 1-6
-        return const _GridRegion(col: 17, endCol: 17, row: 0, endRow: 5);
-      case ElementCategory.lanthanide:
-        // f-block first row (lanthanides)
-        return const _GridRegion(col: 2, endCol: 16, row: 0, endRow: 0, isFBlock: true);
-      case ElementCategory.actinide:
-        // f-block second row (actinides)
-        return const _GridRegion(col: 2, endCol: 16, row: 1, endRow: 1, isFBlock: true);
-      case ElementCategory.unknown:
-        // Period 7, groups 4-18
-        return const _GridRegion(col: 3, endCol: 17, row: 6, endRow: 6);
-    }
-  }
-
-  void _scrollToCategory(ElementCategory cat) {
-    if (_viewportWidth == 0 || _viewportHeight == 0) return;
-
-    final region = _regionForCategory(cat);
-    final colStep = _tileWidth + 3.0;  // tile width + gap
-    final rowStep = _tileHeight + 3.0; // tile height + gap
-    const headerH = 16.0;             // group number row height estimate
-    const padding = 4.0;
-
-    final mainGridH = 7 * rowStep;
-
-    double targetX;
-    double targetY;
-    double regionW;
-    double regionH;
-
-    if (region.isFBlock) {
-      final fBlockY = padding + headerH + 3 + mainGridH + 10;
-      final fRow = region.row; // 0 = lanthanides, 1 = actinides
-      final leftOffset = _tileWidth * 2 + 6;
-
-      targetX = leftOffset + region.col * colStep;
-      targetY = fBlockY + fRow * (rowStep + 3);
-      regionW = (region.endCol - region.col + 1) * colStep;
-      regionH = rowStep;
-    } else {
-      targetX = padding + region.col * colStep;
-      targetY = padding + headerH + 3 + region.row * rowStep;
-      regionW = (region.endCol - region.col + 1) * colStep;
-      regionH = (region.endRow - region.row + 1) * rowStep;
-    }
-
-    // Use a standard size zoom level for all categories.
-    // 1.0 keeps the table readable without extreme zoom-in or zoom-out.
-    const double scale = 1.0;
-
-    // Pan so the center of the region is centered in the viewport
-    final regionCenterX = targetX + regionW / 2;
-    final regionCenterY = targetY + regionH / 2;
-    final tx = _viewportWidth / 2 - regionCenterX * scale;
-    final ty = _viewportHeight / 2 - regionCenterY * scale;
-
-    final target = Matrix4.diagonal3Values(scale, scale, 1.0)
-      ..setTranslationRaw(tx, ty, 0);
-
-    _animateTo(target);
-  }
-
-  void _animateTo(Matrix4 target) {
-    // 1. Capture the current transform BEFORE any reset.
-    final Matrix4 begin = _transformController.value.clone();
-    // 2. Null out _animation so the listener is a no-op during reset().
-    _animation = null;
-    _animController.reset();
-    // 3. Build the new tween from the captured position → target.
-    _animation = Matrix4Tween(begin: begin, end: target).animate(
-      CurvedAnimation(parent: _animController, curve: Curves.easeInOutCubic),
-    );
-    _animController.forward();
-  }
 
   // ---------------------------------------------------------------------------
   // Build
@@ -176,15 +39,10 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Compute tile dimensions from available width
-        final availableWidth = constraints.maxWidth;
-        final computedTileWidth = (availableWidth - (17 * 3.0)) / 18;
-        
-        // Use the original clamp values
-        _tileWidth = computedTileWidth.clamp(36.0, 56.0);
-        _tileHeight = _tileWidth * 1.18;
-        _viewportWidth = constraints.maxWidth;
-        _viewportHeight = constraints.maxHeight;
+        // Set optimal readable tile dimensions for standard portrait/landscape screens
+        // 18 columns * 44px + gaps = ~843px width
+        _tileWidth = 44.0;
+        _tileHeight = 52.0;
 
         final Widget gridContent = Padding(
           padding: const EdgeInsets.all(4.0),
@@ -207,11 +65,10 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
         );
 
         return InteractiveViewer(
-          transformationController: _transformController,
-          minScale: 0.05,
-          maxScale: 6.0,
+          minScale: 0.01,
+          maxScale: 4.0,
           constrained: false,
-          boundaryMargin: const EdgeInsets.all(100),
+          boundaryMargin: const EdgeInsets.all(32.0),
           child: RepaintBoundary(child: gridContent),
         );
       },
@@ -433,28 +290,18 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Flexible(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      range,
-                      style: TextStyle(
-                        fontSize: 7.5,
-                        fontWeight: FontWeight.bold,
-                        color: category.color,
-                      ),
-                    ),
+                Text(
+                  range,
+                  style: TextStyle(
+                    fontSize: 7.5,
+                    fontWeight: FontWeight.bold,
+                    color: category.color,
                   ),
                 ),
-                Flexible(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      title,
-                      style: TextStyle(fontSize: 6, color: category.color),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 6, color: category.color),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
@@ -501,22 +348,4 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
     }
     return null;
   }
-}
-
-/// Describes a rectangular region in the periodic table grid (0-indexed cols/rows).
-class _GridRegion {
-  final int col;
-  final int endCol;
-  final int row;
-  final int endRow;
-  /// True for lanthanide / actinide f-block rows (below the main 7-period grid).
-  final bool isFBlock;
-
-  const _GridRegion({
-    required this.col,
-    required this.endCol,
-    required this.row,
-    required this.endRow,
-    this.isFBlock = false,
-  });
 }

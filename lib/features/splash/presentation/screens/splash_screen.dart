@@ -129,7 +129,7 @@ class _SplashScreenState extends State<SplashScreen>
                 Opacity(
                   opacity: _textFade.value,
                   child: Text(
-                    'Chemical Formulas in One Place',
+                    'Chemical Calculators in One Place',
                     style: AppTextStyles.splashSubtitle.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -138,13 +138,13 @@ class _SplashScreenState extends State<SplashScreen>
 
                 const Spacer(flex: 3),
 
-                // "Powered by Devriz" at bottom
+
                 Opacity(
                   opacity: _poweredFade.value,
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 48),
                     child: Text(
-                      'Powered by Devriz',
+                      '',
                       style: AppTextStyles.splashSubtitle.copyWith(
                         color: AppColors.textTertiary,
                         fontSize: 13,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/calculators/presentation/screens/calculators_screen.dart';
 import '../features/library/presentation/screens/library_screen.dart';
+import '../features/my_chemicals/presentation/screens/my_chemicals_screen.dart';
 import '../features/periodic_table/presentation/screens/periodic_table_screen.dart';
 import 'theme/app_colors.dart';
 
@@ -19,6 +20,7 @@ class _MainScreenState extends State<MainScreen> {
     CalculatorsScreen(),
     PeriodicTableScreen(),
     LibraryScreen(),
+    MyChemicalsScreen(),
   ];
 
   void _onTabSelected(int index) {
@@ -65,6 +67,11 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.menu_book_outlined),
             activeIcon: Icon(Icons.menu_book),
             label: 'Library',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.science_outlined),
+            activeIcon: Icon(Icons.science),
+            label: 'My Chemicals',
           ),
         ],
       ),
