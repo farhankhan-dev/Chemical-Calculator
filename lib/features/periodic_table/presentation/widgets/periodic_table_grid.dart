@@ -176,23 +176,12 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Compute tile dimensions to perfectly fit available width AND height
+        // Compute tile dimensions from available width
         final availableWidth = constraints.maxWidth;
-        final availableHeight = constraints.maxHeight;
-
-        // Width required: 18 columns + 17 gaps (3.0) + 8.0 padding
-        final widthBasedTileWidth = (availableWidth - 59.0) / 18.0;
+        final computedTileWidth = (availableWidth - (17 * 3.0)) / 18;
         
-        // Height required: headers(16) + 9 rows * (tileHeight) + gaps + padding = roughly 61.0 + 9 * tileHeight
-        final heightBasedTileHeight = (availableHeight - 61.0) / 9.0;
-        final heightBasedTileWidth = heightBasedTileHeight / 1.18;
-
-        final computedTileWidth = widthBasedTileWidth < heightBasedTileWidth 
-            ? widthBasedTileWidth 
-            : heightBasedTileWidth;
-
-        // Allow smaller min scale (16.0) so the table can fully fit in landscape mode natively
-        _tileWidth = computedTileWidth.clamp(16.0, 56.0);
+        // Use the original clamp values
+        _tileWidth = computedTileWidth.clamp(36.0, 56.0);
         _tileHeight = _tileWidth * 1.18;
         _viewportWidth = constraints.maxWidth;
         _viewportHeight = constraints.maxHeight;
@@ -444,18 +433,28 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  range,
-                  style: TextStyle(
-                    fontSize: 7.5,
-                    fontWeight: FontWeight.bold,
-                    color: category.color,
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      range,
+                      style: TextStyle(
+                        fontSize: 7.5,
+                        fontWeight: FontWeight.bold,
+                        color: category.color,
+                      ),
+                    ),
                   ),
                 ),
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 6, color: category.color),
-                  textAlign: TextAlign.center,
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      title,
+                      style: TextStyle(fontSize: 6, color: category.color),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
               ],
             ),
