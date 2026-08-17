@@ -200,8 +200,7 @@ class ChemicalIOService {
       }
 
       chemicals.add(CustomChemicalModel(
-        id: DateTime.now().microsecondsSinceEpoch.toString() +
-            '_${chemicals.length}',
+        id: '${DateTime.now().microsecondsSinceEpoch}_${chemicals.length}',
         name: name,
         formula: formula,
         molecularWeight: weight,

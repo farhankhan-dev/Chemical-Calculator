@@ -62,7 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ChemicalSearchBar(
                 controller: _textController,
                 suggestions: _controller.suggestions,
-                hasSelection: _controller.selectedChemical != null,
                 onChanged: (query) {
                   _controller.onQueryChanged(query);
                 },
