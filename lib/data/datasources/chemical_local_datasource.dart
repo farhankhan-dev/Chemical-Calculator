@@ -34,7 +34,7 @@ class ChemicalLocalDatasource {
     try {
       jsonString = await rootBundle
           .loadString('assets/data/chemicals.json')
-          .timeout(const Duration(milliseconds: 1000));
+          .timeout(const Duration(seconds: 10));
     } catch (e) {
       jsonString = '[]';
     }

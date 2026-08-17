@@ -83,6 +83,15 @@ class _MolecularWeightCalculatorScreenState
         _breakdown = []; // Database items bypass breakdown parsing
       });
       FocusScope.of(context).unfocus();
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted && _scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
       return;
     }
 
@@ -165,8 +174,8 @@ class _MolecularWeightCalculatorScreenState
     }
 
     FocusScope.of(context).unfocus();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted && _scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 300),
@@ -520,6 +529,7 @@ class _MolecularWeightCalculatorScreenState
               controller: _formulaController,
               suggestions: _suggestions,
               hintText: 'e.g. NaCl or H2O',
+              showSearchIcon: false,
               onChanged: _onSearchChanged,
               onSelected: (chem) {
                 _formulaController.text = chem.formula;

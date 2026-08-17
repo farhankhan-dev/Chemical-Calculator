@@ -64,12 +64,12 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid> {
           ),
         );
 
-        return SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: RepaintBoundary(child: gridContent),
-          ),
+        return InteractiveViewer(
+          minScale: 0.01,
+          maxScale: 4.0,
+          constrained: false,
+          boundaryMargin: const EdgeInsets.all(32.0),
+          child: RepaintBoundary(child: gridContent),
         );
       },
     );

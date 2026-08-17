@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
+import '../../data/chemical_io_service.dart';
 import '../../data/custom_chemical_repository.dart';
 import '../../models/custom_chemical_model.dart';
 import '../widgets/add_edit_chemical_dialog.dart';
 import '../widgets/custom_chemical_table.dart';
+import 'export_selection_screen.dart';
 
 /// Personal Chemical Notebook Screen ("My Chemicals").
 ///
@@ -83,18 +85,148 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
     await _loadChemicals();
   }
 
+  Future<void> _deleteMultiple(Set<String> ids) async {
+    await _repository.deleteMultiple(ids);
+    await _loadChemicals();
+  }
+
+  Future<void> _togglePin(Set<String> ids, bool pinned) async {
+    await _repository.togglePin(ids, pinned);
+    await _loadChemicals();
+  }
+
+  void _showImportExportSheet() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 8),
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppColors.border,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 12),
+              ListTile(
+                leading: const Icon(Icons.file_upload_outlined, color: AppColors.primary),
+                title: const Text('Import Chemicals'),
+                subtitle: const Text('Import from a .txt file'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _doImport();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.file_download_outlined, color: AppColors.primary),
+                title: const Text('Export Chemicals'),
+                subtitle: const Text('Export to a .txt file'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _doExport();
+                },
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _doImport() async {
+    final result = await ChemicalIOService.importChemicals();
+
+    if (!mounted) return;
+
+    if (result.error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result.error!),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
+    // Save imported chemicals, skipping duplicates
+    final existingChemicals = await _repository.getAll();
+    final existingKeys = existingChemicals
+        .map((c) => '${c.name.toLowerCase()}|${c.formula.toLowerCase()}')
+        .toSet();
+
+    int imported = 0;
+    int duplicates = 0;
+
+    for (final chem in result.chemicals) {
+      final key = '${chem.name.toLowerCase()}|${chem.formula.toLowerCase()}';
+      if (existingKeys.contains(key)) {
+        duplicates++;
+      } else {
+        await _repository.save(chem);
+        existingKeys.add(key);
+        imported++;
+      }
+    }
+    await _loadChemicals();
+
+    if (!mounted) return;
+
+    final parts = <String>[];
+    if (imported > 0) parts.add('Imported $imported chemical${imported == 1 ? '' : 's'}.');
+    if (duplicates > 0) parts.add('$duplicates duplicate${duplicates == 1 ? '' : 's'} skipped.');
+    if (result.skippedRows > 0) parts.add('${result.skippedRows} invalid row${result.skippedRows == 1 ? '' : 's'} skipped.');
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(parts.join(' ')),
+        backgroundColor: imported > 0 ? AppColors.success : AppColors.warning,
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
+  Future<void> _doExport() async {
+    // Load all chemicals (not just searched ones)
+    final all = await _repository.getAll();
+    if (!mounted) return;
+
+    if (all.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No chemicals to export.'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
+    final exported = await ExportSelectionScreen.show(context, all);
+    if (exported == true && mounted) {
+      // Reload in case something changed
+      await _loadChemicals();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isSearching = _searchQuery.trim().isNotEmpty;
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         onPressed: _openAddDialog,
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
-        icon: const Icon(Icons.add),
-        label: const Text('Add Chemical', style: TextStyle(fontWeight: FontWeight.w700)),
+        child: const Icon(Icons.add),
       ),
       body: SafeArea(
         child: Padding(
@@ -133,9 +265,9 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
                   ),
                   const Spacer(),
                   IconButton(
-                    icon: const Icon(Icons.add_circle_outline, color: AppColors.primary, size: 24),
-                    tooltip: 'Add Chemical',
-                    onPressed: _openAddDialog,
+                    icon: const Icon(Icons.import_export, color: AppColors.primary, size: 24),
+                    tooltip: 'Import / Export',
+                    onPressed: _showImportExportSheet,
                   ),
                 ],
               ),
@@ -189,6 +321,8 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
                             chemicals: _chemicals,
                             onEdit: _openEditDialog,
                             onDelete: _deleteChemical,
+                            onDeleteMultiple: _deleteMultiple,
+                            onTogglePin: _togglePin,
                           ),
               ),
             ],
@@ -221,44 +355,34 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
     }
 
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppColors.primarySurface,
-                shape: BoxShape.circle,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: AppColors.primarySurface,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.science_outlined, size: 48, color: AppColors.primary),
               ),
-              child: const Icon(Icons.science_outlined, size: 48, color: AppColors.primary),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'No custom chemicals yet.',
-              style: AppTextStyles.h3.copyWith(color: AppColors.primaryDark),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Add your laboratory chemicals to access them quickly in your personal notebook.',
-              style: AppTextStyles.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: _openAddDialog,
-              icon: const Icon(Icons.add, size: 18),
-              label: const Text('Add Chemical', style: TextStyle(fontWeight: FontWeight.w700)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                elevation: 0,
+              const SizedBox(height: 16),
+              Text(
+                'No custom chemicals yet.',
+                style: AppTextStyles.h3.copyWith(color: AppColors.primaryDark),
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                'Add your laboratory chemicals to access them quickly in your personal notebook.',
+                style: AppTextStyles.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

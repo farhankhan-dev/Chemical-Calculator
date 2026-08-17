@@ -1,5 +1,6 @@
 import '../../features/periodic_table/data/element_repository.dart';
 import '../../features/periodic_table/models/element_model.dart';
+import 'formula_formatter.dart';
 
 /// Result container for chemical formula parsing.
 class FormulaParseResult {
@@ -36,7 +37,7 @@ class FormulaParser {
 
   /// Parses a chemical formula string and returns a [FormulaParseResult].
   FormulaParseResult parse(String rawFormula) {
-    final formula = rawFormula.trim();
+    final formula = FormulaFormatter.format(rawFormula.trim());
     if (formula.isEmpty) {
       return const FormulaParseResult.failure('Please enter a chemical formula.');
     }

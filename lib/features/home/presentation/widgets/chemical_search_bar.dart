@@ -15,6 +15,7 @@ class ChemicalSearchBar extends StatelessWidget {
   final ValueChanged<ChemicalModel> onSelected;
   final VoidCallback? onClear;
   final String hintText;
+  final bool showSearchIcon;
 
   const ChemicalSearchBar({
     super.key,
@@ -24,6 +25,7 @@ class ChemicalSearchBar extends StatelessWidget {
     required this.onSelected,
     this.onClear,
     this.hintText = 'Type chemical name...',
+    this.showSearchIcon = true,
   });
 
   @override
@@ -48,11 +50,13 @@ class ChemicalSearchBar extends StatelessWidget {
           style: AppTextStyles.bodyLarge,
           decoration: InputDecoration(
             hintText: hintText,
-            prefixIcon: const Icon(
-              Icons.search_rounded,
-              color: AppColors.textTertiary,
-              size: 22,
-            ),
+            prefixIcon: showSearchIcon
+                ? const Icon(
+                    Icons.search_rounded,
+                    color: AppColors.textTertiary,
+                    size: 22,
+                  )
+                : null,
             suffixIcon: controller.text.isNotEmpty
                 ? IconButton(
                     onPressed: onClear,

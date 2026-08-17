@@ -5,6 +5,7 @@ class CustomChemicalModel {
   final String formula;
   final double molecularWeight;
   final DateTime createdAt;
+  final bool isPinned;
 
   const CustomChemicalModel({
     required this.id,
@@ -12,6 +13,7 @@ class CustomChemicalModel {
     required this.formula,
     required this.molecularWeight,
     required this.createdAt,
+    this.isPinned = false,
   });
 
   factory CustomChemicalModel.fromJson(Map<String, dynamic> json) {
@@ -21,6 +23,7 @@ class CustomChemicalModel {
       formula: json['formula'] as String,
       molecularWeight: (json['molecularWeight'] as num).toDouble(),
       createdAt: DateTime.parse(json['createdAt'] as String),
+      isPinned: json['isPinned'] as bool? ?? false,
     );
   }
 
@@ -31,6 +34,7 @@ class CustomChemicalModel {
       'formula': formula,
       'molecularWeight': molecularWeight,
       'createdAt': createdAt.toIso8601String(),
+      'isPinned': isPinned,
     };
   }
 
@@ -40,6 +44,7 @@ class CustomChemicalModel {
     String? formula,
     double? molecularWeight,
     DateTime? createdAt,
+    bool? isPinned,
   }) {
     return CustomChemicalModel(
       id: id ?? this.id,
@@ -47,6 +52,7 @@ class CustomChemicalModel {
       formula: formula ?? this.formula,
       molecularWeight: molecularWeight ?? this.molecularWeight,
       createdAt: createdAt ?? this.createdAt,
+      isPinned: isPinned ?? this.isPinned,
     );
   }
 

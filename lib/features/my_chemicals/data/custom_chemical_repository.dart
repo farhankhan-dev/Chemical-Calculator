@@ -10,6 +10,7 @@ class CustomChemicalRepository {
   static const String _storageKey = 'custom_chemicals_notebook';
 
   /// Fetches all custom chemicals stored locally on the device.
+  /// Pinned chemicals appear first, then sorted oldest-first within each group.
   Future<List<CustomChemicalModel>> getAll() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString(_storageKey);
@@ -23,8 +24,12 @@ class CustomChemicalRepository {
           .map((e) => CustomChemicalModel.fromJson(e as Map<String, dynamic>))
           .toList();
       
-      // Sort newest first
-      chemicals.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      // Sort: pinned first, then oldest first within each group
+      chemicals.sort((a, b) {
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+        return a.createdAt.compareTo(b.createdAt);
+      });
       return chemicals;
     } catch (_) {
       return [];
@@ -39,7 +44,7 @@ class CustomChemicalRepository {
     if (index >= 0) {
       list[index] = chemical;
     } else {
-      list.insert(0, chemical);
+      list.add(chemical);
     }
 
     await _persist(list);
@@ -49,6 +54,24 @@ class CustomChemicalRepository {
   Future<void> delete(String id) async {
     final list = await getAll();
     list.removeWhere((c) => c.id == id);
+    await _persist(list);
+  }
+
+  /// Deletes multiple custom chemicals by ids.
+  Future<void> deleteMultiple(Set<String> ids) async {
+    final list = await getAll();
+    list.removeWhere((c) => ids.contains(c.id));
+    await _persist(list);
+  }
+
+  /// Toggles pin state for multiple chemicals.
+  Future<void> togglePin(Set<String> ids, bool pinned) async {
+    final list = await getAll();
+    for (int i = 0; i < list.length; i++) {
+      if (ids.contains(list[i].id)) {
+        list[i] = list[i].copyWith(isPinned: pinned);
+      }
+    }
     await _persist(list);
   }
 

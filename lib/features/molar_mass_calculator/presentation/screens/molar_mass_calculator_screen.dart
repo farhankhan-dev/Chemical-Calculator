@@ -79,6 +79,15 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
         _error = null;
       });
       FocusScope.of(context).unfocus();
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted && _scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
       return;
     }
 
@@ -152,8 +161,8 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
     }
 
     FocusScope.of(context).unfocus();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted && _scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 300),
@@ -490,6 +499,7 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
               controller: _formulaController,
               suggestions: _suggestions,
               hintText: 'e.g. H2SO4 or C6H12O6',
+              showSearchIcon: false,
               onChanged: _onSearchChanged,
               onSelected: (chem) {
                 _formulaController.text = chem.formula;

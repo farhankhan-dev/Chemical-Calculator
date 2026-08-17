@@ -4,6 +4,10 @@ import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/utils/format_utils.dart';
 import '../../../../core/utils/formula_parser.dart';
+import '../../../../core/utils/formula_formatter.dart';
+import '../../../../data/models/chemical_model.dart';
+import '../../../../data/datasources/chemical_local_datasource.dart';
+import '../../../chemical_detail/presentation/screens/chemical_detail_screen.dart';
 import '../../models/custom_chemical_model.dart';
 
 /// Modal dialog / sheet for adding a new custom chemical or editing an existing one.
@@ -42,6 +46,7 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
 
   bool _isManualMwOverride = false;
   String? _validationError;
+  ChemicalModel? _duplicateLibraryChemical;
   String _lastAutoFormula = '';
 
   bool get _isEditing => widget.existingChemical != null;
@@ -110,9 +115,10 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
     }
   }
 
-  void _save() {
+  void _save() async {
     setState(() {
       _validationError = null;
+      _duplicateLibraryChemical = null;
     });
 
     final name = _nameController.text.trim();
@@ -123,13 +129,17 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
       return;
     }
 
-    final formula = _formulaController.text.trim();
-    if (formula.isEmpty) {
+    final rawFormula = _formulaController.text.trim();
+    if (rawFormula.isEmpty) {
       setState(() {
         _validationError = 'Please enter a chemical formula.';
       });
       return;
     }
+    
+    // Auto format the formula properly (e.g. nacl -> NaCl)
+    final formula = FormulaFormatter.format(rawFormula);
+    _formulaController.text = formula; // Update the UI so they see the caps when it dismisses
 
     final parseResult = _formulaParser.parse(formula);
     if (!parseResult.isValid) {
@@ -149,6 +159,32 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
     }
 
     final now = DateTime.now();
+    final isNew = widget.existingChemical == null;
+
+    if (isNew) {
+      final localSource = ChemicalLocalDatasource();
+      final all = await localSource.getAllChemicals();
+      final nLower = name.toLowerCase();
+      final fLower = formula.toLowerCase();
+
+      ChemicalModel? dup;
+      for (final c in all) {
+        if (c.id <= 273) {
+          if (c.name.toLowerCase() == nLower || c.formula.toLowerCase() == fLower) {
+            dup = c;
+            break;
+          }
+        }
+      }
+
+      if (dup != null) {
+        setState(() {
+          _duplicateLibraryChemical = dup;
+        });
+        return;
+      }
+    }
+
     final chemical = CustomChemicalModel(
       id: widget.existingChemical?.id ?? now.millisecondsSinceEpoch.toString(),
       name: name,
@@ -157,6 +193,7 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
       createdAt: widget.existingChemical?.createdAt ?? now,
     );
 
+    if (!mounted) return;
     Navigator.of(context).pop(chemical);
   }
 
@@ -326,6 +363,61 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
                               style: AppTextStyles.bodySmall.copyWith(
                                 color: Colors.red.shade800,
                                 fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                  // Duplicate Error Display
+                  if (_duplicateLibraryChemical != null)
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade50,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.orange.shade300),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.warning_amber_rounded, size: 20, color: Colors.orange.shade800),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  'This chemical is already available in the app library!',
+                                  style: AppTextStyles.bodyMedium.copyWith(
+                                    color: Colors.orange.shade900,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close dialog
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => ChemicalDetailScreen(chemical: _duplicateLibraryChemical!),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.science, size: 16),
+                              label: Text('View ${_duplicateLibraryChemical!.name}'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange.shade600,
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                               ),
                             ),
                           ),
