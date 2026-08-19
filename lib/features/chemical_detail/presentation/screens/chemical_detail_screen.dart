@@ -44,11 +44,6 @@ class _ChemicalDetailScreenState extends State<ChemicalDetailScreen> {
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
         actions: [
-          if (_isPinned)
-            const Padding(
-              padding: EdgeInsets.only(right: 8.0),
-              child: Icon(Icons.push_pin, color: AppColors.primary),
-            ),
           if (widget.chemical.id > 273)
             IconButton(
               icon: const Icon(Icons.delete_outline, color: Colors.red),
@@ -144,11 +139,18 @@ class _ChemicalDetailScreenState extends State<ChemicalDetailScreen> {
             const SizedBox(height: AppSpacing.xl),
             
             // Details Section
-            Text(
-              'Properties',
-              style: AppTextStyles.h2.copyWith(
-                color: AppColors.textPrimary,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Properties',
+                  style: AppTextStyles.h2.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                if (_isPinned)
+                  const Icon(Icons.push_pin, color: AppColors.primary),
+              ],
             ),
             const SizedBox(height: AppSpacing.md),
             

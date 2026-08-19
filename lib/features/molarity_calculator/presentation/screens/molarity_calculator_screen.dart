@@ -175,7 +175,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
     
     if (!mounted) return;
     if (!context.mounted) return;
-    String searchQuery = '';
+    final searchQueryNotifier = ValueNotifier<String>('');
     // 0 = Menu, 1 = Library Pinned, 2 = My Chemicals Pinned
     int currentView = 0;
     
@@ -189,20 +189,8 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
         
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
-            final filteredCustom = customPinnedChemicals.where((c) {
-              if (searchQuery.isEmpty) return true;
-              final q = searchQuery.toLowerCase();
-              return c.name.toLowerCase().contains(q) || c.formula.toLowerCase().contains(q);
-            }).toList();
-            
-            final filteredLibrary = libraryPinnedChemicals.where((c) {
-              if (searchQuery.isEmpty) return true;
-              final q = searchQuery.toLowerCase();
-              return c.name.toLowerCase().contains(q) || c.formula.toLowerCase().contains(q);
-            }).toList();
-
             return Container(
-              height: MediaQuery.of(context).size.height * 0.85,
+              height: MediaQuery.of(context).size.height * 0.5,
               padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
               child: SafeArea(
                 child: Column(
@@ -228,7 +216,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                               onPressed: () {
                                 setModalState(() {
                                   currentView = 0;
-                                  searchQuery = '';
+                                  searchQueryNotifier.value = '';
                                 });
                               },
                               padding: EdgeInsets.zero,
@@ -299,91 +287,104 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                             ),
                           ),
                           onChanged: (val) {
-                            setModalState(() {
-                              searchQuery = val.trim();
-                            });
+                            searchQueryNotifier.value = val.trim();
                           },
                         ),
                       ),
                       const SizedBox(height: 8),
 
                       Expanded(
-                        child: () {
-                          final isLibraryEmpty = currentView == 1 && libraryPinnedChemicals.isEmpty;
-                          final isCustomEmpty = currentView == 2 && customPinnedChemicals.isEmpty;
+                        child: ValueListenableBuilder<String>(
+                          valueListenable: searchQueryNotifier,
+                          builder: (context, searchQuery, child) {
+                            final filteredCustom = customPinnedChemicals.where((c) {
+                              if (searchQuery.isEmpty) return true;
+                              final q = searchQuery.toLowerCase();
+                              return c.name.toLowerCase().contains(q) || c.formula.toLowerCase().contains(q);
+                            }).toList();
+                            
+                            final filteredLibrary = libraryPinnedChemicals.where((c) {
+                              if (searchQuery.isEmpty) return true;
+                              final q = searchQuery.toLowerCase();
+                              return c.name.toLowerCase().contains(q) || c.formula.toLowerCase().contains(q);
+                            }).toList();
 
-                          if (isLibraryEmpty || isCustomEmpty) {
-                            return Center(
-                              child: Text(
-                                'No pinned chemicals found in this section.',
-                                textAlign: TextAlign.center,
-                                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
-                              ),
-                            );
-                          } else if (currentView == 1 && filteredLibrary.isEmpty) {
-                            return Center(
-                              child: Text(
-                                'No matching chemicals found.',
-                                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
-                              ),
-                            );
-                          } else if (currentView == 2 && filteredCustom.isEmpty) {
-                            return Center(
-                              child: Text(
-                                'No matching chemicals found.',
-                                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
-                              ),
-                            );
-                          }
+                            final isLibraryEmpty = currentView == 1 && libraryPinnedChemicals.isEmpty;
+                            final isCustomEmpty = currentView == 2 && customPinnedChemicals.isEmpty;
 
-                          if (currentView == 1) {
-                            return ListView.builder(
-                              itemCount: filteredLibrary.length,
-                              itemBuilder: (context, index) {
-                                final chem = filteredLibrary[index];
-                                return ListTile(
-                                  leading: const Icon(Icons.push_pin, color: AppColors.primary),
-                                  title: Text(chem.name, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
-                                  subtitle: Text(chem.formula, style: AppTextStyles.mono.copyWith(fontSize: 12, color: AppColors.primaryDark)),
-                                  trailing: Text(chem.category, style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
-                                  onTap: () {
-                                    Navigator.pop(ctx);
-                                    _formulaController.text = chem.formula;
-                                    _selectedChemical = null;
-                                    setState(() {});
-                                    
-                                    if (_massController.text.isNotEmpty && _volController.text.isNotEmpty) {
-                                      _calculate();
-                                    }
-                                  },
-                                );
-                              },
-                            );
-                          } else {
-                            return ListView.builder(
-                              itemCount: filteredCustom.length,
-                              itemBuilder: (context, index) {
-                                final chem = filteredCustom[index];
-                                return ListTile(
-                                  leading: const Icon(Icons.push_pin, color: AppColors.primary),
-                                  title: Text(chem.name, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
-                                  subtitle: Text(chem.formula, style: AppTextStyles.mono.copyWith(fontSize: 12, color: AppColors.primaryDark)),
-                                  trailing: Text('Custom', style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
-                                  onTap: () {
-                                    Navigator.pop(ctx);
-                                    _formulaController.text = chem.formula;
-                                    _selectedChemical = null;
-                                    setState(() {});
-                                    
-                                    if (_massController.text.isNotEmpty && _volController.text.isNotEmpty) {
-                                      _calculate();
-                                    }
-                                  },
-                                );
-                              },
-                            );
-                          }
-                        }(),
+                            if (isLibraryEmpty || isCustomEmpty) {
+                              return Center(
+                                child: Text(
+                                  'No pinned chemicals found in this section.',
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                                ),
+                              );
+                            } else if (currentView == 1 && filteredLibrary.isEmpty) {
+                              return Center(
+                                child: Text(
+                                  'No matching chemicals found.',
+                                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                                ),
+                              );
+                            } else if (currentView == 2 && filteredCustom.isEmpty) {
+                              return Center(
+                                child: Text(
+                                  'No matching chemicals found.',
+                                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                                ),
+                              );
+                            }
+
+                            if (currentView == 1) {
+                              return ListView.builder(
+                                itemCount: filteredLibrary.length,
+                                itemBuilder: (context, index) {
+                                  final chem = filteredLibrary[index];
+                                  return ListTile(
+                                    leading: const Icon(Icons.push_pin, color: AppColors.primary),
+                                    title: Text(chem.name, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
+                                    subtitle: Text(chem.formula, style: AppTextStyles.mono.copyWith(fontSize: 12, color: AppColors.primaryDark)),
+                                    trailing: Text(chem.category, style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
+                                    onTap: () {
+                                      Navigator.pop(ctx);
+                                      _formulaController.text = chem.formula;
+                                      _selectedChemical = null;
+                                      setState(() {});
+                                      
+                                      if (_massController.text.isNotEmpty && _volController.text.isNotEmpty) {
+                                        _calculate();
+                                      }
+                                    },
+                                  );
+                                },
+                              );
+                            } else {
+                              return ListView.builder(
+                                itemCount: filteredCustom.length,
+                                itemBuilder: (context, index) {
+                                  final chem = filteredCustom[index];
+                                  return ListTile(
+                                    leading: const Icon(Icons.push_pin, color: AppColors.primary),
+                                    title: Text(chem.name, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
+                                    subtitle: Text(chem.formula, style: AppTextStyles.mono.copyWith(fontSize: 12, color: AppColors.primaryDark)),
+                                    trailing: Text('Custom', style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
+                                    onTap: () {
+                                      Navigator.pop(ctx);
+                                      _formulaController.text = chem.formula;
+                                      _selectedChemical = null;
+                                      setState(() {});
+                                      
+                                      if (_massController.text.isNotEmpty && _volController.text.isNotEmpty) {
+                                        _calculate();
+                                      }
+                                    },
+                                  );
+                                },
+                              );
+                            }
+                          },
+                        ),
                       ),
                     ],
                   ],
