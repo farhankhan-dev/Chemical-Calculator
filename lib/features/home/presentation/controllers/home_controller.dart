@@ -67,6 +67,10 @@ class HomeController extends ChangeNotifier {
   Future<void> onQueryChanged(String query) async {
     _query = query;
 
+    if (_selectedChemical != null && query != _selectedChemical!.name) {
+      _selectedChemical = null;
+    }
+
     if (query.trim().isEmpty) {
       _suggestions = [];
       notifyListeners();

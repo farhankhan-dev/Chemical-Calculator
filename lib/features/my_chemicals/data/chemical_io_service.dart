@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../../../core/services/preferences_service.dart';
 import '../models/custom_chemical_model.dart';
 
 /// Service for importing/exporting custom chemical notebook data as `.txt` files.
@@ -50,17 +51,30 @@ class ChemicalIOService {
 
       if (sanitizedName.isEmpty) return null;
 
+      final customFieldsList = await PreferencesService.getCustomFields();
+
       // Build file content
       final buffer = StringBuffer();
       buffer.writeln(_magicHeader);
-      buffer.writeln(_columnHeader);
+      
+      String header = _columnHeader;
+      for (final field in customFieldsList) {
+        header += '|$field';
+      }
+      buffer.writeln(header);
 
       for (final chem in chemicals) {
         // Escape any pipe characters in data to prevent format corruption
         final name = chem.name.replaceAll('|', '-');
         final formula = chem.formula.replaceAll('|', '-');
         final weight = chem.molecularWeight.toString();
-        buffer.writeln('$name|$formula|$weight');
+        
+        String row = '$name|$formula|$weight';
+        for (final field in customFieldsList) {
+          final val = (chem.customFields[field] ?? '').replaceAll('|', '-').replaceAll('\n', ' ');
+          row += '|$val';
+        }
+        buffer.writeln(row);
       }
 
       // Get Downloads directory
@@ -123,14 +137,14 @@ class ChemicalIOService {
       }
 
       final content = await file.readAsString();
-      return _parseContent(content);
+      return await _parseContent(content);
     } catch (e) {
       return _createResult(error: 'Failed to import: ${e.toString()}');
     }
   }
 
   /// Parses and validates the file content.
-  static ImportResult _parseContent(String content) {
+  static Future<ImportResult> _parseContent(String content) async {
     final lines = content
         .split('\n')
         .map((l) => l.trim())
@@ -149,7 +163,20 @@ class ChemicalIOService {
     }
 
     // Skip header and column header line
-    final dataStartIndex = (lines.length > 1 && lines[1] == _columnHeader) ? 2 : 1;
+    int dataStartIndex = 1;
+    List<String> customFieldNames = [];
+
+    if (lines.length > 1 && lines[1].startsWith('Chemical Name|Formula|Molecular Weight')) {
+      final headerParts = lines[1].split('|');
+      if (headerParts.length > 3) {
+        customFieldNames = headerParts.sublist(3);
+      }
+      dataStartIndex = 2;
+    }
+
+    if (customFieldNames.isNotEmpty) {
+      await PreferencesService.saveCustomFields(customFieldNames);
+    }
 
     if (dataStartIndex >= lines.length) {
       return _createResult(error: 'The file contains no chemical data.');
@@ -170,8 +197,8 @@ class ChemicalIOService {
     for (final line in dataLines) {
       final fields = line.split('|');
 
-      // Security: must have exactly 3 fields
-      if (fields.length != 3) {
+      // Security: must have at least 3 fields
+      if (fields.length < 3) {
         skipped++;
         continue;
       }
@@ -199,12 +226,21 @@ class ChemicalIOService {
         continue;
       }
 
+      final customFields = <String, String>{};
+      for (int i = 0; i < customFieldNames.length; i++) {
+        if (i + 3 < fields.length) {
+          final val = fields[i + 3].trim();
+          if (val.isNotEmpty) customFields[customFieldNames[i]] = val;
+        }
+      }
+
       chemicals.add(CustomChemicalModel(
         id: '${DateTime.now().microsecondsSinceEpoch}_${chemicals.length}',
         name: name,
         formula: formula,
         molecularWeight: weight,
         createdAt: DateTime.now(),
+        customFields: customFields,
       ));
     }
 

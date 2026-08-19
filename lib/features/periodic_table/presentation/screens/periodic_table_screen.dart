@@ -7,6 +7,7 @@ import '../widgets/category_legend.dart';
 import '../widgets/element_search_bar.dart';
 import '../widgets/periodic_table_grid.dart';
 import 'element_detail_screen.dart';
+import 'landscape_periodic_table_screen.dart';
 
 class PeriodicTableScreen extends StatefulWidget {
   const PeriodicTableScreen({super.key});
@@ -79,6 +80,19 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.screen_rotation, color: AppColors.primary),
+                    tooltip: 'Horizontal Mode',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LandscapePeriodicTableScreen(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
@@ -7,7 +8,9 @@ import '../../../../core/utils/formula_parser.dart';
 import '../../../../core/utils/formula_formatter.dart';
 import '../../../../data/models/chemical_model.dart';
 import '../../../../data/datasources/chemical_local_datasource.dart';
+import '../../../../core/services/preferences_service.dart';
 import '../../../chemical_detail/presentation/screens/chemical_detail_screen.dart';
+import '../../data/custom_chemical_repository.dart';
 import '../../models/custom_chemical_model.dart';
 
 /// Modal dialog / sheet for adding a new custom chemical or editing an existing one.
@@ -48,6 +51,10 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
   String? _validationError;
   ChemicalModel? _duplicateLibraryChemical;
   String _lastAutoFormula = '';
+  Timer? _debounce;
+
+  List<String> _customFieldNames = [];
+  final Map<String, TextEditingController> _customFieldControllers = {};
 
   bool get _isEditing => widget.existingChemical != null;
 
@@ -64,6 +71,94 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
       _lastAutoFormula = existing.formula;
       _isManualMwOverride = true;
     }
+    _loadCustomFields();
+  }
+
+  Future<void> _loadCustomFields() async {
+    final fields = await PreferencesService.getCustomFields();
+    if (!mounted) return;
+    
+    setState(() {
+      _customFieldNames = fields;
+      for (final field in fields) {
+        _customFieldControllers[field] = TextEditingController(
+          text: widget.existingChemical?.customFields[field] ?? '',
+        );
+      }
+    });
+  }
+
+  void _addNewCustomField() async {
+    final newField = await showDialog<String>(
+      context: context,
+      builder: (ctx) {
+        final controller = TextEditingController();
+        return AlertDialog(
+          title: const Text('Add Custom Field'),
+          content: TextField(
+            controller: controller,
+            decoration: const InputDecoration(
+              hintText: 'e.g. Purity, State, Color',
+            ),
+            textCapitalization: TextCapitalization.words,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(ctx).pop(controller.text.trim()),
+              child: const Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (newField != null && newField.isNotEmpty && !_customFieldNames.contains(newField)) {
+      await PreferencesService.saveCustomField(newField);
+      setState(() {
+        _customFieldNames.add(newField);
+        _customFieldControllers[newField] = TextEditingController();
+      });
+    }
+  }
+
+  void _deleteCustomField(String fieldName) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Delete Custom Field?'),
+        content: Text('Are you sure you want to delete the column "$fieldName" and all its data from all saved chemicals?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('No'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: const Text('Yes', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      // 1. Remove from preferences
+      await PreferencesService.deleteCustomField(fieldName);
+      // 2. Remove from all existing chemicals
+      await CustomChemicalRepository().removeCustomField(fieldName);
+      
+      // 3. Remove from current UI state
+      if (!mounted) return;
+      setState(() {
+        _customFieldNames.remove(fieldName);
+        _customFieldControllers[fieldName]?.dispose();
+        _customFieldControllers.remove(fieldName);
+      });
+    }
   }
 
   @override
@@ -71,10 +166,21 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
     _nameController.dispose();
     _formulaController.dispose();
     _mwController.dispose();
+    for (final controller in _customFieldControllers.values) {
+      controller.dispose();
+    }
+    _debounce?.cancel();
     super.dispose();
   }
 
   void _onFormulaChanged(String val) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 400), () {
+      _processFormulaChange(val);
+    });
+  }
+
+  void _processFormulaChange(String val) {
     final formula = val.trim();
     if (formula.isEmpty) {
       setState(() {
@@ -185,12 +291,21 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
       }
     }
 
+    final customFields = <String, String>{};
+    for (final entry in _customFieldControllers.entries) {
+      final val = entry.value.text.trim();
+      if (val.isNotEmpty) {
+        customFields[entry.key] = val;
+      }
+    }
+
     final chemical = CustomChemicalModel(
       id: widget.existingChemical?.id ?? now.millisecondsSinceEpoch.toString(),
       name: name,
       formula: formula,
       molecularWeight: mw,
       createdAt: widget.existingChemical?.createdAt ?? now,
+      customFields: customFields,
     );
 
     if (!mounted) return;
@@ -203,6 +318,8 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
       backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
       child: Container(
+        width: double.infinity,
+        constraints: const BoxConstraints(maxWidth: 400),
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(16),
@@ -217,13 +334,16 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(24.0),
             child: Form(
               key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+              child: AnimatedSize(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOutCubic,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   // Title
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -425,6 +545,70 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
                       ),
                     ),
 
+                  // Custom Fields
+                  if (_customFieldNames.isNotEmpty) ...[
+                    const Divider(),
+                    const SizedBox(height: AppSpacing.sm),
+                    Text('Custom Fields', style: AppTextStyles.h3.copyWith(fontSize: 16)),
+                    const SizedBox(height: AppSpacing.sm),
+                    ..._customFieldNames.map((field) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(field, style: AppTextStyles.label),
+                                InkWell(
+                                  onTap: () => _deleteCustomField(field),
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(4.0),
+                                    child: Icon(Icons.delete_outline, size: 18, color: Colors.red),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                            TextFormField(
+                              controller: _customFieldControllers[field],
+                              decoration: InputDecoration(
+                                hintText: 'Enter value',
+                                hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textTertiary),
+                                filled: true,
+                                fillColor: AppColors.background,
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(color: AppColors.border),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                  ],
+
+                  // Add Custom Field Button
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: _addNewCustomField,
+                      icon: const Icon(Icons.add, size: 18),
+                      label: const Text('Add Custom Field'),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        side: const BorderSide(color: AppColors.primary),
+                        foregroundColor: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
                   // Buttons
                   Row(
                     children: [
@@ -463,6 +647,7 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 }

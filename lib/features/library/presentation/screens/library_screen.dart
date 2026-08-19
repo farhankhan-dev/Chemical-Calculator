@@ -112,11 +112,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
     final index = _flattenedList.indexWhere((item) => item.isHeader && item.letter == letter);
     if (index != -1) {
       setState(() => _activeLetter = letter);
-      _scrollController.animateTo(
-        index * 84.0, // Exact mathematically perfect offset
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeOut,
-      );
+      // Use jumpTo instead of animateTo to prevent massive jank/lag during rapid drag gestures
+      _scrollController.jumpTo(index * 84.0);
     }
   }
 
