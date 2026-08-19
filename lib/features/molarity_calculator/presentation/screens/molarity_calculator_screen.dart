@@ -309,7 +309,6 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
 
                       Expanded(
                         child: () {
-                          final list = currentView == 1 ? filteredLibrary : filteredCustom;
                           final isLibraryEmpty = currentView == 1 && libraryPinnedChemicals.isEmpty;
                           final isCustomEmpty = currentView == 2 && customPinnedChemicals.isEmpty;
 
@@ -321,7 +320,14 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                                 style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
                               ),
                             );
-                          } else if (list.isEmpty) {
+                          } else if (currentView == 1 && filteredLibrary.isEmpty) {
+                            return Center(
+                              child: Text(
+                                'No matching chemicals found.',
+                                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                              ),
+                            );
+                          } else if (currentView == 2 && filteredCustom.isEmpty) {
                             return Center(
                               child: Text(
                                 'No matching chemicals found.',
@@ -330,28 +336,53 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                             );
                           }
 
-                          return ListView.builder(
-                            itemCount: list.length,
-                            itemBuilder: (context, index) {
-                              final chem = list[index];
-                              return ListTile(
-                                leading: const Icon(Icons.push_pin, color: AppColors.primary),
-                                title: Text(chem.name, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
-                                subtitle: Text(chem.formula, style: AppTextStyles.mono.copyWith(fontSize: 12, color: AppColors.primaryDark)),
-                                trailing: Text(chem.category, style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
-                                onTap: () {
-                                  Navigator.pop(ctx);
-                                  _formulaController.text = chem.formula;
-                                  _selectedChemical = null;
-                                  setState(() {});
-                                  
-                                  if (_massController.text.isNotEmpty && _volController.text.isNotEmpty) {
-                                    _calculate();
-                                  }
-                                },
-                              );
-                            },
-                          );
+                          if (currentView == 1) {
+                            return ListView.builder(
+                              itemCount: filteredLibrary.length,
+                              itemBuilder: (context, index) {
+                                final chem = filteredLibrary[index];
+                                return ListTile(
+                                  leading: const Icon(Icons.push_pin, color: AppColors.primary),
+                                  title: Text(chem.name, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
+                                  subtitle: Text(chem.formula, style: AppTextStyles.mono.copyWith(fontSize: 12, color: AppColors.primaryDark)),
+                                  trailing: Text(chem.category, style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
+                                  onTap: () {
+                                    Navigator.pop(ctx);
+                                    _formulaController.text = chem.formula;
+                                    _selectedChemical = null;
+                                    setState(() {});
+                                    
+                                    if (_massController.text.isNotEmpty && _volController.text.isNotEmpty) {
+                                      _calculate();
+                                    }
+                                  },
+                                );
+                              },
+                            );
+                          } else {
+                            return ListView.builder(
+                              itemCount: filteredCustom.length,
+                              itemBuilder: (context, index) {
+                                final chem = filteredCustom[index];
+                                return ListTile(
+                                  leading: const Icon(Icons.push_pin, color: AppColors.primary),
+                                  title: Text(chem.name, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
+                                  subtitle: Text(chem.formula, style: AppTextStyles.mono.copyWith(fontSize: 12, color: AppColors.primaryDark)),
+                                  trailing: Text('Custom', style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
+                                  onTap: () {
+                                    Navigator.pop(ctx);
+                                    _formulaController.text = chem.formula;
+                                    _selectedChemical = null;
+                                    setState(() {});
+                                    
+                                    if (_massController.text.isNotEmpty && _volController.text.isNotEmpty) {
+                                      _calculate();
+                                    }
+                                  },
+                                );
+                              },
+                            );
+                          }
                         }(),
                       ),
                     ],
