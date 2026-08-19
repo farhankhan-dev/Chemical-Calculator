@@ -175,6 +175,9 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
     
     if (!mounted) return;
     if (!context.mounted) return;
+    String searchQuery = '';
+    // 0 = Menu, 1 = Library Pinned, 2 = My Chemicals Pinned
+    int currentView = 0;
     
     showModalBottomSheet(
       context: context,
@@ -183,9 +186,6 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (ctx) {
-        String searchQuery = '';
-        // 0 = Menu, 1 = Library Pinned, 2 = My Chemicals Pinned
-        int currentView = 0;
         
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
