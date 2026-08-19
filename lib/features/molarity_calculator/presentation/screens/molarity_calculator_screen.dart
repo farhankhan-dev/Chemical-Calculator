@@ -5,6 +5,8 @@ import '../../../../app/theme/app_text_styles.dart';
 import '../../../../data/models/chemical_model.dart';
 import '../../../../core/widgets/chemical_selector.dart';
 import '../../../../core/utils/format_utils.dart';
+import '../../../../core/utils/formula_parser.dart';
+import '../../../my_chemicals/data/custom_chemical_repository.dart';
 
 class MolarityCalculatorScreen extends StatefulWidget {
   const MolarityCalculatorScreen({super.key});
@@ -15,7 +17,9 @@ class MolarityCalculatorScreen extends StatefulWidget {
 
 class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
   ChemicalModel? _selectedChemical;
+  final FormulaParser _formulaParser = FormulaParser();
   
+  final TextEditingController _formulaController = TextEditingController();
   final TextEditingController _massController = TextEditingController();
   final TextEditingController _volController = TextEditingController(); 
   final ScrollController _scrollController = ScrollController();
@@ -23,12 +27,25 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
   bool _isVolMl = true; // false = Liters
 
   double? _molarity;
+  double? _displayedMolarity;
+  String _displayedUnitLabel = 'mol/L';
   double? _normality;
+  
+  String _selectedOutputUnit = 'M (mol/L)';
+  final List<String> _outputUnits = [
+    'M (mol/L)',
+    'mM (mmol/L)',
+    'µM (µmol/L)',
+    'nM (nmol/L)',
+    'ppm (mg/L)',
+    'ppb (µg/L)'
+  ];
   String? _calculationString;
   String? _validationError;
 
   @override
   void dispose() {
+    _formulaController.dispose();
     _massController.dispose();
     _volController.dispose();
     _scrollController.dispose();
@@ -40,7 +57,30 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
       _validationError = null;
     });
 
-    if (_selectedChemical == null || _massController.text.isEmpty || _volController.text.isEmpty) {
+    final manualFormulaText = _formulaController.text.trim();
+    double? molarMass;
+    double? eqWeight;
+
+    if (manualFormulaText.isNotEmpty) {
+      final parseResult = _formulaParser.parse(manualFormulaText);
+      if (!parseResult.isValid) {
+        setState(() {
+          _validationError = parseResult.error ?? 'Please enter a valid chemical formula.';
+        });
+        return;
+      }
+      molarMass = parseResult.molarMass;
+    } else if (_selectedChemical != null) {
+      molarMass = _selectedChemical!.molecularWeight;
+      eqWeight = _selectedChemical!.equivalentWeight;
+    } else {
+      setState(() {
+        _validationError = 'Please fill all requirements';
+      });
+      return;
+    }
+
+    if (_massController.text.isEmpty || _volController.text.isEmpty) {
       setState(() {
         _validationError = 'Please fill all requirements';
       });
@@ -54,29 +94,64 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
     setState(() {
       final volLiters = _isVolMl ? vol / 1000 : vol;
       
-      final moles = mass / _selectedChemical!.molecularWeight;
+      final moles = mass / molarMass!;
       _molarity = moles / volLiters;
       
-      final eqWeight = _selectedChemical!.equivalentWeight;
       if (eqWeight != null) {
         final equivalents = mass / eqWeight;
         _normality = equivalents / volLiters;
         
-        _calculationString = 'Moles = ${FormatUtils.format(mass)} g / ${FormatUtils.format(_selectedChemical!.molecularWeight)} g/mol = ${FormatUtils.format(moles)}\n'
-            'Molarity = ${FormatUtils.format(moles)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_molarity!)} M\n\n'
-            'Eq = ${FormatUtils.format(mass)} g / ${FormatUtils.format(eqWeight)} g/eq = ${FormatUtils.format(equivalents)}\n'
-            'Normality = ${FormatUtils.format(equivalents)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_normality!)} N';
+        _calculationString = 'Moles = ${FormatUtils.format(mass)} g / ${FormatUtils.format(molarMass)} g/mol = ${FormatUtils.format(moles)}\n'
+            'Molarity = ${FormatUtils.format(moles)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_molarity!)} M\n';
       } else {
         _normality = null;
-        _calculationString = 'Moles = ${FormatUtils.format(mass)} g / ${FormatUtils.format(_selectedChemical!.molecularWeight)} g/mol = ${FormatUtils.format(moles)}\n'
-            'Molarity = ${FormatUtils.format(moles)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_molarity!)} M\n\n'
-            'Normality: N/A (Equivalent weight not available)';
+        _calculationString = 'Moles = ${FormatUtils.format(mass)} g / ${FormatUtils.format(molarMass)} g/mol = ${FormatUtils.format(moles)}\n'
+            'Molarity = ${FormatUtils.format(moles)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_molarity!)} M\n';
+      }
+      
+      switch (_selectedOutputUnit) {
+        case 'M (mol/L)':
+          _displayedMolarity = _molarity;
+          _displayedUnitLabel = 'mol/L';
+          break;
+        case 'mM (mmol/L)':
+          _displayedMolarity = _molarity! * 1000;
+          _displayedUnitLabel = 'mmol/L';
+          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × 1000 = ${_displayedMolarity!} mM\n';
+          break;
+        case 'µM (µmol/L)':
+          _displayedMolarity = _molarity! * 1000000;
+          _displayedUnitLabel = 'µmol/L';
+          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × 10⁶ = ${_displayedMolarity!} µM\n';
+          break;
+        case 'nM (nmol/L)':
+          _displayedMolarity = _molarity! * 1000000000;
+          _displayedUnitLabel = 'nmol/L';
+          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × 10⁹ = ${_displayedMolarity!} nM\n';
+          break;
+        case 'ppm (mg/L)':
+          _displayedMolarity = _molarity! * molarMass * 1000;
+          _displayedUnitLabel = 'mg/L (ppm)';
+          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × ${FormatUtils.format(molarMass)} g/mol × 1000 = ${_displayedMolarity!} ppm\n';
+          break;
+        case 'ppb (µg/L)':
+          _displayedMolarity = _molarity! * molarMass * 1000000;
+          _displayedUnitLabel = 'µg/L (ppb)';
+          _calculationString = '${_calculationString}Conversion: ${_molarity!} M × ${FormatUtils.format(molarMass)} g/mol × 10⁶ = ${_displayedMolarity!} ppb\n';
+          break;
+      }
+      
+      if (eqWeight != null) {
+        _calculationString = '$_calculationString\nEq = ${FormatUtils.format(mass)} g / ${FormatUtils.format(eqWeight)} g/eq = ${FormatUtils.format(mass/eqWeight)}\n'
+            'Normality = ${FormatUtils.format(mass/eqWeight)} / ${FormatUtils.format(volLiters)} L = ${FormatUtils.format(_normality!)} N';
+      } else {
+        _calculationString = '$_calculationString\nNormality: N/A (Equivalent weight not available)';
       }
     });
 
     FocusScope.of(context).unfocus();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted && _scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 300),
@@ -84,6 +159,139 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
         );
       }
     });
+  }
+
+  void _showPinnedChemicalsBottomSheet(BuildContext context) async {
+    final customRepo = CustomChemicalRepository();
+    final allCustom = await customRepo.getAll();
+    final pinnedChemicals = allCustom.where((c) => c.isPinned).toList();
+    
+    if (!mounted) return;
+    if (!context.mounted) return;
+    
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        String searchQuery = '';
+        
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            final filteredChemicals = pinnedChemicals.where((c) {
+              if (searchQuery.isEmpty) return true;
+              final q = searchQuery.toLowerCase();
+              return c.name.toLowerCase().contains(q) || c.formula.toLowerCase().contains(q);
+            }).toList();
+
+            return SafeArea(
+              child: Padding(
+                // Add padding for keyboard to avoid it covering the list
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 8),
+                    Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: AppColors.border,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Pinned Chemicals',
+                      style: AppTextStyles.h3.copyWith(color: AppColors.primaryDark),
+                    ),
+                    if (pinnedChemicals.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: 'Search pinned chemicals...',
+                            hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                            prefixIcon: const Icon(Icons.search, color: AppColors.primary),
+                            filled: true,
+                            fillColor: AppColors.background,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: AppColors.border),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: AppColors.border),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+                            ),
+                          ),
+                          onChanged: (val) {
+                            setModalState(() {
+                              searchQuery = val.trim();
+                            });
+                          },
+                        ),
+                      ),
+                    const SizedBox(height: 8),
+                    if (pinnedChemicals.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Text(
+                          'No pinned chemicals found.\n\nGo to "My Chemicals" to pin some!',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                        ),
+                      )
+                    else if (filteredChemicals.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Text(
+                          'No matching chemicals found.',
+                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                        ),
+                      )
+                    else
+                      Flexible(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: filteredChemicals.length,
+                          itemBuilder: (context, index) {
+                            final chem = filteredChemicals[index];
+                            return ListTile(
+                              leading: const Icon(Icons.push_pin, color: AppColors.primary),
+                              title: Text(chem.name, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
+                              subtitle: Text(chem.formula, style: AppTextStyles.mono.copyWith(fontSize: 12, color: AppColors.primaryDark)),
+                              trailing: Text(FormatUtils.format(chem.molecularWeight), style: AppTextStyles.bodySmall),
+                              onTap: () {
+                                Navigator.pop(ctx);
+                                _formulaController.text = chem.formula;
+                                // Clear the selected chemical so it uses the formula text instead
+                                _selectedChemical = null;
+                                setState(() {});
+                                
+                                // Auto calculate if mass and volume are provided
+                                if (_massController.text.isNotEmpty && _volController.text.isNotEmpty) {
+                                  _calculate();
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            );
+          }
+        );
+      },
+    );
   }
 
   void _showNormalityNoteDialog(BuildContext context) {
@@ -114,7 +322,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        'Normality Reference Notes',
+                        'Molarity Reference Notes',
                         style: AppTextStyles.label.copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w700,
@@ -450,7 +658,10 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
               onTap: () async {
                 final chem = await ChemicalSelector.show(context);
                 if (chem != null) {
-                  setState(() => _selectedChemical = chem);
+                  setState(() {
+                    _selectedChemical = chem;
+                    _formulaController.clear();
+                  });
                 }
               },
               child: Container(
@@ -488,6 +699,89 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                   ],
                 ),
               ),
+            ),
+            const SizedBox(height: 12),
+
+            Row(
+              children: [
+                const Expanded(child: Divider(color: AppColors.border)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    'OR',
+                    style: AppTextStyles.labelSmall.copyWith(
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                const Expanded(child: Divider(color: AppColors.border)),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Write Formula', style: AppTextStyles.label),
+                InkWell(
+                  onTap: () => _showPinnedChemicalsBottomSheet(context),
+                  borderRadius: BorderRadius.circular(20),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.push_pin_outlined, color: AppColors.primary, size: 16),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Pinned',
+                          style: AppTextStyles.labelSmall.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            TextField(
+              controller: _formulaController,
+              decoration: InputDecoration(
+                hintText: 'Enter chemical formula (e.g. H2O, NaCl)...',
+                hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                prefixIcon: const Icon(Icons.edit_note_outlined, color: AppColors.primary),
+                suffixIcon: _formulaController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear, color: AppColors.textSecondary, size: 20),
+                        onPressed: () {
+                          _formulaController.clear();
+                          setState(() {});
+                        },
+                      )
+                    : null,
+                filled: true,
+                fillColor: AppColors.surface,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.border),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.border),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+                ),
+              ),
+              onChanged: (val) {
+                setState(() {});
+              },
             ),
             const SizedBox(height: AppSpacing.lg),
 
@@ -552,6 +846,36 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                 ),
               ],
             ),
+            const SizedBox(height: AppSpacing.lg),
+
+            // Output Unit Selector
+            Text('Desired Concentration Unit', style: AppTextStyles.labelSmall),
+            const SizedBox(height: 8),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: _selectedOutputUnit,
+                  isExpanded: true,
+                  icon: const Icon(Icons.expand_more, color: AppColors.textSecondary),
+                  items: _outputUnits.map((u) => DropdownMenuItem(value: u, child: Text(u, style: AppTextStyles.bodyMedium))).toList(),
+                  onChanged: (val) {
+                    if (val != null) {
+                      setState(() {
+                        _selectedOutputUnit = val;
+                        if (_molarity != null) _calculate();
+                      });
+                    }
+                  },
+                ),
+              ),
+            ),
             const SizedBox(height: AppSpacing.xl),
 
             // Calculate Button
@@ -594,12 +918,12 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Molarity (M)',
+                      'Concentration',
                       style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primaryDark),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 12),
                     Text(
-                      '${FormatUtils.format(_molarity!)} mol/L',
+                      '${FormatUtils.format(_displayedMolarity!)} $_displayedUnitLabel',
                       style: AppTextStyles.h1.copyWith(color: AppColors.primary, fontSize: 32),
                     ),
                     if (_normality != null) ...[

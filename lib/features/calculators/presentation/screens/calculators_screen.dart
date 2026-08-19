@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
 
-import '../../../periodic_table/presentation/screens/periodic_table_screen.dart';
 import '../../../dilution_calculator/presentation/screens/dilution_calculator_screen.dart';
 import '../../../molarity_calculator/presentation/screens/molarity_calculator_screen.dart';
 import '../../../mass_calculator/presentation/screens/mass_calculator_screen.dart';
@@ -25,36 +25,44 @@ class CalculatorsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                'Calculators',
-                style: AppTextStyles.h1.copyWith(
-                  color: AppColors.primary,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Choose a calculator or tool to get started',
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textSecondary,
-                  fontSize: 14,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Calculators',
+                          style: AppTextStyles.h1.copyWith(
+                            color: AppColors.primary,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Choose a calculator or tool to get started',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.textSecondary,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.info_outline, color: AppColors.primary),
+                    tooltip: 'About & Legal',
+                    onPressed: () => _showLegalMenu(context),
+                  ),
+                ],
               ),
               const SizedBox(height: AppSpacing.lg),
               Expanded(
                 child: ListView(
                   children: [
-                    _buildCalculatorCard(
-                      context,
-                      title: 'Interactive Periodic Table',
-                      subtitle: 'Explore all 118 chemical elements in landscape mode.',
-                      icon: Icons.grid_on,
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const PeriodicTableScreen()));
-                      },
-                    ),
                     _buildCalculatorCard(
                       context,
                       title: 'Molarity Calculator',
@@ -212,6 +220,122 @@ class CalculatorsScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showLegalMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 8),
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppColors.border,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 12),
+              ListTile(
+                leading: const Icon(Icons.info_outline, color: AppColors.primary),
+                title: const Text('About Us'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _showDocumentDialog(context, 'About Us', 'assets/docs/about_us.txt');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.privacy_tip_outlined, color: AppColors.primary),
+                title: const Text('Privacy Policy'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _showDocumentDialog(context, 'Privacy Policy', 'assets/docs/privacy_policy.txt');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.description_outlined, color: AppColors.primary),
+                title: const Text('Terms and Conditions'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _showDocumentDialog(context, 'Terms and Conditions', 'assets/docs/terms_and_conditions.txt');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.gavel_outlined, color: AppColors.primary),
+                title: const Text('Terms of Use'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _showDocumentDialog(context, 'Terms of Use', 'assets/docs/terms_of_use.txt');
+                },
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _showDocumentDialog(BuildContext context, String title, String assetPath) async {
+    String content = '';
+    try {
+      content = await rootBundle.loadString(assetPath);
+    } catch (e) {
+      content = 'Error loading document: ${e.toString()}';
+    }
+
+    if (!context.mounted) return;
+
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return Dialog(
+          backgroundColor: AppColors.surface,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: AppTextStyles.h3.copyWith(color: AppColors.primary),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close, color: AppColors.textSecondary),
+                      onPressed: () => Navigator.of(ctx).pop(),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Text(
+                      content,
+                      style: AppTextStyles.bodyMedium,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

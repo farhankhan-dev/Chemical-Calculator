@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../models/element_model.dart';
+import '../../models/element_category.dart';
 import 'element_tile.dart';
 
-class PeriodicTableGrid extends StatelessWidget {
+class PeriodicTableGrid extends StatefulWidget {
   final Map<int, ElementModel> elementsMap;
   final Set<int> matchingAtomicNumbers;
   final bool hasActiveFilter;
   final ValueChanged<ElementModel> onElementSelected;
+  final ValueChanged<ElementCategory>? onCategorySelected;
+  final ElementCategory? selectedCategory;
 
   const PeriodicTableGrid({
     super.key,
@@ -16,47 +19,65 @@ class PeriodicTableGrid extends StatelessWidget {
     required this.matchingAtomicNumbers,
     required this.hasActiveFilter,
     required this.onElementSelected,
+    this.onCategorySelected,
+    this.selectedCategory,
   });
 
+  @override
+  State<PeriodicTableGrid> createState() => _PeriodicTableGridState();
+}
+
+class _PeriodicTableGridState extends State<PeriodicTableGrid> {
+  // Cached layout values, set during build
+  double _tileWidth = 44.0;
+  double _tileHeight = 52.0;
+
+  // ---------------------------------------------------------------------------
+  // Build
+  // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Standard table requires 18 columns.
-        // We compute tileSize based on available constraints or fallback minimum.
-        final availableWidth = constraints.maxWidth;
-        final computedTileWidth = (availableWidth - (17 * 3.0)) / 18;
-        final tileWidth = computedTileWidth.clamp(36.0, 56.0);
-        final tileHeight = tileWidth * 1.18;
+        // Set optimal readable tile dimensions for standard portrait/landscape screens
+        // 18 columns * 44px + gaps = ~843px width
+        _tileWidth = 44.0;
+        _tileHeight = 52.0;
 
-        return SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Top Group Numbers (1 to 18)
-                  _buildGroupHeaders(tileWidth),
-                  const SizedBox(height: 3),
+        final Widget gridContent = Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Top Group Numbers (1 to 18)
+              _buildGroupHeaders(_tileWidth),
+              const SizedBox(height: 3),
 
-                  // Main Periodic Table Grid (18 columns x 7 periods)
-                  _buildMainGrid(tileWidth, tileHeight),
+              // Main Periodic Table Grid (18 columns × 7 periods)
+              _buildMainGrid(context, _tileWidth, _tileHeight),
 
-                  const SizedBox(height: 10),
+              const SizedBox(height: 10),
 
-                  // Separator and Lanthanides / Actinides section
-                  _buildFBlockGrid(tileWidth, tileHeight),
-                ],
-              ),
-            ),
+              // f-block: Lanthanides / Actinides
+              _buildFBlockGrid(_tileWidth, _tileHeight),
+            ],
           ),
+        );
+
+        return InteractiveViewer(
+          minScale: 0.01,
+          maxScale: 4.0,
+          constrained: false,
+          boundaryMargin: const EdgeInsets.all(32.0),
+          child: RepaintBoundary(child: gridContent),
         );
       },
     );
   }
+
+  // ---------------------------------------------------------------------------
+  // Sub-builders (unchanged logic, just use widget.xxx instead of xxx)
+  // ---------------------------------------------------------------------------
 
   Widget _buildGroupHeaders(double tileWidth) {
     return Row(
@@ -79,7 +100,8 @@ class PeriodicTableGrid extends StatelessWidget {
     );
   }
 
-  Widget _buildMainGrid(double tileWidth, double tileHeight) {
+  Widget _buildMainGrid(
+      BuildContext context, double tileWidth, double tileHeight) {
     return Column(
       children: List.generate(7, (pIndex) {
         final period = pIndex + 1;
@@ -91,27 +113,40 @@ class PeriodicTableGrid extends StatelessWidget {
               final atomicNum = _getAtomicNumberForMainGrid(period, group);
 
               if (atomicNum == null) {
-                // Empty cell in the periodic grid
-                return SizedBox(
+                return Container(
                   width: tileWidth,
                   height: tileHeight,
-                  child: Container(margin: const EdgeInsets.only(right: 3)),
+                  margin: EdgeInsets.only(right: gIndex == 17 ? 0 : 3),
                 );
               }
 
               if (atomicNum == -57) {
-                // Placeholder cell for Lanthanides (57-71)
                 return _buildSeriesPlaceholder(
-                  tileWidth, tileHeight, '57-71', 'Lanthanides', AppColors.primarySurface);
+                  context,
+                  tileWidth,
+                  tileHeight,
+                  '57-71',
+                  'Lanthanides',
+                  ElementCategory.lanthanide,
+                  () => widget.onCategorySelected
+                      ?.call(ElementCategory.lanthanide),
+                );
               }
 
               if (atomicNum == -89) {
-                // Placeholder cell for Actinides (89-103)
                 return _buildSeriesPlaceholder(
-                  tileWidth, tileHeight, '89-103', 'Actinides', AppColors.primarySurface);
+                  context,
+                  tileWidth,
+                  tileHeight,
+                  '89-103',
+                  'Actinides',
+                  ElementCategory.actinide,
+                  () =>
+                      widget.onCategorySelected?.call(ElementCategory.actinide),
+                );
               }
 
-              final element = elementsMap[atomicNum];
+              final element = widget.elementsMap[atomicNum];
               if (element == null) {
                 return SizedBox(width: tileWidth, height: tileHeight);
               }
@@ -122,9 +157,10 @@ class PeriodicTableGrid extends StatelessWidget {
                 margin: EdgeInsets.only(right: gIndex == 17 ? 0 : 3),
                 child: ElementTile(
                   element: element,
-                  isHighlighted: matchingAtomicNumbers.contains(atomicNum),
-                  hasActiveFilter: hasActiveFilter,
-                  onTap: () => onElementSelected(element),
+                  isHighlighted:
+                      widget.matchingAtomicNumbers.contains(atomicNum),
+                  hasActiveFilter: widget.hasActiveFilter,
+                  onTap: () => widget.onElementSelected(element),
                 ),
               );
             }),
@@ -135,16 +171,14 @@ class PeriodicTableGrid extends StatelessWidget {
   }
 
   Widget _buildFBlockGrid(double tileWidth, double tileHeight) {
-    // Lanthanides (57-71) and Actinides (89-103)
     final lanthanideNums = List.generate(15, (i) => 57 + i);
     final actinideNums = List.generate(15, (i) => 89 + i);
-
-    final leftOffsetWidth = tileWidth * 2 + 6; // Offset by 2 columns to align under Group 3
+    final leftOffsetWidth = tileWidth * 2 + 6;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Lanthanides Row
+        // Lanthanides row
         Row(
           children: [
             SizedBox(
@@ -155,7 +189,7 @@ class PeriodicTableGrid extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 6.0),
                   child: Text(
                     'Lanthanides (57-71)',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 8.5,
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
@@ -164,19 +198,20 @@ class PeriodicTableGrid extends StatelessWidget {
                 ),
               ),
             ),
-            ...lanthanideNums.map((num) {
-              final element = elementsMap[num];
-              if (element == null) return SizedBox(width: tileWidth, height: tileHeight);
-
+            ...lanthanideNums.map((atomicN) {
+              final element = widget.elementsMap[atomicN];
+              if (element == null) {
+                return SizedBox(width: tileWidth, height: tileHeight);
+              }
               return Container(
                 width: tileWidth,
                 height: tileHeight,
                 margin: const EdgeInsets.only(right: 3),
                 child: ElementTile(
                   element: element,
-                  isHighlighted: matchingAtomicNumbers.contains(num),
-                  hasActiveFilter: hasActiveFilter,
-                  onTap: () => onElementSelected(element),
+                  isHighlighted: widget.matchingAtomicNumbers.contains(atomicN),
+                  hasActiveFilter: widget.hasActiveFilter,
+                  onTap: () => widget.onElementSelected(element),
                 ),
               );
             }),
@@ -185,7 +220,7 @@ class PeriodicTableGrid extends StatelessWidget {
 
         const SizedBox(height: 3),
 
-        // Actinides Row
+        // Actinides row
         Row(
           children: [
             SizedBox(
@@ -196,7 +231,7 @@ class PeriodicTableGrid extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 6.0),
                   child: Text(
                     'Actinides (89-103)',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 8.5,
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
@@ -205,19 +240,20 @@ class PeriodicTableGrid extends StatelessWidget {
                 ),
               ),
             ),
-            ...actinideNums.map((num) {
-              final element = elementsMap[num];
-              if (element == null) return SizedBox(width: tileWidth, height: tileHeight);
-
+            ...actinideNums.map((atomicN) {
+              final element = widget.elementsMap[atomicN];
+              if (element == null) {
+                return SizedBox(width: tileWidth, height: tileHeight);
+              }
               return Container(
                 width: tileWidth,
                 height: tileHeight,
                 margin: const EdgeInsets.only(right: 3),
                 child: ElementTile(
                   element: element,
-                  isHighlighted: matchingAtomicNumbers.contains(num),
-                  hasActiveFilter: hasActiveFilter,
-                  onTap: () => onElementSelected(element),
+                  isHighlighted: widget.matchingAtomicNumbers.contains(atomicN),
+                  hasActiveFilter: widget.hasActiveFilter,
+                  onTap: () => widget.onElementSelected(element),
                 ),
               );
             }),
@@ -228,93 +264,88 @@ class PeriodicTableGrid extends StatelessWidget {
   }
 
   Widget _buildSeriesPlaceholder(
-    double width, double height, String range, String title, Color bg) {
-    return Container(
-      width: width,
-      height: height,
-      margin: const EdgeInsets.only(right: 3),
-      decoration: BoxDecoration(
-        color: bg,
+    BuildContext context,
+    double width,
+    double height,
+    String range,
+    String title,
+    ElementCategory category,
+    VoidCallback onTap,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 3),
+      child: Material(
+        color: category.bgTint,
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.4), width: 1),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            range,
-            style: const TextStyle(
-              fontSize: 7.5,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              border: Border.all(color: category.borderColor, width: 1),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  range,
+                  style: TextStyle(
+                    fontSize: 7.5,
+                    fontWeight: FontWeight.bold,
+                    color: category.color,
+                  ),
+                ),
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 6, color: category.color),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 6,
-              color: AppColors.textSecondary,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  /// Map (Period, Group) to Atomic Number for standard 18-column grid
+  /// Maps (period, group) → atomic number for the standard 18-column grid.
   int? _getAtomicNumberForMainGrid(int period, int group) {
-    // Period 1
     if (period == 1) {
-      if (group == 1) return 1; // H
+      if (group == 1) return 1;  // H
       if (group == 18) return 2; // He
       return null;
     }
-
-    // Period 2
     if (period == 2) {
-      if (group == 1) return 3; // Li
-      if (group == 2) return 4; // Be
-      if (group >= 13 && group <= 18) return 5 + (group - 13); // B (5) to Ne (10)
+      if (group == 1) return 3;
+      if (group == 2) return 4;
+      if (group >= 13 && group <= 18) return 5 + (group - 13);
       return null;
     }
-
-    // Period 3
     if (period == 3) {
-      if (group == 1) return 11; // Na
-      if (group == 2) return 12; // Mg
-      if (group >= 13 && group <= 18) return 13 + (group - 13); // Al (13) to Ar (18)
+      if (group == 1) return 11;
+      if (group == 2) return 12;
+      if (group >= 13 && group <= 18) return 13 + (group - 13);
       return null;
     }
-
-    // Period 4
-    if (period == 4) {
-      return 19 + (group - 1); // K (19) to Kr (36)
-    }
-
-    // Period 5
-    if (period == 5) {
-      return 37 + (group - 1); // Rb (37) to Xe (54)
-    }
-
-    // Period 6
+    if (period == 4) return 19 + (group - 1); // K–Kr
+    if (period == 5) return 37 + (group - 1); // Rb–Xe
     if (period == 6) {
-      if (group == 1) return 55; // Cs
-      if (group == 2) return 56; // Ba
-      if (group == 3) return -57; // Lanthanides Placeholder
-      if (group >= 4 && group <= 18) return 72 + (group - 4); // Hf (72) to Rn (86)
+      if (group == 1) return 55;
+      if (group == 2) return 56;
+      if (group == 3) return -57; // lanthanide placeholder
+      if (group >= 4 && group <= 18) return 72 + (group - 4); // Hf–Rn
       return null;
     }
-
-    // Period 7
     if (period == 7) {
-      if (group == 1) return 87; // Fr
-      if (group == 2) return 88; // Ra
-      if (group == 3) return -89; // Actinides Placeholder
-      if (group >= 4 && group <= 18) return 104 + (group - 4); // Rf (104) to Og (118)
+      if (group == 1) return 87;
+      if (group == 2) return 88;
+      if (group == 3) return -89; // actinide placeholder
+      if (group >= 4 && group <= 18) return 104 + (group - 4); // Rf–Og
       return null;
     }
-
     return null;
   }
 }

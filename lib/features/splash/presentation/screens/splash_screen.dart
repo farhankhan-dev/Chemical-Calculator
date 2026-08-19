@@ -1,3 +1,4 @@
+// cspell:ignore Chemicalc Devriz
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
@@ -111,32 +112,24 @@ class _SplashScreenState extends State<SplashScreen>
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(28),
                       child: Image.asset(
-                        'assets/icons/logo.png',
-                        fit: BoxFit.cover,
+                        'assets/icons/logo 2.png',
                       ),
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
-                // "ChemiCalc" text with fade animation
                 Opacity(
                   opacity: _textFade.value,
                   child: Text(
-                    'ChemiCalc',
-                    style: AppTextStyles.splashTitle.copyWith(
-                      color: AppColors.primary,
-                    ),
+                    'Chemicalc',
+                    style: AppTextStyles.splashTitle,
                   ),
                 ),
-
                 const SizedBox(height: 8),
-
                 Opacity(
                   opacity: _textFade.value,
                   child: Text(
-                    'Chemical Formulas in One Place',
+                    'Chemical Calculators in One Place',
                     style: AppTextStyles.splashSubtitle.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -145,13 +138,13 @@ class _SplashScreenState extends State<SplashScreen>
 
                 const Spacer(flex: 3),
 
-                // "Powered by Devriz" at bottom
+
                 Opacity(
                   opacity: _poweredFade.value,
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 48),
                     child: Text(
-                      'Powered by Devriz',
+                      '',
                       style: AppTextStyles.splashSubtitle.copyWith(
                         color: AppColors.textTertiary,
                         fontSize: 13,

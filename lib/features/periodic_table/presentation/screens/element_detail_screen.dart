@@ -2,30 +2,24 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
-import 'package:flutter/services.dart';
+
 import '../../models/element_model.dart';
 class ElementDetailScreen extends StatelessWidget {
   final ElementModel element;
 
   const ElementDetailScreen({super.key, required this.element});
 
-  static Future<void> show(BuildContext context, ElementModel element) async {
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+  static Future<void> show(BuildContext context, ElementModel element, {bool isLandscape = false}) async {
+    if (!context.mounted) return;
 
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      useSafeArea: true,
+      constraints: const BoxConstraints(maxWidth: 600),
       builder: (_) => ElementDetailScreen(element: element),
     );
-
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
   }
 
   @override
@@ -378,6 +372,7 @@ class ElementDetailScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   item.label,
@@ -385,11 +380,15 @@ class ElementDetailScreen extends StatelessWidget {
                     color: AppColors.textSecondary,
                   ),
                 ),
-                Text(
-                  item.value,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    item.value,
+                    textAlign: TextAlign.right,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                 ),
               ],
