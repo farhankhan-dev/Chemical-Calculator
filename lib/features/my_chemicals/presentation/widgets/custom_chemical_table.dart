@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/utils/format_utils.dart';
+import '../../../../core/services/preferences_service.dart';
 import '../../models/custom_chemical_model.dart';
 
 /// Table widget displaying user's custom chemicals with 3 main columns:
@@ -14,6 +15,7 @@ class CustomChemicalTable extends StatefulWidget {
   final ValueChanged<CustomChemicalModel> onDelete;
   final void Function(Set<String> ids) onDeleteMultiple;
   final void Function(Set<String> ids, bool pinned) onTogglePin;
+  final ValueChanged<CustomChemicalModel>? onRowTap;
 
   const CustomChemicalTable({
     super.key,
@@ -22,6 +24,7 @@ class CustomChemicalTable extends StatefulWidget {
     required this.onDelete,
     required this.onDeleteMultiple,
     required this.onTogglePin,
+    this.onRowTap,
   });
 
   @override
@@ -31,6 +34,18 @@ class CustomChemicalTable extends StatefulWidget {
 class _CustomChemicalTableState extends State<CustomChemicalTable> {
   bool _selectionMode = false;
   final Set<String> _selectedIds = {};
+  List<String> _customFields = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCustomFields();
+  }
+
+  Future<void> _loadCustomFields() async {
+    final fields = await PreferencesService.getCustomFields();
+    if (mounted) setState(() => _customFields = fields);
+  }
 
   void _enterSelectionMode(String id) {
     setState(() {
@@ -200,9 +215,27 @@ class _CustomChemicalTableState extends State<CustomChemicalTable> {
 
         // Table
         Expanded(
-          child: ListView(
-            padding: const EdgeInsets.only(bottom: 88, left: 16, right: 16, top: 16),
-            children: [
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final minWidth = constraints.maxWidth - 32; // minus horizontal padding
+              final customFieldsWidth = _customFields.length * 100.0;
+              final tableWidth = (minWidth + customFieldsWidth) < minWidth ? minWidth : (minWidth + customFieldsWidth);
+              
+              final minScale = (minWidth / tableWidth).clamp(0.1, 1.0);
+
+              return InteractiveViewer(
+                panEnabled: false, // Let SingleChildScrollView handle panning
+                scaleEnabled: true,
+                minScale: minScale,
+                maxScale: 1.0, // Zoom in only up to original size
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: SizedBox(
+                    width: tableWidth,
+                    child: ListView(
+                      padding: const EdgeInsets.only(bottom: 88),
+                    children: [
               // Header Row
               Container(
                 decoration: const BoxDecoration(
@@ -239,6 +272,16 @@ class _CustomChemicalTableState extends State<CustomChemicalTable> {
                           child: Text('Mol Wt', textAlign: TextAlign.right, style: AppTextStyles.label.copyWith(color: AppColors.primaryDark, fontWeight: FontWeight.w700)),
                         ),
                       ),
+                      ..._customFields.map((field) => [
+                        const VerticalDivider(width: 1, thickness: 1, color: AppColors.border),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                            child: Text(field, style: AppTextStyles.label.copyWith(color: AppColors.primaryDark, fontWeight: FontWeight.w700)),
+                          ),
+                        ),
+                      ]).expand((e) => e),
                     ],
                   ),
                 ),
@@ -250,6 +293,8 @@ class _CustomChemicalTableState extends State<CustomChemicalTable> {
                   onTap: () {
                     if (_selectionMode) {
                       _toggleSelection(chem.id);
+                    } else {
+                      widget.onRowTap?.call(chem);
                     }
                   },
                   onLongPress: () {
@@ -355,6 +400,21 @@ class _CustomChemicalTableState extends State<CustomChemicalTable> {
                               ),
                             ),
                           ),
+                          ..._customFields.map((field) => [
+                            const VerticalDivider(width: 1, thickness: 1, color: AppColors.border),
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                                child: Text(
+                                  chem.customFields[field] ?? '-',
+                                  style: AppTextStyles.bodyMedium.copyWith(
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]).expand((e) => e),
                         ],
                       ),
                     ),
@@ -362,6 +422,11 @@ class _CustomChemicalTableState extends State<CustomChemicalTable> {
                 );
               }),
             ],
+          ),
+        ),
+                ),
+              );
+            },
           ),
         ),
       ],

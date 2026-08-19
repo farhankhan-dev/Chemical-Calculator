@@ -1,0 +1,18 @@
+Terms and Conditions
+
+1. Acceptance of Terms
+By downloading or using ChemiCalc, you agree to comply with these terms. If you disagree, do not use the application.
+
+2. Usage
+ChemiCalc is provided for educational and reference purposes only. You should always verify critical calculations independently.
+
+3. Offline Functionality
+ChemiCalc operates locally on your device. We do not store, process, or transmit your chemical data to any external servers.
+
+4. Intellectual Property
+The app, its design, and its logic are the property of the ChemiCalc team.
+
+5. Liability
+The ChemiCalc team is not liable for any direct, indirect, or consequential damages resulting from the use or inability to use the app.
+
+Last Updated: August 2026

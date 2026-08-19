@@ -1,0 +1,22 @@
+About Us - ChemiCalc
+
+Welcome to ChemiCalc!
+
+ChemiCalc was created with a simple yet powerful vision: to provide students, researchers, and chemistry enthusiasts with a fast, reliable, and entirely offline tool for their daily chemical calculations. 
+
+Our Mission
+We believe that essential utility tools shouldn't rely on an internet connection or compromise your privacy. That's why ChemiCalc is designed from the ground up to be an offline-first, privacy-focused application. Whether you are in a lab with no signal, in a classroom, or at home, ChemiCalc is always ready to work when you are.
+
+What We Offer
+- Instant Molecular Weight Calculations: Type in any valid chemical formula and get instant, accurate molecular weights.
+- Comprehensive Built-in Library: Access a complete periodic table dataset with detailed information on elements and common compounds.
+- Personal Chemical Notebook ("My Chemicals"): Add your own custom chemicals, define unique fields (like purity, state, or color), and manage your personal database.
+- Secure Import & Export: Easily backup your custom chemicals or share them across devices using our secure file export and import features.
+
+Privacy by Design
+Your data is exactly that—yours. ChemiCalc does not collect, store, or transmit your personal data or your custom chemical formulas to any external servers. Everything you create and save stays securely on your device.
+
+Thank you for choosing ChemiCalc as your trusted chemistry companion. We are constantly working to improve and expand our features to better serve your needs.
+
+Happy Calculating!
+The ChemiCalc Team

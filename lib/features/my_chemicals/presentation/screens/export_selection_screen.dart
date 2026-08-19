@@ -22,7 +22,6 @@ class ExportSelectionScreen extends StatefulWidget {
 }
 
 class _ExportSelectionScreenState extends State<ExportSelectionScreen> {
-  late final TextEditingController _fileNameController;
   final Set<String> _selectedIds = {};
   bool _isExporting = false;
 
@@ -37,15 +36,7 @@ class _ExportSelectionScreenState extends State<ExportSelectionScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    final timestamp = _formatTimestamp(DateTime.now());
-    _fileNameController = TextEditingController(text: 'ChemiCalc_Notebook_$timestamp');
-  }
-
-  @override
   void dispose() {
-    _fileNameController.dispose();
     super.dispose();
   }
 
@@ -74,11 +65,37 @@ class _ExportSelectionScreenState extends State<ExportSelectionScreen> {
   Future<void> _doExport() async {
     if (_selectedIds.isEmpty) return;
 
-    final fileName = _fileNameController.text.trim();
-    if (fileName.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a file name.')),
-      );
+    final timestamp = _formatTimestamp(DateTime.now());
+    final defaultName = 'ChemiCalc_Notebook_$timestamp';
+
+    final fileName = await showDialog<String>(
+      context: context,
+      builder: (ctx) {
+        final controller = TextEditingController(text: defaultName);
+        return AlertDialog(
+          title: const Text('Export File Name'),
+          content: TextField(
+            controller: controller,
+            decoration: const InputDecoration(
+              hintText: 'Enter file name',
+              suffixText: '.txt',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(ctx).pop(controller.text.trim()),
+              child: const Text('Export'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (fileName == null || fileName.isEmpty) {
       return;
     }
 
@@ -125,38 +142,6 @@ class _ExportSelectionScreenState extends State<ExportSelectionScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // File name field
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-              child: TextField(
-                controller: _fileNameController,
-                decoration: InputDecoration(
-                  labelText: 'File Name',
-                  labelStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
-                  suffixText: '.txt',
-                  suffixStyle: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textTertiary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  filled: true,
-                  fillColor: AppColors.surface,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.border),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.border),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
-                  ),
-                ),
-              ),
-            ),
-
             // Select All / Deselect All
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),

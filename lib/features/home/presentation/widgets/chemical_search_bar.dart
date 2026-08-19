@@ -49,6 +49,7 @@ class ChemicalSearchBar extends StatelessWidget {
         TextField(
           controller: controller,
           onChanged: onChanged,
+          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
           style: AppTextStyles.bodyLarge,
           decoration: InputDecoration(
             hintText: hintText,

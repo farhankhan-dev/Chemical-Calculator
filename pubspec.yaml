@@ -16,6 +16,7 @@ dependencies:
   google_fonts: ^6.2.1
   shared_preferences: ^2.5.5
   file_picker: ^8.0.0
+  path_provider: ^2.1.2
   image: 4.8.0
 
 dev_dependencies:
@@ -51,6 +52,10 @@ flutter:
     - assets/data/
     - assets/icons/
     - assets/images/
+    - assets/docs/about_us.txt
+    - assets/docs/privacy_policy.txt
+    - assets/docs/terms_and_conditions.txt
+    - assets/docs/terms_of_use.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

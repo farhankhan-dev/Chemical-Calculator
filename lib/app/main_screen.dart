@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/calculators/presentation/screens/calculators_screen.dart';
 import '../features/library/presentation/screens/library_screen.dart';
@@ -33,8 +34,42 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
     
-    return Scaffold(
-      body: IndexedStack(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+
+        if (_currentIndex != 0) {
+          setState(() {
+            _currentIndex = 0;
+          });
+        } else {
+          final shouldExit = await showDialog<bool>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: const Text('Exit App'),
+              content: const Text('Are you sure you want to exit?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(ctx).pop(false),
+                  child: Text('No', style: TextStyle(color: AppColors.textSecondary)),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(ctx).pop(true),
+                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
+                  child: const Text('Yes', style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
+          );
+
+          if (shouldExit == true) {
+            SystemNavigator.pop();
+          }
+        }
+      },
+      child: Scaffold(
+        body: IndexedStack(
         index: _currentIndex,
         children: _screens,
       ),
@@ -75,7 +110,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
       ),
+    ),
     );
   }
 }
-

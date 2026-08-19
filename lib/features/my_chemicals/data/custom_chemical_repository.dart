@@ -64,6 +64,23 @@ class CustomChemicalRepository {
     await _persist(list);
   }
 
+  /// Removes a specific custom field from all stored chemicals.
+  Future<void> removeCustomField(String fieldName) async {
+    final list = await getAll();
+    bool changed = false;
+    for (int i = 0; i < list.length; i++) {
+      if (list[i].customFields.containsKey(fieldName)) {
+        final newFields = Map<String, String>.from(list[i].customFields);
+        newFields.remove(fieldName);
+        list[i] = list[i].copyWith(customFields: newFields);
+        changed = true;
+      }
+    }
+    if (changed) {
+      await _persist(list);
+    }
+  }
+
   /// Toggles pin state for multiple chemicals.
   Future<void> togglePin(Set<String> ids, bool pinned) async {
     final list = await getAll();

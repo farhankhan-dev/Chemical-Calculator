@@ -62,6 +62,7 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
   }
 
   Future<void> _openAddDialog() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     final result = await AddEditChemicalDialog.show(context);
     if (result != null) {
       await _repository.save(result);
@@ -81,21 +82,97 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
   }
 
   Future<void> _deleteChemical(CustomChemicalModel chemical) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await _repository.delete(chemical.id);
     await _loadChemicals();
   }
 
   Future<void> _deleteMultiple(Set<String> ids) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await _repository.deleteMultiple(ids);
     await _loadChemicals();
   }
 
   Future<void> _togglePin(Set<String> ids, bool pinned) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await _repository.togglePin(ids, pinned);
     await _loadChemicals();
   }
 
+  void _showChemicalDetails(CustomChemicalModel chemical) {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.all(20),
+          child: Container(
+            width: double.infinity,
+            constraints: const BoxConstraints(maxWidth: 400),
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.primaryLight.withValues(alpha: 0.5)),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          chemical.name,
+                          style: AppTextStyles.h2.copyWith(color: AppColors.primary),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: AppColors.textSecondary),
+                        onPressed: () => Navigator.of(ctx).pop(),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                  const Divider(),
+                  const SizedBox(height: 12),
+                  _buildDetailRow('Formula', chemical.formula),
+                  _buildDetailRow('Molecular Weight', '${chemical.molecularWeight.toStringAsFixed(2)} g/mol'),
+                  if (chemical.customFields.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Text('Custom Fields', style: AppTextStyles.h3.copyWith(fontSize: 16)),
+                    const SizedBox(height: 8),
+                    ...chemical.customFields.entries.map((e) => _buildDetailRow(e.key, e.value)),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: AppTextStyles.label.copyWith(color: AppColors.textTertiary)),
+          const SizedBox(height: 4),
+          Text(value, style: AppTextStyles.bodyLarge),
+        ],
+      ),
+    );
+  }
+
   void _showImportExportSheet() {
+    FocusManager.instance.primaryFocus?.unfocus();
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -157,41 +234,70 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
       return;
     }
 
-    // Save imported chemicals, skipping duplicates
     final existingChemicals = await _repository.getAll();
-    final existingKeys = existingChemicals
-        .map((c) => '${c.name.toLowerCase()}|${c.formula.toLowerCase()}')
-        .toSet();
+    final existingMap = <String, CustomChemicalModel>{};
+    for (final c in existingChemicals) {
+      existingMap['${c.name.toLowerCase()}|${c.formula.toLowerCase()}'] = c;
+    }
 
     int imported = 0;
-    int duplicates = 0;
+    int updated = 0;
+    int duplicatesSkipped = 0;
 
-    for (final chem in result.chemicals) {
-      final key = '${chem.name.toLowerCase()}|${chem.formula.toLowerCase()}';
-      if (existingKeys.contains(key)) {
-        duplicates++;
+    for (final importedChem in result.chemicals) {
+      final key = '${importedChem.name.toLowerCase()}|${importedChem.formula.toLowerCase()}';
+      final existingChem = existingMap[key];
+
+      if (existingChem != null) {
+        // Merge custom fields
+        bool hasChanges = false;
+        final mergedFields = Map<String, String>.from(existingChem.customFields);
+
+        for (final entry in importedChem.customFields.entries) {
+          final importedKey = entry.key;
+          final importedVal = entry.value;
+
+          if (!mergedFields.containsKey(importedKey) || mergedFields[importedKey] != importedVal) {
+            mergedFields[importedKey] = importedVal;
+            hasChanges = true;
+          }
+        }
+
+        if (hasChanges) {
+          final updatedChem = existingChem.copyWith(customFields: mergedFields);
+          await _repository.save(updatedChem);
+          existingMap[key] = updatedChem; // Update map for subsequent checks if any
+          updated++;
+        } else {
+          duplicatesSkipped++;
+        }
       } else {
-        await _repository.save(chem);
-        existingKeys.add(key);
+        // Brand new chemical
+        await _repository.save(importedChem);
+        existingMap[key] = importedChem;
         imported++;
       }
     }
+    
     await _loadChemicals();
 
     if (!mounted) return;
 
     final parts = <String>[];
-    if (imported > 0) parts.add('Imported $imported chemical${imported == 1 ? '' : 's'}.');
-    if (duplicates > 0) parts.add('$duplicates duplicate${duplicates == 1 ? '' : 's'} skipped.');
+    if (imported > 0) parts.add('Imported $imported new chemical${imported == 1 ? '' : 's'}.');
+    if (updated > 0) parts.add('Updated $updated chemical${updated == 1 ? '' : 's'}.');
+    if (duplicatesSkipped > 0) parts.add('$duplicatesSkipped duplicate${duplicatesSkipped == 1 ? '' : 's'} skipped.');
     if (result.skippedRows > 0) parts.add('${result.skippedRows} invalid row${result.skippedRows == 1 ? '' : 's'} skipped.');
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(parts.join(' ')),
-        backgroundColor: imported > 0 ? AppColors.success : AppColors.warning,
-        duration: const Duration(seconds: 3),
-      ),
-    );
+    if (parts.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(parts.join(' ')),
+          backgroundColor: (imported > 0 || updated > 0) ? AppColors.success : AppColors.warning,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+    }
   }
 
   Future<void> _doExport() async {
@@ -282,6 +388,7 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
               TextField(
                 controller: _searchController,
                 onChanged: _onSearchChanged,
+                onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
                 decoration: InputDecoration(
                   hintText: 'Search chemicals...',
                   hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textTertiary),
@@ -323,6 +430,7 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
                             onDelete: _deleteChemical,
                             onDeleteMultiple: _deleteMultiple,
                             onTogglePin: _togglePin,
+                            onRowTap: _showChemicalDetails,
                           ),
               ),
             ],

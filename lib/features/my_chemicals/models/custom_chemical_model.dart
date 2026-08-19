@@ -6,6 +6,7 @@ class CustomChemicalModel {
   final double molecularWeight;
   final DateTime createdAt;
   final bool isPinned;
+  final Map<String, String> customFields;
 
   const CustomChemicalModel({
     required this.id,
@@ -14,6 +15,7 @@ class CustomChemicalModel {
     required this.molecularWeight,
     required this.createdAt,
     this.isPinned = false,
+    this.customFields = const {},
   });
 
   factory CustomChemicalModel.fromJson(Map<String, dynamic> json) {
@@ -24,6 +26,9 @@ class CustomChemicalModel {
       molecularWeight: (json['molecularWeight'] as num).toDouble(),
       createdAt: DateTime.parse(json['createdAt'] as String),
       isPinned: json['isPinned'] as bool? ?? false,
+      customFields: json['customFields'] != null
+          ? Map<String, String>.from(json['customFields'] as Map)
+          : {},
     );
   }
 
@@ -35,6 +40,7 @@ class CustomChemicalModel {
       'molecularWeight': molecularWeight,
       'createdAt': createdAt.toIso8601String(),
       'isPinned': isPinned,
+      'customFields': customFields,
     };
   }
 
@@ -45,6 +51,7 @@ class CustomChemicalModel {
     double? molecularWeight,
     DateTime? createdAt,
     bool? isPinned,
+    Map<String, String>? customFields,
   }) {
     return CustomChemicalModel(
       id: id ?? this.id,
@@ -53,6 +60,7 @@ class CustomChemicalModel {
       molecularWeight: molecularWeight ?? this.molecularWeight,
       createdAt: createdAt ?? this.createdAt,
       isPinned: isPinned ?? this.isPinned,
+      customFields: customFields ?? this.customFields,
     );
   }
 
