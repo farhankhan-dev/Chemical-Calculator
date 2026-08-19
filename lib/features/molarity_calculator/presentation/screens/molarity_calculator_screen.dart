@@ -189,11 +189,9 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
         
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
-            return Padding(
-              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.65,
-                child: SafeArea(
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.65,
+              child: SafeArea(
                 child: Column(
                   children: [
                     const SizedBox(height: 8),
@@ -339,6 +337,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
 
                             if (currentView == 1) {
                               return ListView.builder(
+                                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                                 itemCount: filteredLibrary.length,
                                 itemBuilder: (context, index) {
                                   final chem = filteredLibrary[index];
@@ -349,8 +348,8 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                                     trailing: Text(chem.category, style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
                                     onTap: () {
                                       Navigator.pop(ctx);
-                                      _formulaController.clear();
-                                      _selectedChemical = chem;
+                                      _formulaController.text = chem.formula;
+                                      _selectedChemical = null;
                                       setState(() {});
                                       
                                       if (_massController.text.isNotEmpty && _volController.text.isNotEmpty) {
@@ -362,6 +361,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                               );
                             } else {
                               return ListView.builder(
+                                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                                 itemCount: filteredCustom.length,
                                 itemBuilder: (context, index) {
                                   final chem = filteredCustom[index];
@@ -372,14 +372,8 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                                     trailing: Text('Custom', style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
                                     onTap: () {
                                       Navigator.pop(ctx);
-                                      _formulaController.clear();
-                                      _selectedChemical = ChemicalModel(
-                                        id: -1,
-                                        name: chem.name,
-                                        formula: chem.formula,
-                                        molecularWeight: chem.molecularWeight,
-                                        category: 'Custom',
-                                      );
+                                      _formulaController.text = chem.formula;
+                                      _selectedChemical = null;
                                       setState(() {});
                                       
                                       if (_massController.text.isNotEmpty && _volController.text.isNotEmpty) {
@@ -395,8 +389,8 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                       ),
                     ],
                   ],
+                  ],
                 ),
-              ),
               ),
             );
           }
