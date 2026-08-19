@@ -349,8 +349,8 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                                     trailing: Text(chem.category, style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
                                     onTap: () {
                                       Navigator.pop(ctx);
-                                      _formulaController.text = chem.formula;
-                                      _selectedChemical = null;
+                                      _formulaController.clear();
+                                      _selectedChemical = chem;
                                       setState(() {});
                                       
                                       if (_massController.text.isNotEmpty && _volController.text.isNotEmpty) {
@@ -372,8 +372,14 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                                     trailing: Text('Custom', style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
                                     onTap: () {
                                       Navigator.pop(ctx);
-                                      _formulaController.text = chem.formula;
-                                      _selectedChemical = null;
+                                      _formulaController.clear();
+                                      _selectedChemical = ChemicalModel(
+                                        id: -1,
+                                        name: chem.name,
+                                        formula: chem.formula,
+                                        molecularWeight: chem.molecularWeight,
+                                        category: 'Custom',
+                                      );
                                       setState(() {});
                                       
                                       if (_massController.text.isNotEmpty && _volController.text.isNotEmpty) {
