@@ -189,10 +189,11 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
         
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
-            return Container(
-              height: MediaQuery.of(context).size.height * 0.5,
+            return Padding(
               padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: SafeArea(
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.65,
+                child: SafeArea(
                 child: Column(
                   children: [
                     const SizedBox(height: 8),
