@@ -5,6 +5,8 @@ import '../../../../app/theme/app_text_styles.dart';
 import '../../../../data/datasources/chemical_local_datasource.dart';
 import '../../../../data/models/chemical_model.dart';
 import '../../../chemical_detail/presentation/screens/chemical_detail_screen.dart';
+import '../../data/library_pinned_repository.dart';
+import '../../../../core/utils/format_utils.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -23,6 +25,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
   List<ChemicalModel> _filteredChemicals = [];
   bool _isLoading = true;
   String? _activeLetter;
+  
+  final LibraryPinnedRepository _pinnedRepo = LibraryPinnedRepository();
+  Set<int> _pinnedIds = {};
 
 
   
@@ -32,8 +37,18 @@ class _LibraryScreenState extends State<LibraryScreen> {
   @override
   void initState() {
     super.initState();
+    _loadPinnedIds();
     _loadChemicals();
     _scrollController.addListener(_onScroll);
+  }
+
+  Future<void> _loadPinnedIds() async {
+    final ids = await _pinnedRepo.getPinnedIds();
+    if (mounted) {
+      setState(() {
+        _pinnedIds = ids;
+      });
+    }
   }
 
   void _onScroll() {
@@ -145,6 +160,196 @@ class _LibraryScreenState extends State<LibraryScreen> {
     super.dispose();
   }
 
+  void _showPinOptions(ChemicalModel chemical) {
+    final isPinned = _pinnedIds.contains(chemical.id);
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 8),
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppColors.border,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                chemical.name,
+                style: AppTextStyles.h3.copyWith(color: AppColors.primaryDark),
+              ),
+              const SizedBox(height: 16),
+              ListTile(
+                leading: Icon(
+                  isPinned ? Icons.push_pin : Icons.push_pin_outlined,
+                  color: AppColors.primary,
+                ),
+                title: Text(
+                  isPinned ? 'Unpin Chemical' : 'Pin Chemical',
+                  style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                ),
+                onTap: () async {
+                  Navigator.pop(ctx);
+                  await _pinnedRepo.togglePin(chemical.id, !isPinned);
+                  _loadPinnedIds();
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(isPinned ? '${chemical.name} unpinned' : '${chemical.name} pinned'),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showPinnedLibraryBottomSheet() {
+    final pinnedChemicals = _allChemicals.where((c) => _pinnedIds.contains(c.id)).toList();
+    
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        String searchQuery = '';
+        
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            final filteredChemicals = pinnedChemicals.where((c) {
+              if (searchQuery.isEmpty) return true;
+              final q = searchQuery.toLowerCase();
+              return c.name.toLowerCase().contains(q) || c.formula.toLowerCase().contains(q);
+            }).toList();
+
+            return SafeArea(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 8),
+                    Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: AppColors.border,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Library Pinned Chemicals',
+                      style: AppTextStyles.h3.copyWith(color: AppColors.primaryDark),
+                    ),
+                    if (pinnedChemicals.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: 'Search pinned...',
+                            hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                            prefixIcon: const Icon(Icons.search, color: AppColors.primary),
+                            filled: true,
+                            fillColor: AppColors.background,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: AppColors.border),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: AppColors.border),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+                            ),
+                          ),
+                          onChanged: (val) {
+                            setModalState(() {
+                              searchQuery = val.trim();
+                            });
+                          },
+                        ),
+                      ),
+                    const SizedBox(height: 8),
+                    if (pinnedChemicals.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Text(
+                          'No pinned chemicals found.\n\nLong press a chemical in the library to pin it!',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                        ),
+                      )
+                    else if (filteredChemicals.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Text(
+                          'No matching chemicals found.',
+                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                        ),
+                      )
+                    else
+                      Flexible(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: filteredChemicals.length,
+                          itemBuilder: (context, index) {
+                            final chem = filteredChemicals[index];
+                            return ListTile(
+                              leading: const Icon(Icons.science_outlined, color: AppColors.primary),
+                              title: Text(chem.name, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
+                              subtitle: Text(chem.formula, style: AppTextStyles.mono.copyWith(fontSize: 12, color: AppColors.primaryDark)),
+                              trailing: Text(FormatUtils.format(chem.molecularWeight), style: AppTextStyles.bodySmall),
+                              onTap: () async {
+                                Navigator.pop(ctx);
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ChemicalDetailScreen(chemical: chem),
+                                  ),
+                                );
+                                if (result == true && mounted) {
+                                  _loadChemicals();
+                                }
+                              },
+                              onLongPress: () {
+                                Navigator.pop(ctx);
+                                _showPinOptions(chem);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            );
+          }
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -182,6 +387,11 @@ class _LibraryScreenState extends State<LibraryScreen> {
                         ),
                       ],
                     ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.push_pin_outlined, color: AppColors.primary),
+                    onPressed: _showPinnedLibraryBottomSheet,
+                    tooltip: 'View Pinned Chemicals',
                   ),
                 ],
               ),
@@ -360,13 +570,24 @@ class _LibraryScreenState extends State<LibraryScreen> {
               child: const Icon(Icons.science_outlined,
                   color: AppColors.primary, size: 20),
             ),
-          title: Text(
-            chemical.name,
-            style: AppTextStyles.h3.copyWith(
-              color: AppColors.textPrimary,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
+          title: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  chemical.name,
+                  style: AppTextStyles.h3.copyWith(
+                    color: AppColors.textPrimary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              if (_pinnedIds.contains(chemical.id))
+                const Padding(
+                  padding: EdgeInsets.only(left: 4.0),
+                  child: Icon(Icons.push_pin, size: 14, color: AppColors.primary),
+                ),
+            ],
           ),
           subtitle: Text(
             chemical.formula,
@@ -376,6 +597,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
           ),
           trailing: const Icon(Icons.chevron_right,
               color: AppColors.textTertiary, size: 20),
+          onLongPress: () => _showPinOptions(chemical),
           onTap: () async {
             FocusManager.instance.primaryFocus?.unfocus();
             final result = await Navigator.push(
