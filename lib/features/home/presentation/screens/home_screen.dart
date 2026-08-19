@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                ' Chemical Formulas\n In One Place',
+                ' Chemical Calculators\n In One Place',
                 style: AppTextStyles.bodyMedium.copyWith(
                   fontSize: 14,
                   height: 1.4,
