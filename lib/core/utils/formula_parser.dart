@@ -37,7 +37,19 @@ class FormulaParser {
 
   /// Parses a chemical formula string and returns a [FormulaParseResult].
   FormulaParseResult parse(String rawFormula) {
-    final formula = FormulaFormatter.format(rawFormula.trim());
+    // Normalize Unicode subscript digits (₀₁₂₃₄₅₆₇₈₉) to regular digits
+    final normalized = rawFormula.trim()
+        .replaceAll('₀', '0')
+        .replaceAll('₁', '1')
+        .replaceAll('₂', '2')
+        .replaceAll('₃', '3')
+        .replaceAll('₄', '4')
+        .replaceAll('₅', '5')
+        .replaceAll('₆', '6')
+        .replaceAll('₇', '7')
+        .replaceAll('₈', '8')
+        .replaceAll('₉', '9');
+    final formula = FormulaFormatter.format(normalized);
     if (formula.isEmpty) {
       return const FormulaParseResult.failure('Please enter a chemical formula.');
     }
