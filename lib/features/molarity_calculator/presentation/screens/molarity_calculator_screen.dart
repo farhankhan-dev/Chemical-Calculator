@@ -191,7 +191,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
           builder: (BuildContext context, StateSetter setModalState) {
             return Padding(
               padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.65,
                 child: SafeArea(
                 child: Column(
@@ -390,6 +390,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                     ],
                   ],
                 ),
+              ),
               ),
             );
           }
