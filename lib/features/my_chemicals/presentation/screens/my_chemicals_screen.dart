@@ -66,8 +66,9 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
     final result = await AddEditChemicalDialog.show(context);
     if (result != null) {
       await _repository.save(result);
-      await _loadChemicals();
     }
+    // Always load chemicals because custom fields might have been added/deleted
+    await _loadChemicals();
   }
 
   Future<void> _openEditDialog(CustomChemicalModel chemical) async {
@@ -77,8 +78,9 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
     );
     if (result != null) {
       await _repository.save(result);
-      await _loadChemicals();
     }
+    // Always load chemicals because custom fields might have been added/deleted
+    await _loadChemicals();
   }
 
   Future<void> _deleteChemical(CustomChemicalModel chemical) async {

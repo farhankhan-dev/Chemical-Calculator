@@ -42,6 +42,14 @@ class _CustomChemicalTableState extends State<CustomChemicalTable> {
     _loadCustomFields();
   }
 
+  @override
+  void didUpdateWidget(covariant CustomChemicalTable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Reload custom fields whenever the parent rebuilds this widget, 
+    // ensuring deleted or added columns are immediately reflected.
+    _loadCustomFields();
+  }
+
   Future<void> _loadCustomFields() async {
     final fields = await PreferencesService.getCustomFields();
     if (mounted) setState(() => _customFields = fields);
