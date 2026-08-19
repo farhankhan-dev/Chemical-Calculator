@@ -389,7 +389,6 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                       ),
                     ],
                   ],
-                  ],
                 ),
               ),
             );
