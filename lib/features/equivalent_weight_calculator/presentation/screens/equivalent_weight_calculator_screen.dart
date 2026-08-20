@@ -36,10 +36,39 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
     super.dispose();
   }
 
+  String? _validationError;
+
   void _calculateManual() {
-    final molarMass = double.tryParse(_molarMassController.text);
-    final nFactor = double.tryParse(_nFactorController.text);
-    if (molarMass == null || nFactor == null || nFactor == 0) return;
+    setState(() {
+      _validationError = null;
+    });
+
+    final molarMassText = _molarMassController.text.trim();
+    final nFactorText = _nFactorController.text.trim();
+
+    if (molarMassText.isEmpty || nFactorText.isEmpty) {
+      setState(() {
+        _validationError = 'Please fill all requirements';
+      });
+      return;
+    }
+
+    final molarMass = double.tryParse(molarMassText);
+    final nFactor = double.tryParse(nFactorText);
+    
+    if (molarMass == null || nFactor == null) {
+      setState(() {
+        _validationError = 'Please enter valid numbers.';
+      });
+      return;
+    }
+
+    if (nFactor == 0) {
+      setState(() {
+        _validationError = 'n-factor cannot be zero.';
+      });
+      return;
+    }
 
     setState(() {
       _selectedChemical = null; // Clear chemical if manually calculating
@@ -809,7 +838,17 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
               ),
             ),
 
-            if (_result != null || _calculationString != null) ...[
+            if (_validationError != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: Text(
+                  _validationError!,
+                  style: AppTextStyles.bodyMedium.copyWith(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+
+            if (_validationError == null && (_result != null || _calculationString != null)) ...[
               const SizedBox(height: AppSpacing.xl),
               Container(
                 width: double.infinity,

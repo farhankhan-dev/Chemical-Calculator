@@ -225,26 +225,24 @@ class _CustomChemicalTableState extends State<CustomChemicalTable> {
         Expanded(
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final minWidth = constraints.maxWidth - 32; // minus horizontal padding
+              final minWidth = constraints.maxWidth;
+              // Base table width without custom fields
               final baseTableWidth = 340.0;
-              final customFieldsWidth = _customFields.length * 100.0;
+              // Each custom field gets 120 pixels of space
+              final customFieldsWidth = _customFields.length * 120.0;
               final requiredWidth = baseTableWidth + customFieldsWidth;
-              final tableWidth = minWidth > requiredWidth ? minWidth : requiredWidth;
               
-              final minScale = (minWidth / tableWidth).clamp(0.1, 1.0);
+              // If the screen is wider than required, expand to fill it.
+              // If the screen is smaller, maintain required width and enable horizontal scrolling.
+              final tableWidth = minWidth > requiredWidth ? minWidth : requiredWidth;
 
-              return InteractiveViewer(
-                panEnabled: false, // Let SingleChildScrollView handle panning
-                scaleEnabled: true,
-                minScale: minScale,
-                maxScale: 1.0, // Zoom in only up to original size
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  child: SizedBox(
-                    width: tableWidth,
-                    child: ListView(
-                      padding: const EdgeInsets.only(bottom: 88),
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                child: SizedBox(
+                  width: tableWidth,
+                  child: ListView(
+                    padding: const EdgeInsets.only(bottom: 88, top: 8, left: 16, right: 16),
                     children: [
               // Header Row
               Container(
@@ -382,15 +380,12 @@ class _CustomChemicalTableState extends State<CustomChemicalTable> {
                                     color: AppColors.primarySurface.withValues(alpha: 0.5),
                                     borderRadius: BorderRadius.circular(4),
                                   ),
-                                  child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      chem.formula,
-                                      style: AppTextStyles.mono.copyWith(
-                                        fontSize: 12,
-                                        color: AppColors.primaryDark,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                  child: Text(
+                                    chem.formula,
+                                    style: AppTextStyles.mono.copyWith(
+                                      fontSize: 12,
+                                      color: AppColors.primaryDark,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),
@@ -403,17 +398,13 @@ class _CustomChemicalTableState extends State<CustomChemicalTable> {
                             flex: 2,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  FormatUtils.format(chem.molecularWeight),
-                                  style: AppTextStyles.bodyMedium.copyWith(
-                                    color: AppColors.textPrimary,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  textAlign: TextAlign.right,
+                              child: Text(
+                                FormatUtils.format(chem.molecularWeight),
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  color: AppColors.textPrimary,
+                                  fontWeight: FontWeight.w500,
                                 ),
+                                textAlign: TextAlign.right,
                               ),
                             ),
                           ),
@@ -443,7 +434,6 @@ class _CustomChemicalTableState extends State<CustomChemicalTable> {
             ],
           ),
         ),
-                ),
               );
             },
           ),

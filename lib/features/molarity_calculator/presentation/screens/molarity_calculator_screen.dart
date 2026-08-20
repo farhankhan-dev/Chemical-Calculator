@@ -82,16 +82,32 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
       return;
     }
 
-    if (_massController.text.isEmpty || _volController.text.isEmpty) {
+    final massText = _massController.text.trim();
+    final volText = _volController.text.trim();
+    
+    if (massText.isEmpty || volText.isEmpty) {
       setState(() {
         _validationError = 'Please fill all requirements';
       });
       return;
     }
     
-    final mass = double.tryParse(_massController.text);
-    final vol = double.tryParse(_volController.text);
-    if (mass == null || vol == null) return;
+    final mass = double.tryParse(massText);
+    final vol = double.tryParse(volText);
+    
+    if (mass == null || vol == null) {
+      setState(() {
+        _validationError = 'Please enter valid numbers.';
+      });
+      return;
+    }
+
+    if (vol == 0) {
+      setState(() {
+        _validationError = 'Volume cannot be zero.';
+      });
+      return;
+    }
 
     setState(() {
       final volLiters = _isVolMl ? vol / 1000 : vol;

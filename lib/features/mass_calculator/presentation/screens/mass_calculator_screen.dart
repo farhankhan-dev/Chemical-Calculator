@@ -69,16 +69,32 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
       return;
     }
 
-    if (_targetController.text.isEmpty || _volMassController.text.isEmpty) {
+    final targetText = _targetController.text.trim();
+    final volMassText = _volMassController.text.trim();
+
+    if (targetText.isEmpty || volMassText.isEmpty) {
       setState(() {
         _validationError = 'Please fill all requirements';
       });
       return;
     }
     
-    final target = double.tryParse(_targetController.text);
-    final volMass = double.tryParse(_volMassController.text);
-    if (target == null || volMass == null) return;
+    final target = double.tryParse(targetText);
+    final volMass = double.tryParse(volMassText);
+    
+    if (target == null || volMass == null) {
+      setState(() {
+        _validationError = 'Please enter valid numbers.';
+      });
+      return;
+    }
+
+    if (!_isMassNeeded && target == 0) {
+      setState(() {
+        _validationError = 'Concentration cannot be zero when calculating volume.';
+      });
+      return;
+    }
 
     setState(() {
       if (_isMassNeeded) {

@@ -33,17 +33,32 @@ class _MolalityCalculatorScreenState extends State<MolalityCalculatorScreen> {
       _validationError = null;
     });
 
-    if (_molesController.text.isEmpty || _massSolventController.text.isEmpty) {
+    final molesText = _molesController.text.trim();
+    final massText = _massSolventController.text.trim();
+
+    if (molesText.isEmpty || massText.isEmpty) {
       setState(() {
         _validationError = 'Please fill all requirements';
       });
       return;
     }
 
-    final moles = double.tryParse(_molesController.text);
-    final mass = double.tryParse(_massSolventController.text);
+    final moles = double.tryParse(molesText);
+    final mass = double.tryParse(massText);
     
-    if (moles == null || mass == null || mass == 0) return;
+    if (moles == null || mass == null) {
+      setState(() {
+        _validationError = 'Please enter valid numbers.';
+      });
+      return;
+    }
+
+    if (mass == 0) {
+      setState(() {
+        _validationError = 'Mass cannot be zero.';
+      });
+      return;
+    }
 
     setState(() {
       _result = moles / mass;
