@@ -77,6 +77,7 @@ class FormulaParser {
     final List<Map<String, int>> stack = [{}];
     int i = 0;
     final length = formula.length;
+    int currentMultiplier = 1; // Used for leading coefficients and hydrates like 5 in .5H2O
 
     while (i < length) {
       final char = formula[i];
@@ -133,10 +134,32 @@ class FormulaParser {
         }
 
         final currentTop = stack.last;
-        currentTop[symbol] = (currentTop[symbol] ?? 0) + count;
+        currentTop[symbol] = (currentTop[symbol] ?? 0) + (count * currentMultiplier);
       } else if (char == ' ' || char == '·' || char == '.') {
-        // Ignore spaces or hydrate dots
+        // Handle dots or spaces, optionally followed by a hydrate coefficient
         i++;
+        int countStart = i;
+        while (i < length && _isDigit(formula[i])) {
+          i++;
+        }
+        if (i > countStart) {
+          final parsed = int.tryParse(formula.substring(countStart, i));
+          if (parsed != null && parsed > 0) {
+            currentMultiplier = parsed;
+          }
+        } else {
+          currentMultiplier = 1; // Reset multiplier if no number follows
+        }
+      } else if (_isDigit(char)) {
+        // Leading digit at the very beginning of a formula or chunk
+        int countStart = i;
+        while (i < length && _isDigit(formula[i])) {
+          i++;
+        }
+        final parsed = int.tryParse(formula.substring(countStart, i));
+        if (parsed != null && parsed > 0) {
+          currentMultiplier = parsed;
+        }
       } else {
         throw FormatException('Invalid character "$char" in formula.');
       }
