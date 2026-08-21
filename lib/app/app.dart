@@ -11,7 +11,9 @@ class ChemiCalcApp extends StatelessWidget {
     return MaterialApp(
       title: 'ChemiCalc',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
+      theme: AppTheme.light.copyWith(
+        platform: TargetPlatform.android, // Forces mobile text selection behavior even on Windows/Web
+      ),
       initialRoute: AppRoutes.splash,
       onGenerateRoute: AppRoutes.generateRoute,
     );

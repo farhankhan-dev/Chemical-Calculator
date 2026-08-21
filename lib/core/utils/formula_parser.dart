@@ -37,6 +37,7 @@ class FormulaParser {
 
   /// Parses a chemical formula string and returns a [FormulaParseResult].
   FormulaParseResult parse(String rawFormula) {
+
     // Normalize Unicode subscript digits (₀₁₂₃₄₅₆₇₈₉) to regular digits
     final normalized = rawFormula.trim()
         .replaceAll('₀', '0')
@@ -72,7 +73,7 @@ class FormulaParser {
         }
         totalMolarMass += element.atomicMass * count;
       }
-
+      
       return FormulaParseResult.success(
         molarMass: totalMolarMass,
         elementCounts: counts,
@@ -86,10 +87,60 @@ class FormulaParser {
   }
 
   Map<String, int> _parseElementCounts(String formula) {
+    final Map<String, int> totalCounts = {};
+    // Replace '·' with '.' for unified splitting
+    final normalizedForSplit = formula.replaceAll('·', '.');
+    final segments = normalizedForSplit.split('.');
+    
+    if (segments.isEmpty) {
+      throw const FormatException('Empty formula.');
+    }
+    
+    for (final segment in segments) {
+      final trimmedSegment = segment.trim();
+      if (trimmedSegment.isEmpty) {
+        throw const FormatException('Empty segment in formula (e.g., trailing dot).');
+      }
+      
+      // Extract leading integer
+      int i = 0;
+      while (i < trimmedSegment.length && _isDigit(trimmedSegment[i])) {
+        i++;
+      }
+      
+      int coefficient = 1;
+      String subFormula = trimmedSegment;
+      if (i > 0) {
+        final parsed = int.tryParse(trimmedSegment.substring(0, i));
+        if (parsed != null && parsed > 0) {
+          coefficient = parsed;
+        } else {
+          throw FormatException('Invalid leading coefficient in segment "$trimmedSegment".');
+        }
+        subFormula = trimmedSegment.substring(i).trim();
+      }
+      
+      if (subFormula.isEmpty) {
+        throw FormatException('Segment "$trimmedSegment" has no chemical elements.');
+      }
+      
+      final segmentCounts = _parseSegmentCounts(subFormula);
+      
+      final segmentCountsAfter = <String, int>{};
+      segmentCounts.forEach((symbol, count) {
+        final applied = count * coefficient;
+        segmentCountsAfter[symbol] = applied;
+        totalCounts[symbol] = (totalCounts[symbol] ?? 0) + applied;
+      });
+    }
+    
+    return totalCounts;
+  }
+
+  Map<String, int> _parseSegmentCounts(String formula) {
     final List<Map<String, int>> stack = [{}];
     int i = 0;
     final length = formula.length;
-    int currentMultiplier = 1; // Used for leading coefficients and hydrates like 5 in .5H2O
 
     while (i < length) {
       final char = formula[i];
@@ -146,32 +197,9 @@ class FormulaParser {
         }
 
         final currentTop = stack.last;
-        currentTop[symbol] = (currentTop[symbol] ?? 0) + (count * currentMultiplier);
-      } else if (char == ' ' || char == '·' || char == '.') {
-        // Handle dots or spaces, optionally followed by a hydrate coefficient
+        currentTop[symbol] = (currentTop[symbol] ?? 0) + count;
+      } else if (char == ' ') {
         i++;
-        int countStart = i;
-        while (i < length && _isDigit(formula[i])) {
-          i++;
-        }
-        if (i > countStart) {
-          final parsed = int.tryParse(formula.substring(countStart, i));
-          if (parsed != null && parsed > 0) {
-            currentMultiplier = parsed;
-          }
-        } else {
-          currentMultiplier = 1; // Reset multiplier if no number follows
-        }
-      } else if (_isDigit(char)) {
-        // Leading digit at the very beginning of a formula or chunk
-        int countStart = i;
-        while (i < length && _isDigit(formula[i])) {
-          i++;
-        }
-        final parsed = int.tryParse(formula.substring(countStart, i));
-        if (parsed != null && parsed > 0) {
-          currentMultiplier = parsed;
-        }
       } else {
         throw FormatException('Invalid character "$char" in formula.');
       }

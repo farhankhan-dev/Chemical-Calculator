@@ -56,6 +56,18 @@ void main() {
       // C: 72.066 + H: 12.096 + O: 95.994 => 180.156
       expect(res.molarMass, closeTo(180.156, 0.01));
     });
+
+    test('MgSO4.7H2O', () {
+      final res = parser.parse('MgSO4.7H2O');
+      expect(res.isValid, isTrue);
+      expect(res.molarMass, closeTo(246.47, 0.01));
+    });
+
+    test('KAl(SO4)2.12H2O', () {
+      final res = parser.parse('KAl(SO4)2.12H2O');
+      expect(res.isValid, isTrue);
+      expect(res.molarMass, closeTo(474.372, 0.01));
+    });
   });
 
   group('FormulaParser Invalid Formulas', () {
