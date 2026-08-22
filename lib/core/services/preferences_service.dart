@@ -75,4 +75,18 @@ class PreferencesService {
       await prefs.setStringList(_customFieldsKey, fields);
     }
   }
+
+  static const String _onboardingKey = 'has_seen_onboarding';
+
+  /// Check if the user has completed onboarding
+  static Future<bool> hasSeenOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_onboardingKey) ?? false;
+  }
+
+  /// Set the onboarding as completed
+  static Future<void> setSeenOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_onboardingKey, true);
+  }
 }

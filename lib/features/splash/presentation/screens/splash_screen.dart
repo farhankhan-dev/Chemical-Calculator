@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
+import '../../../../core/services/preferences_service.dart';
 
 /// Animated splash screen — 1.4 seconds.
 ///
@@ -57,9 +58,14 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.forward();
 
     // Navigate to home after 2.5 seconds
-    Future.delayed(const Duration(milliseconds: 2500), () {
+    Future.delayed(const Duration(milliseconds: 2500), () async {
+      final hasSeenOnboarding = await PreferencesService.hasSeenOnboarding();
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/home');
+        if (hasSeenOnboarding) {
+          Navigator.of(context).pushReplacementNamed('/home');
+        } else {
+          Navigator.of(context).pushReplacementNamed('/onboarding');
+        }
       }
     });
   }
