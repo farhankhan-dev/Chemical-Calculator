@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../../core/services/preferences_service.dart';
+import '../../../../core/utils/formula_parser.dart';
 import '../models/custom_chemical_model.dart';
 
 /// Service for importing/exporting custom chemical notebook data as `.txt` files.
@@ -197,15 +198,15 @@ class ChemicalIOService {
     for (final line in dataLines) {
       final fields = line.split('|');
 
-      // Security: must have at least 3 fields
-      if (fields.length < 3) {
+      // Security: must have at least 2 fields (Name and Formula)
+      if (fields.length < 2) {
         skipped++;
         continue;
       }
 
       final name = fields[0].trim();
       final formula = fields[1].trim();
-      final weightStr = fields[2].trim();
+      final weightStr = fields.length > 2 ? fields[2].trim() : '';
 
       // Validate name
       if (name.isEmpty || name.length > 100 || !_validNamePattern.hasMatch(name)) {
@@ -219,11 +220,17 @@ class ChemicalIOService {
         continue;
       }
 
-      // Validate molecular weight
-      final weight = double.tryParse(weightStr);
+      // Validate or auto-calculate molecular weight
+      double? weight = double.tryParse(weightStr);
       if (weight == null || weight <= 0 || weight >= 1000000) {
-        skipped++;
-        continue;
+        final parser = FormulaParser();
+        final result = parser.parse(formula);
+        if (result.isValid && result.molarMass > 0 && result.molarMass < 1000000) {
+          weight = result.molarMass;
+        } else {
+          skipped++;
+          continue;
+        }
       }
 
       final customFields = <String, String>{};

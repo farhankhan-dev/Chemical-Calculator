@@ -112,15 +112,21 @@ class FormulaParser {
       String subFormula = trimmedSegment;
       if (i > 0) {
         final parsed = int.tryParse(trimmedSegment.substring(0, i));
+        subFormula = trimmedSegment.substring(i).trim();
         if (parsed != null && parsed > 0) {
           coefficient = parsed;
         } else {
+          if (parsed == 0 && subFormula.isEmpty) {
+            throw FormatException("This formula has a decimal number, which isn't allowed. Rewrite it using whole numbers instead — for example, multiplying '\$formula' by 2.");
+          }
           throw FormatException('Invalid leading coefficient in segment "$trimmedSegment".');
         }
-        subFormula = trimmedSegment.substring(i).trim();
       }
       
       if (subFormula.isEmpty) {
+        if (RegExp(r'^\d+$').hasMatch(trimmedSegment)) {
+          throw FormatException("This formula has a decimal number, which isn't allowed. Rewrite it using whole numbers instead — for example, multiplying '\$formula' by 2.");
+        }
         throw FormatException('Segment "$trimmedSegment" has no chemical elements.');
       }
       

@@ -79,13 +79,8 @@ void main() {
 
     test('7. Decimal coefficients', () {
       final res = parser.parse('CaSO4.0.5H2O');
-      expect(res.isValid, isTrue);
-      expect(res.elementCounts['Ca'], equals(1));
-      expect(res.elementCounts['S'], equals(1));
-      expect(res.elementCounts['O'], equals(4)); 
-      // wait, decimal means 0.5 * H2O = H1 O0.5
-      // The app currently uses Map<String, int> for element counts, so it can't represent 0.5 atoms!
-      // This will require an architectural decision.
+      expect(res.isValid, isFalse);
+      expect(res.error, contains("This formula has a decimal number, which isn't allowed"));
     });
   });
 }
