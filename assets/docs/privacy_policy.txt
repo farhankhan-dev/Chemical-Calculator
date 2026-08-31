@@ -1,33 +1,45 @@
 PRIVACY POLICY FOR CHEMI CALC
 
-Effective Date: 2026-08-20
+Effective Date: 2026-08-31
 
-This Privacy Policy describes how Chemi Calc ("we", "our", or "the App") handles your information. 
+This Privacy Policy describes how Chemi Calc, developed by Codevelop Solutions ("we", "our", or "the App"), handles your information. 
 
-1. ZERO DATA COLLECTION
-Chemi Calc is designed with privacy as its absolute core principle. We do not collect, transmit, store externally, or share any personal data, usage data, or analytics. The app operates entirely offline and does not require an internet connection to function.
+1. DATA COLLECTION
+Chemi Calc is designed with privacy as its core principle. We do not directly collect, transmit, or store any personal data or usage analytics. The app operates primarily offline and does not require an internet connection for its core calculations.
 
 2. LOCAL STORAGE ONLY
 All data you generate or enter within the App (such as custom chemicals, formulas, and notes in the "My Chemicals" notebook) is stored entirely locally on your device using local storage mechanisms. 
 - Your data never leaves your device.
 - We have no access to your data.
-- No third-party analytics or tracking SDKs are integrated into this App.
+- No first-party analytics or tracking is integrated into this App.
 
-3. PLAY STORE DATA SAFETY
+3. THIRD-PARTY SERVICES — GOOGLE ADMOB
+This App uses Google AdMob to display advertisements. Google AdMob is a third-party advertising service provided by Google LLC. AdMob may collect and use certain data to serve personalized or non-personalized ads, including:
+- Device identifiers (such as Advertising ID)
+- IP address
+- General location data (coarse, not precise)
+- App usage and ad interaction data
+- Device information (model, OS version, screen size)
+
+This data is collected and processed by Google in accordance with Google's Privacy Policy (https://policies.google.com/privacy). We do not have access to this data. You can opt out of personalized ads by adjusting your device's ad settings.
+
+4. PLAY STORE DATA SAFETY
 In compliance with the Google Play Store Data Safety guidelines, we declare that:
-- No data is collected
-- No data is shared with third parties
-- Data is not encrypted in transit because data is never transmitted.
-- You have full control over your data. To delete all your data, you can simply clear the app's cache/data through your device settings, or uninstall the app.
+- No data is collected directly by us.
+- Google AdMob, as a third-party SDK, may collect device identifiers and ad interaction data as described above.
+- You have full control over your locally stored data. To delete all your data, you can simply clear the app's cache/data through your device settings, or uninstall the app.
 
-4. CHILDREN'S PRIVACY
-Because we do not collect any personal information, the App is completely safe for use by children of all ages. 
+5. CHILDREN'S PRIVACY
+We do not knowingly collect any personal information from children. Google AdMob may serve ads in compliance with Google's policies regarding child-directed content.
 
-5. PERMISSIONS
-The App does not request any intrusive device permissions (like Camera, Microphone, or Location). Any permissions requested are strictly for essential local file operations (e.g., exporting your chemical notebook to a text file on your device).
+6. PERMISSIONS
+The App may request storage permissions strictly for essential local file operations (e.g., exporting your chemical notebook to a text file on your device). No intrusive permissions (such as Camera, Microphone, or Location) are requested.
 
-6. CHANGES TO THIS POLICY
-We may update this Privacy Policy from time to time if the functionality of the App changes. Any updates will be reflected in this document. Since we do not collect contact information, we cannot notify you of changes; we encourage you to review this policy periodically.
+7. CHANGES TO THIS POLICY
+We may update this Privacy Policy from time to time if the functionality of the App changes. Any updates will be reflected in this document. We encourage you to review this policy periodically.
 
-7. CONTACT US
-If you have any questions or concerns about our privacy practices, you can contact the developer through the support email provided on our Google Play Store listing.
+8. CONTACT US
+If you have any questions or concerns about our privacy practices, please contact us at:
+Email: codevelop.in@gmail.com
+Developer: Codevelop Solutions
+

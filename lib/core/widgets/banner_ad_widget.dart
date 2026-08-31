@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 
 class BannerAdWidget extends StatefulWidget {
@@ -14,12 +13,16 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
   BannerAd? _bannerAd;
   bool _isLoaded = false;
 
-  // Use test ads during development, real ads in production
-  final String _adUnitId = Platform.isAndroid
-      ? (kDebugMode 
-          ? 'ca-app-pub-3940256099942544/6300978111' 
-          : 'ca-app-pub-9757019467795506/4050397933')
-      : 'ca-app-pub-3940256099942544/2934735716';
+  // Security: Real Ad Unit ID is passed at build time via --dart-define
+  // Default fallback is Google's official test Ad Unit ID
+  static const String _prodAdUnitId = String.fromEnvironment(
+    'ADMOB_BANNER_ID',
+    defaultValue: 'ca-app-pub-3940256099942544/6300978111', // Test ID
+  );
+
+  final String _adUnitId = kDebugMode
+      ? 'ca-app-pub-3940256099942544/6300978111' // Always use test ID in debug
+      : _prodAdUnitId;
 
   @override
   void initState() {
@@ -34,13 +37,13 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
       size: AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (ad) {
-          debugPrint('$BannerAd loaded.');
+          if (kDebugMode) debugPrint('BannerAd loaded.');
           setState(() {
             _isLoaded = true;
           });
         },
         onAdFailedToLoad: (ad, err) {
-          debugPrint('BannerAd failed to load: $err');
+          if (kDebugMode) debugPrint('BannerAd failed to load: $err');
           ad.dispose();
         },
       ),

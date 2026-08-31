@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../../core/services/preferences_service.dart';
@@ -45,6 +46,13 @@ class ChemicalIOService {
     required String fileName,
   }) async {
     try {
+      // Request storage permission explicitly
+      if (Platform.isAndroid) {
+        final status = await Permission.storage.request();
+        // We continue even if denied on Android 11+ as scoped storage 
+        // might still allow writing to Downloads.
+      }
+
       // Sanitize file name — remove any path separators or invalid chars
       final sanitizedName = fileName
           .replaceAll(RegExp(r'[\\/:*?"<>|]'), '_')
@@ -106,6 +114,11 @@ class ChemicalIOService {
   /// Returns an [ImportResult] with the parsed chemicals and any skipped rows.
   static Future<ImportResult> importChemicals() async {
     try {
+      // Request storage permission explicitly
+      if (Platform.isAndroid) {
+        await Permission.storage.request();
+      }
+
       // Open file picker — restrict to .txt only
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import '../../../../data/datasources/chemical_local_datasource.dart';
 import '../../../../data/models/chemical_model.dart';
 import '../../../../core/services/preferences_service.dart';
@@ -41,7 +42,7 @@ class HomeController extends ChangeNotifier {
         _loadRecentSearches(),
       ]).timeout(const Duration(milliseconds: 1500));
     } catch (e) {
-      debugPrint('Error initializing HomeController: $e');
+      if (kDebugMode) debugPrint('Error initializing HomeController: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -57,7 +58,7 @@ class HomeController extends ChangeNotifier {
           .whereType<ChemicalModel>()
           .toList();
     } catch (e) {
-      debugPrint('Error loading recent searches: $e');
+      if (kDebugMode) debugPrint('Error loading recent searches: $e');
       _recentSearches = [];
     }
     notifyListeners();
