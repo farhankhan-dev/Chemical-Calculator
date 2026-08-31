@@ -96,7 +96,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             color: AppColors.primarySurface,
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.primary.withOpacity(0.1),
+                                color: AppColors.primary.withValues(alpha: 0.1),
                                 blurRadius: 20,
                                 offset: const Offset(0, 10),
                               ),

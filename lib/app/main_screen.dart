@@ -5,6 +5,7 @@ import '../features/calculators/presentation/screens/calculators_screen.dart';
 import '../features/library/presentation/screens/library_screen.dart';
 import '../features/my_chemicals/presentation/screens/my_chemicals_screen.dart';
 import '../features/periodic_table/presentation/screens/periodic_table_screen.dart';
+import '../core/widgets/banner_ad_widget.dart';
 import 'theme/app_colors.dart';
 
 class MainScreen extends StatefulWidget {
@@ -69,10 +70,17 @@ class _MainScreenState extends State<MainScreen> {
         }
       },
       child: Scaffold(
-        body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+        body: Column(
+          children: [
+            Expanded(
+              child: IndexedStack(
+                index: _currentIndex,
+                children: _screens,
+              ),
+            ),
+            const BannerAdWidget(),
+          ],
+        ),
       bottomNavigationBar: isLandscape 
           ? null 
           : BottomNavigationBar(
