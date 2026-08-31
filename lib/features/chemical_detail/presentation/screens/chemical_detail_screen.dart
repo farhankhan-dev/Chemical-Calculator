@@ -4,53 +4,83 @@ import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../data/models/chemical_model.dart';
 import '../../../../data/datasources/chemical_local_datasource.dart';
+import '../../../library/data/library_pinned_repository.dart';
 
-class ChemicalDetailScreen extends StatelessWidget {
+class ChemicalDetailScreen extends StatefulWidget {
   final ChemicalModel chemical;
 
   const ChemicalDetailScreen({super.key, required this.chemical});
+
+  @override
+  State<ChemicalDetailScreen> createState() => _ChemicalDetailScreenState();
+}
+
+class _ChemicalDetailScreenState extends State<ChemicalDetailScreen> {
+  bool _isPinned = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfPinned();
+  }
+
+  Future<void> _checkIfPinned() async {
+    final repo = LibraryPinnedRepository();
+    final ids = await repo.getPinnedIds();
+    if (mounted) {
+      setState(() {
+        _isPinned = ids.contains(widget.chemical.id);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(chemical.name),
+        title: Text(widget.chemical.name),
         backgroundColor: AppColors.surface,
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
         actions: [
-          if (chemical.id > 273)
-            IconButton(
-              icon: const Icon(Icons.delete_outline, color: Colors.red),
-              onPressed: () async {
-                final confirm = await showDialog<bool>(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Delete Chemical'),
-                    content: const Text('Are you sure you want to delete this custom chemical?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: const Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        child: const Text('Delete', style: TextStyle(color: Colors.red)),
-                      ),
-                    ],
-                  ),
+          IconButton(
+            icon: const Icon(Icons.delete_outline, color: Colors.red),
+            onPressed: () async {
+              if (widget.chemical.id <= 273) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Built-in library chemicals cannot be deleted.')),
                 );
+                return;
+              }
+              
+              final confirm = await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Delete Chemical'),
+                  content: const Text('Are you sure you want to delete this chemical?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                    ),
+                  ],
+                ),
+              );
 
-                if (confirm == true && context.mounted) {
-                  final datasource = ChemicalLocalDatasource();
-                  await datasource.deleteChemical(chemical.id);
-                  if (context.mounted) {
-                    Navigator.pop(context, true); 
-                  }
+              if (confirm == true && context.mounted) {
+                final datasource = ChemicalLocalDatasource();
+                await datasource.deleteChemical(widget.chemical.id);
+                if (context.mounted) {
+                  Navigator.pop(context, true); 
                 }
-              },
-            ),
+              }
+            },
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -93,7 +123,7 @@ class ChemicalDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.md),
                   Text(
-                    chemical.formula,
+                    widget.chemical.formula,
                     style: AppTextStyles.h1.copyWith(
                       color: Colors.white,
                       fontSize: 32,
@@ -102,7 +132,7 @@ class ChemicalDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
-                    chemical.name,
+                    widget.chemical.name,
                     style: AppTextStyles.bodyLarge.copyWith(
                       color: Colors.white70,
                       fontWeight: FontWeight.w500,
@@ -115,23 +145,30 @@ class ChemicalDetailScreen extends StatelessWidget {
             const SizedBox(height: AppSpacing.xl),
             
             // Details Section
-            Text(
-              'Properties',
-              style: AppTextStyles.h2.copyWith(
-                color: AppColors.textPrimary,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Properties',
+                  style: AppTextStyles.h2.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                if (_isPinned)
+                  const Icon(Icons.push_pin, color: AppColors.primary),
+              ],
             ),
             const SizedBox(height: AppSpacing.md),
             
-            _buildDetailRow('Category', chemical.category, Icons.category_outlined),
-            if (chemical.category == 'Element')
-              _buildDetailRow('Atomic Number', '${chemical.displayAtomicNumber}', Icons.numbers_outlined),
-            if (chemical.category == 'Element')
-              _buildDetailRow('Atomic Mass', '${(chemical.atomicMass ?? chemical.molecularWeight).toStringAsFixed(4)} u', Icons.science_outlined),
-            _buildDetailRow('Molecular Weight', '${chemical.molecularWeight.toStringAsFixed(4)} g/mol', Icons.monitor_weight_outlined),
-            if (chemical.equivalentWeight != null)
-              _buildDetailRow('Equivalent Weight', '${chemical.equivalentWeight!.toStringAsFixed(4)} g/eq', Icons.balance_outlined)
-            else if (_noEwChemicalIds.contains(chemical.id))
+            _buildDetailRow('Category', widget.chemical.category, Icons.category_outlined),
+            if (widget.chemical.category == 'Element')
+              _buildDetailRow('Atomic Number', '${widget.chemical.displayAtomicNumber}', Icons.numbers_outlined),
+            if (widget.chemical.category == 'Element')
+              _buildDetailRow('Atomic Mass', '${(widget.chemical.atomicMass ?? widget.chemical.molecularWeight).toStringAsFixed(4)} u', Icons.science_outlined),
+            _buildDetailRow('Molecular Weight', '${widget.chemical.molecularWeight.toStringAsFixed(4)} g/mol', Icons.monitor_weight_outlined),
+            if (widget.chemical.equivalentWeight != null)
+              _buildDetailRow('Equivalent Weight', '${widget.chemical.equivalentWeight!.toStringAsFixed(4)} g/eq', Icons.balance_outlined)
+            else if (_noEwChemicalIds.contains(widget.chemical.id))
               _buildDetailRow(
                 'Equivalent Weight',
                 'N/A',
@@ -186,16 +223,16 @@ class ChemicalDetailScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            if (chemical.density != null)
-              _buildDetailRow('Density', '${chemical.density} g/cm³', Icons.water_drop_outlined),
-            if (chemical.meltingPoint != null)
-              _buildDetailRow('Melting Point', '${chemical.meltingPoint} °C', Icons.thermostat_outlined),
-            if (chemical.boilingPoint != null)
-              _buildDetailRow('Boiling Point', '${chemical.boilingPoint} °C', Icons.local_fire_department_outlined),
-            if (chemical.casNumber != null)
+            if (widget.chemical.density != null)
+              _buildDetailRow('Density', '${widget.chemical.density} g/cm³', Icons.water_drop_outlined),
+            if (widget.chemical.meltingPoint != null)
+              _buildDetailRow('Melting Point', '${widget.chemical.meltingPoint} °C', Icons.thermostat_outlined),
+            if (widget.chemical.boilingPoint != null)
+              _buildDetailRow('Boiling Point', '${widget.chemical.boilingPoint} °C', Icons.local_fire_department_outlined),
+            if (widget.chemical.casNumber != null)
               _buildDetailRow(
                 'CAS Number', 
-                chemical.casNumber!, 
+                widget.chemical.casNumber!, 
                 Icons.tag,
                 labelTrailing: GestureDetector(
                   onTap: () {
@@ -232,7 +269,7 @@ class ChemicalDetailScreen extends StatelessWidget {
                 ),
               ),
               
-            if (chemical.note != null && chemical.note!.isNotEmpty) ...[
+            if (widget.chemical.note != null && widget.chemical.note!.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.lg),
               Container(
                 width: double.infinity,
@@ -243,7 +280,7 @@ class ChemicalDetailScreen extends StatelessWidget {
                   border: Border.all(color: AppColors.primary),
                 ),
                 child: Text(
-                  'Note : ${chemical.note!}',
+                  'Note : ${widget.chemical.note!}',
                   style: AppTextStyles.bodyMedium.copyWith(
                     color: Colors.black87,
                     fontWeight: FontWeight.w600,

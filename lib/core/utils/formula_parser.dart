@@ -37,7 +37,20 @@ class FormulaParser {
 
   /// Parses a chemical formula string and returns a [FormulaParseResult].
   FormulaParseResult parse(String rawFormula) {
-    final formula = FormulaFormatter.format(rawFormula.trim());
+
+    // Normalize Unicode subscript digits (₀₁₂₃₄₅₆₇₈₉) to regular digits
+    final normalized = rawFormula.trim()
+        .replaceAll('₀', '0')
+        .replaceAll('₁', '1')
+        .replaceAll('₂', '2')
+        .replaceAll('₃', '3')
+        .replaceAll('₄', '4')
+        .replaceAll('₅', '5')
+        .replaceAll('₆', '6')
+        .replaceAll('₇', '7')
+        .replaceAll('₈', '8')
+        .replaceAll('₉', '9');
+    final formula = FormulaFormatter.format(normalized);
     if (formula.isEmpty) {
       return const FormulaParseResult.failure('Please enter a chemical formula.');
     }
@@ -60,7 +73,7 @@ class FormulaParser {
         }
         totalMolarMass += element.atomicMass * count;
       }
-
+      
       return FormulaParseResult.success(
         molarMass: totalMolarMass,
         elementCounts: counts,
@@ -74,6 +87,63 @@ class FormulaParser {
   }
 
   Map<String, int> _parseElementCounts(String formula) {
+    final Map<String, int> totalCounts = {};
+    // Replace '·' with '.' for unified splitting
+    final normalizedForSplit = formula.replaceAll('·', '.');
+    final segments = normalizedForSplit.split('.');
+    
+    if (segments.isEmpty) {
+      throw const FormatException('Empty formula.');
+    }
+    
+    for (final segment in segments) {
+      final trimmedSegment = segment.trim();
+      if (trimmedSegment.isEmpty) {
+        throw const FormatException('Empty segment in formula (e.g., trailing dot).');
+      }
+      
+      // Extract leading integer
+      int i = 0;
+      while (i < trimmedSegment.length && _isDigit(trimmedSegment[i])) {
+        i++;
+      }
+      
+      int coefficient = 1;
+      String subFormula = trimmedSegment;
+      if (i > 0) {
+        final parsed = int.tryParse(trimmedSegment.substring(0, i));
+        subFormula = trimmedSegment.substring(i).trim();
+        if (parsed != null && parsed > 0) {
+          coefficient = parsed;
+        } else {
+          if (parsed == 0 && subFormula.isEmpty) {
+            throw FormatException("This formula has a decimal number, which isn't allowed. Rewrite it using whole numbers instead — for example, multiplying '\$formula' by 2.");
+          }
+          throw FormatException('Invalid leading coefficient in segment "$trimmedSegment".');
+        }
+      }
+      
+      if (subFormula.isEmpty) {
+        if (RegExp(r'^\d+$').hasMatch(trimmedSegment)) {
+          throw FormatException("This formula has a decimal number, which isn't allowed. Rewrite it using whole numbers instead — for example, multiplying '\$formula' by 2.");
+        }
+        throw FormatException('Segment "$trimmedSegment" has no chemical elements.');
+      }
+      
+      final segmentCounts = _parseSegmentCounts(subFormula);
+      
+      final segmentCountsAfter = <String, int>{};
+      segmentCounts.forEach((symbol, count) {
+        final applied = count * coefficient;
+        segmentCountsAfter[symbol] = applied;
+        totalCounts[symbol] = (totalCounts[symbol] ?? 0) + applied;
+      });
+    }
+    
+    return totalCounts;
+  }
+
+  Map<String, int> _parseSegmentCounts(String formula) {
     final List<Map<String, int>> stack = [{}];
     int i = 0;
     final length = formula.length;
@@ -134,8 +204,7 @@ class FormulaParser {
 
         final currentTop = stack.last;
         currentTop[symbol] = (currentTop[symbol] ?? 0) + count;
-      } else if (char == ' ' || char == '·' || char == '.') {
-        // Ignore spaces or hydrate dots
+      } else if (char == ' ') {
         i++;
       } else {
         throw FormatException('Invalid character "$char" in formula.');

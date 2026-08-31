@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
@@ -11,6 +10,7 @@ import '../../../equivalent_weight_calculator/presentation/screens/equivalent_we
 import '../../../molar_mass_calculator/presentation/screens/molar_mass_calculator_screen.dart';
 import '../../../molality_calculator/presentation/screens/molality_calculator_screen.dart';
 import '../../../molecular_weight_calculator/presentation/screens/molecular_weight_calculator_screen.dart';
+import 'legal_document_screen.dart';
 
 class CalculatorsScreen extends StatelessWidget {
   const CalculatorsScreen({super.key});
@@ -248,32 +248,40 @@ class CalculatorsScreen extends StatelessWidget {
                 leading: const Icon(Icons.info_outline, color: AppColors.primary),
                 title: const Text('About Us'),
                 onTap: () {
-                  Navigator.pop(ctx);
-                  _showDocumentDialog(context, 'About Us', 'assets/docs/about_us.txt');
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const LegalDocumentScreen(
+                    title: 'About Us',
+                    assetPath: 'assets/docs/about_us.txt',
+                  )));
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.privacy_tip_outlined, color: AppColors.primary),
                 title: const Text('Privacy Policy'),
                 onTap: () {
-                  Navigator.pop(ctx);
-                  _showDocumentDialog(context, 'Privacy Policy', 'assets/docs/privacy_policy.txt');
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const LegalDocumentScreen(
+                    title: 'Privacy Policy',
+                    assetPath: 'assets/docs/privacy_policy.txt',
+                  )));
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.description_outlined, color: AppColors.primary),
                 title: const Text('Terms and Conditions'),
                 onTap: () {
-                  Navigator.pop(ctx);
-                  _showDocumentDialog(context, 'Terms and Conditions', 'assets/docs/terms_and_conditions.txt');
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const LegalDocumentScreen(
+                    title: 'Terms and Conditions',
+                    assetPath: 'assets/docs/terms_and_conditions.txt',
+                  )));
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.gavel_outlined, color: AppColors.primary),
                 title: const Text('Terms of Use'),
                 onTap: () {
-                  Navigator.pop(ctx);
-                  _showDocumentDialog(context, 'Terms of Use', 'assets/docs/terms_of_use.txt');
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const LegalDocumentScreen(
+                    title: 'Terms of Use',
+                    assetPath: 'assets/docs/terms_of_use.txt',
+                  )));
                 },
               ),
               const SizedBox(height: 8),
@@ -284,58 +292,5 @@ class CalculatorsScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _showDocumentDialog(BuildContext context, String title, String assetPath) async {
-    String content = '';
-    try {
-      content = await rootBundle.loadString(assetPath);
-    } catch (e) {
-      content = 'Error loading document: ${e.toString()}';
-    }
-
-    if (!context.mounted) return;
-
-    showDialog(
-      context: context,
-      builder: (ctx) {
-        return Dialog(
-          backgroundColor: AppColors.surface,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: AppTextStyles.h3.copyWith(color: AppColors.primary),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close, color: AppColors.textSecondary),
-                      onPressed: () => Navigator.of(ctx).pop(),
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                    ),
-                  ],
-                ),
-                const Divider(),
-                Flexible(
-                  child: SingleChildScrollView(
-                    child: Text(
-                      content,
-                      style: AppTextStyles.bodyMedium,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  // Removed _showDocumentDialog as it is replaced by LegalDocumentScreen
 }

@@ -6,7 +6,6 @@ import '../../../../data/datasources/chemical_local_datasource.dart';
 import '../../../../data/models/chemical_model.dart';
 import '../../../chemical_detail/presentation/screens/chemical_detail_screen.dart';
 import '../../data/library_pinned_repository.dart';
-import '../../../../core/utils/format_utils.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -201,12 +200,13 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   await _pinnedRepo.togglePin(chemical.id, !isPinned);
                   _loadPinnedIds();
                   if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(isPinned ? '${chemical.name} unpinned' : '${chemical.name} pinned'),
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: AppColors.primary,
+                          content: Text(isPinned ? '${chemical.name} unpinned' : '${chemical.name} pinned', style: const TextStyle(color: Colors.white)),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
                   }
                 },
               ),
@@ -317,7 +317,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                               leading: const Icon(Icons.science_outlined, color: AppColors.primary),
                               title: Text(chem.name, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
                               subtitle: Text(chem.formula, style: AppTextStyles.mono.copyWith(fontSize: 12, color: AppColors.primaryDark)),
-                              trailing: Text(FormatUtils.format(chem.molecularWeight), style: AppTextStyles.bodySmall),
+                              trailing: Text(chem.category, style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
                               onTap: () async {
                                 Navigator.pop(ctx);
                                 FocusManager.instance.primaryFocus?.unfocus();

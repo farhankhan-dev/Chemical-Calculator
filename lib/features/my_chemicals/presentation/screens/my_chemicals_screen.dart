@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
@@ -302,6 +303,109 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
     }
   }
 
+  void _showTxtStructureDialog() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    
+    final structureText = '''#CHEMICALC_NOTEBOOK_V1
+Chemical Name|Formula|Molecular Weight
+Example Water|H2O|18.01528
+Example Salt|NaCl|58.44''';
+
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.all(20),
+          child: Container(
+            width: double.infinity,
+            constraints: const BoxConstraints(maxWidth: 400),
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.primaryLight.withValues(alpha: 0.5)),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Import File Structure',
+                          style: AppTextStyles.h2.copyWith(color: AppColors.primary),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: AppColors.textSecondary),
+                        onPressed: () => Navigator.of(ctx).pop(),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                  const Divider(),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Want to manually create your own chemical list? Open a text editor on your phone or computer, paste the exact structure below, save it as a .txt file, and import it here!',
+                    style: AppTextStyles.bodyMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.background,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppColors.border),
+                    ),
+                    child: Text(
+                      structureText,
+                      style: AppTextStyles.mono.copyWith(fontSize: 12),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Rules for text files:\n• Keep the #CHEMICALC_NOTEBOOK_V1 exactly as the first line.\n• The chemicals in the template are just examples. Replace them with your own!\n• Use the pipe symbol | to separate columns.\n• Do NOT put | inside chemical names or formulas.',
+                    style: AppTextStyles.labelSmall.copyWith(color: AppColors.textSecondary),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: structureText));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Structure copied to clipboard!'),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                        Navigator.of(ctx).pop();
+                      },
+                      icon: const Icon(Icons.copy, size: 20),
+                      label: const Text('Copy Template'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _doExport() async {
     // Load all chemicals (not just searched ones)
     final all = await _repository.getAll();
@@ -347,31 +451,43 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
               // Header Bar
               Row(
                 children: [
-                  Text(
-                    'My Chemicals',
-                    style: AppTextStyles.h2.copyWith(
-                      color: AppColors.primary,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
+                  Expanded(
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 8,
+                      runSpacing: 4,
+                      children: [
+                        Text(
+                          'My Chemicals',
+                          style: AppTextStyles.h2.copyWith(
+                            color: AppColors.primary,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: AppColors.primarySurface,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'Notebook',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.primary,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: AppColors.primarySurface,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      'Notebook',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.primary,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  IconButton(
+                    icon: const Icon(Icons.text_snippet_outlined, color: AppColors.primary, size: 24),
+                    tooltip: 'Text File Template Guide',
+                    onPressed: _showTxtStructureDialog,
                   ),
-                  const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.import_export, color: AppColors.primary, size: 24),
                     tooltip: 'Import / Export',
@@ -379,7 +495,7 @@ class _MyChemicalsScreenState extends State<MyChemicalsScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 12),
               Text(
                 'Personal Laboratory Chemical Notebook',
                 style: AppTextStyles.bodyMedium,

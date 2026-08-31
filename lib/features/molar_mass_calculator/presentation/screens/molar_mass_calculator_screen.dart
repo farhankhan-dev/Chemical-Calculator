@@ -5,6 +5,8 @@ import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/utils/format_utils.dart';
 import '../../../../data/datasources/chemical_local_datasource.dart';
 import '../../../../data/models/chemical_model.dart';
+import '../../../../core/utils/formula_parser.dart';
+
 import '../../../home/presentation/widgets/chemical_search_bar.dart';
 
 class MolarMassCalculatorScreen extends StatefulWidget {
@@ -18,22 +20,13 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
   final TextEditingController _formulaController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final ChemicalLocalDatasource _datasource = ChemicalLocalDatasource();
-  
+  final FormulaParser _formulaParser = FormulaParser();
+
   double? _totalMass;
 
   String? _error;
   List<ChemicalModel> _suggestions = [];
   ChemicalModel? _selectedChemical;
-
-  static const Map<String, double> atomicWeights = {
-    'H': 1.008, 'He': 4.0026, 'Li': 6.94, 'Be': 9.0122, 'B': 10.81, 'C': 12.011, 'N': 14.007, 'O': 15.999, 'F': 18.998, 'Ne': 20.180,
-    'Na': 22.990, 'Mg': 24.305, 'Al': 26.982, 'Si': 28.085, 'P': 30.974, 'S': 32.06, 'Cl': 35.45, 'Ar': 39.95, 'K': 39.098, 'Ca': 40.078,
-    'Sc': 44.956, 'Ti': 47.867, 'V': 50.942, 'Cr': 51.996, 'Mn': 54.938, 'Fe': 55.845, 'Co': 58.933, 'Ni': 58.693, 'Cu': 63.546, 'Zn': 65.38,
-    'Ga': 69.723, 'Ge': 72.630, 'As': 74.922, 'Se': 78.971, 'Br': 79.904, 'Kr': 83.798, 'Rb': 85.468, 'Sr': 87.62, 'Y': 88.906, 'Zr': 91.224,
-    'Nb': 92.906, 'Mo': 95.95, 'Ru': 101.07, 'Rh': 102.91, 'Pd': 106.42, 'Ag': 107.87, 'Cd': 112.41, 'In': 114.82, 'Sn': 118.71, 'Sb': 121.76,
-    'Te': 127.60, 'I': 126.90, 'Xe': 131.29, 'Cs': 132.91, 'Ba': 137.33, 'W': 183.84, 'Pt': 195.08, 'Au': 196.97, 'Hg': 200.59, 'Pb': 207.2,
-    'Bi': 208.98, 'U': 238.03,
-  };
 
   @override
   void dispose() {
@@ -64,14 +57,16 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
   }
 
   void _calculate() {
-    String formula = _formulaController.text.trim();
-    if (formula.isEmpty) return;
-    
-    // Basic parser for flat formulas like H2SO4, C6H12O6
-    final regex = RegExp(r'([A-Z][a-z]*)(\d*)');
-    double total = 0.0;
-    List<Map<String, dynamic>> breakdown = [];
-    bool hasError = false;
+    final formula = _formulaController.text.trim();
+    if (formula.isEmpty) {
+      if (mounted) {
+        setState(() {
+          _totalMass = null;
+          _error = null;
+        });
+      }
+      return;
+    }
 
     if (_selectedChemical != null && formula == _selectedChemical!.formula) {
       setState(() {
@@ -91,74 +86,19 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
       return;
     }
 
-    // Check if there are unsupported characters like brackets
-    if (formula.contains('(') || formula.contains(')')) {
+    final result = _formulaParser.parse(formula);
+    if (!result.isValid) {
       setState(() {
-        _error = 'Brackets are not supported in this version. Please multiply out the elements (e.g., N2H8S1O4 instead of (NH4)2SO4).';
+        _error = result.error;
         _totalMass = null;
       });
       return;
     }
 
-    final matches = regex.allMatches(formula);
-    if (matches.isEmpty) {
-      setState(() {
-        _error = 'Invalid chemical formula format.';
-        _totalMass = null;
-      });
-      return;
-    }
-
-    // Check if the whole string was matched
-    String matchedString = matches.map((m) => m.group(0)).join('');
-    if (matchedString != formula) {
-      setState(() {
-        _error = 'Formula contains invalid characters or elements.';
-        _totalMass = null;
-      });
-      return;
-    }
-
-    for (final match in matches) {
-      String element = match.group(1)!;
-      String countStr = match.group(2)!;
-      int count = countStr.isEmpty ? 1 : int.parse(countStr);
-
-      if (!atomicWeights.containsKey(element)) {
-        hasError = true;
-        _error = 'Unknown element: $element';
-        break;
-      }
-
-      double weight = atomicWeights[element]!;
-      double contribution = weight * count;
-      total += contribution;
-
-      // Check if we already have this element in breakdown (e.g., CH3COOH -> C appears twice)
-      int existingIndex = breakdown.indexWhere((b) => b['element'] == element);
-      if (existingIndex != -1) {
-        breakdown[existingIndex]['count'] += count;
-        breakdown[existingIndex]['contribution'] += contribution;
-      } else {
-        breakdown.add({
-          'element': element,
-          'count': count,
-          'weight': weight,
-          'contribution': contribution,
-        });
-      }
-    }
-
-    if (hasError) {
-      setState(() {
-        _totalMass = null;
-      });
-    } else {
-      setState(() {
-        _error = null;
-        _totalMass = total;
-      });
-    }
+    setState(() {
+      _totalMass = result.molarMass;
+      _error = null;
+    });
 
     FocusScope.of(context).unfocus();
     Future.delayed(const Duration(milliseconds: 300), () {

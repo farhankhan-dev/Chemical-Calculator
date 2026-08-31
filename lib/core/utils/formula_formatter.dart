@@ -55,17 +55,27 @@ class FormulaFormatter {
       return null;
     }
 
-    // Try 1-letter first (prioritize common elements like C, O, H, N, S, P)
-    String oneLetter = s.substring(0, 1).toLowerCase();
-    if (lowerToProper.containsKey(oneLetter)) {
-      String proper = lowerToProper[oneLetter]!;
-      String? rest = _tokenize(s.substring(1));
-      if (rest != null) {
-        return proper + rest;
+    // 1. Try 2-letter exact casing match first (respect user input like "Co" vs "CO")
+    if (s.length >= 2) {
+      String twoOriginal = s.substring(0, 2);
+      if (elements.contains(twoOriginal)) {
+        String? rest = _tokenize(s.substring(2));
+        if (rest != null) {
+          return twoOriginal + rest;
+        }
       }
     }
 
-    // If 1-letter failed (or wasn't viable for the rest of string), try 2-letter
+    // 2. Try 1-letter exact casing match
+    String oneOriginal = s.substring(0, 1);
+    if (elements.contains(oneOriginal)) {
+      String? rest = _tokenize(s.substring(1));
+      if (rest != null) {
+        return oneOriginal + rest;
+      }
+    }
+
+    // 3. Try 2-letter guessed match (e.g. user typed "cu", we guess "Cu")
     if (s.length >= 2) {
       String twoLetter = s.substring(0, 2).toLowerCase();
       if (lowerToProper.containsKey(twoLetter)) {
@@ -74,6 +84,16 @@ class FormulaFormatter {
         if (rest != null) {
           return proper + rest;
         }
+      }
+    }
+
+    // 4. Try 1-letter guessed match (e.g. user typed "c", we guess "C")
+    String oneLetter = s.substring(0, 1).toLowerCase();
+    if (lowerToProper.containsKey(oneLetter)) {
+      String proper = lowerToProper[oneLetter]!;
+      String? rest = _tokenize(s.substring(1));
+      if (rest != null) {
+        return proper + rest;
       }
     }
 
