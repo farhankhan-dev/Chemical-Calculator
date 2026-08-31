@@ -3,7 +3,9 @@ ABOUT CHEMI CALC
 Welcome to Chemi Calc, your ultimate personal laboratory assistant!
 
 OUR MISSION
-We built Chemi Calc to bridge the gap between heavy, complex chemistry desktop software and the need for quick, accessible, and mathematically sound calculations on the go. Whether you are a high school student balancing your first equations, a university researcher diluting complex molar solutions, or an enthusiast exploring the periodic table, Chemi Calc is designed to make your workflow seamless and fast.
+Chemi Calc is proudly crafted by Codevelop Solutions. We built Chemi Calc to bridge the gap between heavy, complex chemistry desktop software and the need for quick, accessible, and mathematically sound calculations on the go. Whether you are a high school student balancing your first equations, a university researcher diluting complex molar solutions, or an enthusiast exploring the periodic table, Chemi Calc is designed to make your workflow seamless and fast.
+
+For any app-related issues or inquiries, please contact us at codevelop.in@gmail.com.
 
 FEATURES
 - Comprehensive Periodic Table: A full, dynamic periodic table with detailed properties for all 118 elements.

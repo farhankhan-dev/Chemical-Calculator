@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../dilution_calculator/presentation/screens/dilution_calculator_screen.dart';
 import '../../../molarity_calculator/presentation/screens/molarity_calculator_screen.dart';
@@ -284,6 +285,14 @@ class CalculatorsScreen extends StatelessWidget {
                   )));
                 },
               ),
+              ListTile(
+                leading: const Icon(Icons.support_agent_outlined, color: AppColors.primary),
+                title: const Text('Support'),
+                onTap: () {
+                  Navigator.pop(context); // Close bottom sheet
+                  _showSupportDialog(context);
+                },
+              ),
               const SizedBox(height: 8),
             ],
           ),
@@ -293,4 +302,88 @@ class CalculatorsScreen extends StatelessWidget {
   }
 
   // Removed _showDocumentDialog as it is replaced by LegalDocumentScreen
+
+  void _showSupportDialog(BuildContext context) {
+    final TextEditingController messageController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          backgroundColor: AppColors.surface,
+          title: Column(
+            children: [
+              const Icon(Icons.support_agent_outlined, size: 48, color: AppColors.primary),
+              const SizedBox(height: 8),
+              Text(
+                'Codevelop Solutions',
+                style: AppTextStyles.h3.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'For any app related issues, please contact codevelop.in@gmail.com or type your message below to send an email.',
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: messageController,
+                maxLines: 4,
+                decoration: InputDecoration(
+                  hintText: 'Type your message...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Cancel', style: TextStyle(color: AppColors.textSecondary)),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              onPressed: () async {
+                final message = messageController.text;
+                final Uri emailLaunchUri = Uri(
+                  scheme: 'mailto',
+                  path: 'codevelop.in@gmail.com',
+                  queryParameters: {
+                    'subject': 'ChemiCalc Support Request',
+                    if (message.isNotEmpty) 'body': message,
+                  },
+                );
+
+                try {
+                  await launchUrl(emailLaunchUri);
+                  if (ctx.mounted) Navigator.pop(ctx);
+                } catch (e) {
+                  if (ctx.mounted) {
+                    ScaffoldMessenger.of(ctx).showSnackBar(
+                      const SnackBar(content: Text('Could not open email app.')),
+                    );
+                  }
+                }
+              },
+              child: const Text('Send Email', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
