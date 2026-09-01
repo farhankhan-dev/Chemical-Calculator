@@ -27,10 +27,101 @@ class PeriodicTableGrid extends StatefulWidget {
   State<PeriodicTableGrid> createState() => _PeriodicTableGridState();
 }
 
-class _PeriodicTableGridState extends State<PeriodicTableGrid> {
+class _PeriodicTableGridState extends State<PeriodicTableGrid> with SingleTickerProviderStateMixin {
   // Cached layout values, set during build
   double _tileWidth = 44.0;
   double _tileHeight = 52.0;
+
+  late TransformationController _transformationController;
+  late AnimationController _animationController;
+  Animation<Matrix4>? _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _transformationController = TransformationController();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    )..addListener(() {
+        if (_animation != null) {
+          _transformationController.value = _animation!.value;
+        }
+      });
+  }
+
+  @override
+  void didUpdateWidget(PeriodicTableGrid oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedCategory != oldWidget.selectedCategory &&
+        widget.selectedCategory != null) {
+      _panToCategory(widget.selectedCategory!);
+    }
+  }
+
+  void _panToCategory(ElementCategory category) {
+    double minCol = 18;
+    double maxCol = 1;
+    double minRow = 10;
+    double maxRow = 1;
+
+    for (final element in widget.elementsMap.values) {
+      if (element.category == category) {
+        double c = element.group.toDouble();
+        double r = element.period.toDouble();
+
+        if (element.atomicNumber >= 57 && element.atomicNumber <= 71) {
+          r = 9;
+          c = 3.0 + (element.atomicNumber - 56);
+        } else if (element.atomicNumber >= 89 && element.atomicNumber <= 103) {
+          r = 10;
+          c = 3.0 + (element.atomicNumber - 88);
+        }
+
+        if (c < minCol) minCol = c;
+        if (c > maxCol) maxCol = c;
+        if (r < minRow) minRow = r;
+        if (r > maxRow) maxRow = r;
+      }
+    }
+
+    if (minCol > maxCol || minRow > maxRow) return;
+
+    final centerX = ((minCol + maxCol) / 2) * (_tileWidth + 3);
+    final centerY = ((minRow + maxRow) / 2) * (_tileHeight + 3);
+
+    final size = MediaQuery.of(context).size;
+    final viewWidth = size.width;
+    final viewHeight = size.height;
+
+    final currentMatrix = _transformationController.value;
+    final scale = currentMatrix.getMaxScaleOnAxis();
+
+    // Center horizontally, and place slightly above vertical center
+    final dx = (viewWidth / 2) - (centerX * scale);
+    final dy = (viewHeight / 3) - (centerY * scale);
+
+    final targetMatrix = Matrix4.identity()
+      ..translate(dx, dy)
+      ..scale(scale);
+
+    _animation = Matrix4Tween(
+      begin: currentMatrix,
+      end: targetMatrix,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _animationController.forward(from: 0.0);
+  }
+
+  @override
+  void dispose() {
+    _transformationController.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }
 
   // ---------------------------------------------------------------------------
   // Build
@@ -65,6 +156,7 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid> {
         );
 
         return InteractiveViewer(
+          transformationController: _transformationController,
           minScale: 0.01,
           maxScale: 4.0,
           constrained: false,

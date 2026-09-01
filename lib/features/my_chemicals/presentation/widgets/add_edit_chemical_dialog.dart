@@ -275,11 +275,9 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
 
       ChemicalModel? dup;
       for (final c in all) {
-        if (c.id <= 273) {
-          if (c.name.toLowerCase() == nLower || c.formula.toLowerCase() == fLower) {
-            dup = c;
-            break;
-          }
+        if (c.name.toLowerCase() == nLower || c.formula.toLowerCase() == fLower) {
+          dup = c;
+          break;
         }
       }
 

@@ -3,7 +3,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../data/models/chemical_model.dart';
-import '../../../../data/datasources/chemical_local_datasource.dart';
+
 import '../../../library/data/library_pinned_repository.dart';
 
 class ChemicalDetailScreen extends StatefulWidget {
