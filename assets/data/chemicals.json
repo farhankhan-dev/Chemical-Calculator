@@ -1890,21 +1890,6 @@
     "note": "Organic solvent; used as anesthetic and as solvent"
   },
   {
-    "id": 83,
-    "name": "Dihydrogen monoxide",
-    "formula": "H₂O",
-    "molecularWeight": 18.01528,
-    "equivalentWeight": 18.01528,
-    "density": 1.0,
-    "meltingPoint": 0.0,
-    "boilingPoint": 100.0,
-    "casNumber": "7732-18-5",
-    "category": "Inorganic Compound",
-    "atomicNumber": null,
-    "atomicMass": null,
-    "note": "The universal solvent; exhibits anomalous physical properties due to extensive hydrogen bonding network • MP: 0.0°C; abnormally high for a hydride of Group 16 due to H-bonding • BP: 100.0°C; extremely high for a small molecule (compare H2S = -60°C) • Highest heat capacity of any common liquid (4.18 J/g·K); maximum density at 4°C • Essential for all known life; primary solvent in biological and chemical systems; standard reference point for thermodynamics"
-  },
-  {
     "id": 84,
     "name": "Dimethyl sulfoxide",
     "formula": "C₂H₆OS",

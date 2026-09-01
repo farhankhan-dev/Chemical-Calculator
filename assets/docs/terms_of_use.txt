@@ -1,0 +1,25 @@
+TERMS OF USE FOR CHEMI CALC
+
+Effective Date: 2026-08-20
+
+Welcome to Chemi Calc! By downloading or using the app, these terms will automatically apply to you – you should make sure therefore that you read them carefully before using the app.
+
+1. APP USAGE
+Chemi Calc is provided as an educational and utility tool for students, teachers, and professionals. The app is completely offline and processes all chemical calculations directly on your device CPU. 
+
+2. ACCURACY OF CALCULATIONS
+While we have meticulously programmed the underlying algorithms (including Molar Mass, Molarity, Molality, Equivalent Weight, and Dilution calculators) using standard scientific formulas and atomic weight data, we do not guarantee absolute 100% accuracy. 
+- The App should be used for educational and reference purposes only.
+- You should not rely on these calculations for highly sensitive, dangerous, or life-critical chemical synthesis, industrial mixing, or medical dosing. 
+- We hold no liability for any physical or chemical accidents resulting from the use of calculations provided by this App.
+
+3. INTELLECTUAL PROPERTY
+The app itself, and all the trade marks, copyright, database rights, and other intellectual property rights related to it, belong to the developer. You are not allowed to copy or modify the app, any part of the app, or our trademarks in any way. 
+
+4. UPDATES AND AVAILABILITY
+The app is currently available on Android. The requirements for the system (and for any additional systems we decide to extend the availability of the app to) may change, and you will need to download the updates if you want to keep using the app. We do not promise that it will always update the app so that it is relevant to you and/or works with the Android version that you have installed on your device.
+
+5. CHANGES TO TERMS
+We may update our Terms of Use from time to time. Thus, you are advised to review this page periodically for any changes. 
+
+By using Chemi Calc, you signify your acceptance of these Terms of Use.

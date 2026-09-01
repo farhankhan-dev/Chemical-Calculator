@@ -1,0 +1,30 @@
+TERMS AND CONDITIONS FOR CHEMI CALC
+
+Effective Date: 2026-08-20
+
+Please read these Terms and Conditions carefully before using the Chemi Calc mobile application.
+
+1. GENERAL AGREEMENT
+By accessing or using the App, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the App.
+
+2. NO WARRANTY
+The application and all of its tools (Periodic Table, Calculators, Notebook) are provided "AS IS" and "AS AVAILABLE" without any warranties of any kind, either express or implied, including, but not limited to, the implied warranties of merchantability, fitness for a particular purpose, or non-infringement.
+
+3. OFFLINE CAPABILITIES AND DATA LOSS
+Because Chemi Calc is a 100% offline application:
+- We do not back up your data to the cloud.
+- If you uninstall the app, clear the app data, or lose your device, any custom chemicals or notes saved in "My Chemicals" will be permanently lost.
+- We highly recommend manually exporting your chemical notebook periodically using the in-app export feature.
+
+4. LIMITATION OF LIABILITY
+In no event shall the developer of Chemi Calc be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from:
+(i) your access to or use of or inability to access or use the App;
+(ii) any conduct or content of any third party on the App;
+(iii) any content obtained from the App; and
+(iv) unauthorized access, use or alteration of your transmissions or content.
+
+5. MEDICAL & PROFESSIONAL ADVICE DISCLAIMER
+Chemi Calc is NOT a substitute for professional chemical, medical, or pharmacological advice. Calculations should be verified by a certified professional before being used in real-world physical mixing, ingestion, or industrial applications.
+
+6. GOVERNING LAW
+These Terms shall be governed and construed in accordance with the laws of your jurisdiction, without regard to its conflict of law provisions.

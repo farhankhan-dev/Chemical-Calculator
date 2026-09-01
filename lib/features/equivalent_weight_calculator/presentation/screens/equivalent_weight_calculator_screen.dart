@@ -3,9 +3,12 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../data/models/chemical_model.dart';
+import '../../../../core/utils/formula_parser.dart';
 import '../../../../core/widgets/chemical_selector.dart';
 import '../../../../core/utils/format_utils.dart';
-
+import '../../../my_chemicals/data/custom_chemical_repository.dart';
+import '../../../../data/datasources/chemical_local_datasource.dart';
+import '../../../library/data/library_pinned_repository.dart';
 class EquivalentWeightCalculatorScreen extends StatefulWidget {
   const EquivalentWeightCalculatorScreen({super.key});
 
@@ -15,6 +18,8 @@ class EquivalentWeightCalculatorScreen extends StatefulWidget {
 
 class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalculatorScreen> {
   ChemicalModel? _selectedChemical;
+  final FormulaParser _formulaParser = FormulaParser();
+  final TextEditingController _formulaController = TextEditingController();
 
   final TextEditingController _molarMassController = TextEditingController();
   final TextEditingController _nFactorController = TextEditingController();
@@ -25,16 +30,46 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
 
   @override
   void dispose() {
+    _formulaController.dispose();
     _molarMassController.dispose();
     _nFactorController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
+  String? _validationError;
+
   void _calculateManual() {
-    final molarMass = double.tryParse(_molarMassController.text);
-    final nFactor = double.tryParse(_nFactorController.text);
-    if (molarMass == null || nFactor == null || nFactor == 0) return;
+    setState(() {
+      _validationError = null;
+    });
+
+    final molarMassText = _molarMassController.text.trim();
+    final nFactorText = _nFactorController.text.trim();
+
+    if (molarMassText.isEmpty || nFactorText.isEmpty) {
+      setState(() {
+        _validationError = 'Please fill all requirements';
+      });
+      return;
+    }
+
+    final molarMass = double.tryParse(molarMassText);
+    final nFactor = double.tryParse(nFactorText);
+    
+    if (molarMass == null || nFactor == null) {
+      setState(() {
+        _validationError = 'Please enter valid numbers.';
+      });
+      return;
+    }
+
+    if (nFactor == 0) {
+      setState(() {
+        _validationError = 'n-factor cannot be zero.';
+      });
+      return;
+    }
 
     setState(() {
       _selectedChemical = null; // Clear chemical if manually calculating
@@ -44,8 +79,8 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
     });
     
     FocusScope.of(context).unfocus();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted && _scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 300),
@@ -58,6 +93,7 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
   void _selectChemical(ChemicalModel chem) {
     setState(() {
       _selectedChemical = chem;
+      _formulaController.clear();
       _molarMassController.clear();
       _nFactorController.clear();
       
@@ -71,6 +107,173 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
         _calculationString = 'Equivalent weight value N/A\nPlease use manual entry.';
       }
     });
+
+    FocusScope.of(context).unfocus();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted && _scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
+  void _showPinnedChemicalsBottomSheet(BuildContext context) async {
+    final customRepo = CustomChemicalRepository();
+    final allCustom = await customRepo.getAll();
+    final customPinnedChemicals = allCustom.where((c) => c.isPinned).toList();
+    
+    final libraryRepo = LibraryPinnedRepository();
+    final libraryPinnedIds = await libraryRepo.getPinnedIds();
+    final allLibrary = await ChemicalLocalDatasource().getAllChemicals();
+    final libraryPinnedChemicals = allLibrary.where((c) => libraryPinnedIds.contains(c.id)).toList();
+    
+    if (!mounted) return;
+    if (!context.mounted) return;
+    final searchQueryNotifier = ValueNotifier<String>('');
+    int currentView = 0;
+    
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.65,
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 8),
+                    Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(color: AppColors.border, borderRadius: BorderRadius.circular(2)),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        children: [
+                          if (currentView != 0)
+                            IconButton(
+                              icon: const Icon(Icons.arrow_back, color: AppColors.primary),
+                              onPressed: () {
+                                setModalState(() {
+                                  currentView = 0;
+                                  searchQueryNotifier.value = '';
+                                });
+                              },
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                            ),
+                          if (currentView != 0) const SizedBox(width: 16),
+                          Expanded(
+                            child: Text(
+                              currentView == 0 ? 'Pinned Chemicals' : currentView == 1 ? 'Library Pinned' : 'My Chemicals Pinned',
+                              style: AppTextStyles.h3.copyWith(color: AppColors.primaryDark),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    if (currentView == 0) ...[
+                      ListTile(
+                        leading: const Icon(Icons.library_books, color: AppColors.primary),
+                        title: const Text('Library Pinned Chemicals'),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () => setModalState(() => currentView = 1),
+                      ),
+                      const Divider(height: 1),
+                      ListTile(
+                        leading: const Icon(Icons.science, color: AppColors.primary),
+                        title: const Text('My Chemical Pinned Chemicals'),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () => setModalState(() => currentView = 2),
+                      ),
+                    ] else ...[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: 'Search...',
+                            hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                            prefixIcon: const Icon(Icons.search, color: AppColors.primary),
+                            filled: true,
+                            fillColor: AppColors.background,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.border)),
+                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.border)),
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
+                          ),
+                          onChanged: (val) => searchQueryNotifier.value = val.trim(),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Expanded(
+                        child: ValueListenableBuilder<String>(
+                          valueListenable: searchQueryNotifier,
+                          builder: (context, searchQuery, child) {
+                            final filteredCustom = customPinnedChemicals.where((c) {
+                              if (searchQuery.isEmpty) return true;
+                              return c.name.toLowerCase().contains(searchQuery.toLowerCase()) || c.formula.toLowerCase().contains(searchQuery.toLowerCase());
+                            }).toList();
+                            
+                            final filteredLibrary = libraryPinnedChemicals.where((c) {
+                              if (searchQuery.isEmpty) return true;
+                              return c.name.toLowerCase().contains(searchQuery.toLowerCase()) || c.formula.toLowerCase().contains(searchQuery.toLowerCase());
+                            }).toList();
+
+                            if ((currentView == 1 && libraryPinnedChemicals.isEmpty) || (currentView == 2 && customPinnedChemicals.isEmpty)) {
+                              return Center(child: Text('No pinned chemicals found in this section.', textAlign: TextAlign.center, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)));
+                            } else if ((currentView == 1 && filteredLibrary.isEmpty) || (currentView == 2 && filteredCustom.isEmpty)) {
+                              return Center(child: Text('No matching chemicals found.', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)));
+                            }
+
+                            final list = currentView == 1 ? filteredLibrary : filteredCustom;
+                            final trailingText = currentView == 1 ? (chem) => chem.category : (chem) => 'Custom';
+                            
+                            return ListView.builder(
+                              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                              itemCount: list.length,
+                              itemBuilder: (context, index) {
+                                final dynamic chem = list[index];
+                                return ListTile(
+                                  leading: const Icon(Icons.push_pin, color: AppColors.primary),
+                                  title: Text(chem.name, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
+                                  subtitle: Text(chem.formula, style: AppTextStyles.mono.copyWith(fontSize: 12, color: AppColors.primaryDark)),
+                                  trailing: Text(trailingText(chem), style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary)),
+                                  onTap: () {
+                                    Navigator.pop(ctx);
+                                    setState(() {
+                                      _formulaController.text = chem.formula;
+                                      _molarMassController.text = chem.molecularWeight.toStringAsFixed(4);
+                                      _selectedChemical = null;
+                                      _result = null;
+                                      _calculationString = null;
+                                    });
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            );
+          }
+        );
+      },
+    );
   }
 
   void _showEwNoteDialog(BuildContext context) {
@@ -439,7 +642,7 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
             const SizedBox(height: AppSpacing.xl),
 
             // Select Chemical
-            Text('Lookup from Database', style: AppTextStyles.label),
+            Text('Select Chemical', style: AppTextStyles.label),
             const SizedBox(height: 8),
             GestureDetector(
               onTap: () async {
@@ -496,7 +699,96 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                 const Expanded(child: Divider()),
               ],
             ),
-            const SizedBox(height: AppSpacing.xl),
+            const SizedBox(height: AppSpacing.lg),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Write Formula', style: AppTextStyles.label),
+                InkWell(
+                  onTap: () => _showPinnedChemicalsBottomSheet(context),
+                  borderRadius: BorderRadius.circular(20),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.push_pin_outlined, color: AppColors.primary, size: 16),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Pinned',
+                          style: AppTextStyles.labelSmall.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            TextField(
+              controller: _formulaController,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                hintText: 'Enter chemical formula (e.g. H2O, NaCl)...',
+                hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                prefixIcon: const Icon(Icons.edit_note_outlined, color: AppColors.primary),
+                suffixIcon: _formulaController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear, color: AppColors.textSecondary, size: 20),
+                        onPressed: () {
+                          _formulaController.clear();
+                          setState(() {});
+                        },
+                      )
+                    : null,
+                filled: true,
+                fillColor: AppColors.surface,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.border),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.border),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+                ),
+              ),
+              onChanged: (val) {
+                if (val.isNotEmpty) {
+                  final parseResult = _formulaParser.parse(val);
+                  if (parseResult.isValid) {
+                    _molarMassController.text = parseResult.molarMass.toStringAsFixed(4);
+                  }
+                  if (_selectedChemical != null) {
+                    _selectedChemical = null;
+                    _result = null;
+                    _calculationString = null;
+                  }
+                }
+                setState(() {});
+              },
+            ),
+            const SizedBox(height: AppSpacing.lg),
+
+            Row(
+              children: [
+                const Expanded(child: Divider()),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text('OR', style: AppTextStyles.bodySmall),
+                ),
+                const Expanded(child: Divider()),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.lg),
 
             // Manual Entry
             Text('Manual Calculation', style: AppTextStyles.label),
@@ -511,6 +803,7 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                       const SizedBox(height: 4),
                       TextField(
                         controller: _molarMassController,
+                        textInputAction: TextInputAction.next,
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                           filled: true,
@@ -534,6 +827,8 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                       const SizedBox(height: 4),
                       TextField(
                         controller: _nFactorController,
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (_) => _calculateManual(),
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                           filled: true,
@@ -555,18 +850,25 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
               child: ElevatedButton(
                 onPressed: _calculateManual,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.surface,
-                  foregroundColor: AppColors.primary,
+                  backgroundColor: AppColors.primary,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  elevation: 0,
-                  side: const BorderSide(color: AppColors.border),
                 ),
-                child: Text('Calculate Manually', style: AppTextStyles.h3.copyWith(color: AppColors.primary)),
+                child: Text('Calculate Manually', style: AppTextStyles.h3.copyWith(color: Colors.white)),
               ),
             ),
 
-            if (_result != null || _calculationString != null) ...[
+            if (_validationError != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: Text(
+                  _validationError!,
+                  style: AppTextStyles.bodyMedium.copyWith(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+
+            if (_validationError == null && (_result != null || _calculationString != null)) ...[
               const SizedBox(height: AppSpacing.xl),
               Container(
                 width: double.infinity,

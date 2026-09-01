@@ -36,23 +36,45 @@ class _DilutionCalculatorScreenState extends State<DilutionCalculatorScreen> {
       _validationError = null;
     });
 
+    final c1Text = _c1Controller.text.trim();
+    final v1Text = _v1Controller.text.trim();
+    final c2Text = _c2Controller.text.trim();
+    final v2Text = _v2Controller.text.trim();
+
     int emptyCount = 0;
-    if (_c1Controller.text.isEmpty) emptyCount++;
-    if (_v1Controller.text.isEmpty) emptyCount++;
-    if (_c2Controller.text.isEmpty) emptyCount++;
-    if (_v2Controller.text.isEmpty) emptyCount++;
+    if (c1Text.isEmpty) emptyCount++;
+    if (v1Text.isEmpty) emptyCount++;
+    if (c2Text.isEmpty) emptyCount++;
+    if (v2Text.isEmpty) emptyCount++;
 
     if (emptyCount != 1) {
       setState(() {
-        _validationError = 'Please fill all requirements (leave exactly 1 empty)';
+        _validationError = 'Please fill exactly 3 fields (leave 1 empty)';
       });
       return;
     }
 
-    final c1 = double.tryParse(_c1Controller.text);
-    final v1 = double.tryParse(_v1Controller.text);
-    final c2 = double.tryParse(_c2Controller.text);
-    final v2 = double.tryParse(_v2Controller.text);
+    final c1 = c1Text.isEmpty ? null : double.tryParse(c1Text);
+    final v1 = v1Text.isEmpty ? null : double.tryParse(v1Text);
+    final c2 = c2Text.isEmpty ? null : double.tryParse(c2Text);
+    final v2 = v2Text.isEmpty ? null : double.tryParse(v2Text);
+
+    if ((c1Text.isNotEmpty && c1 == null) ||
+        (v1Text.isNotEmpty && v1 == null) ||
+        (c2Text.isNotEmpty && c2 == null) ||
+        (v2Text.isNotEmpty && v2 == null)) {
+      setState(() {
+        _validationError = 'Please enter valid numbers.';
+      });
+      return;
+    }
+
+    if ((v1 == 0 && c1 == null) || (c1 == 0 && v1 == null) || (v2 == 0 && c2 == null) || (c2 == 0 && v2 == null)) {
+      setState(() {
+        _validationError = 'Cannot divide by zero.';
+      });
+      return;
+    }
 
     setState(() {
       if (c1 == null) {
@@ -75,8 +97,8 @@ class _DilutionCalculatorScreenState extends State<DilutionCalculatorScreen> {
     });
 
     FocusScope.of(context).unfocus();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted && _scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 300),
@@ -105,6 +127,8 @@ class _DilutionCalculatorScreenState extends State<DilutionCalculatorScreen> {
         const SizedBox(height: 4),
         TextField(
           controller: controller,
+          textInputAction: TextInputAction.done,
+          onSubmitted: (_) => _calculate(),
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           decoration: InputDecoration(
             hintText: hint,

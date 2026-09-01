@@ -58,48 +58,60 @@ class ElementTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Top Row: Atomic Number
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      '${element.atomicNumber}',
-                      style: TextStyle(
-                        fontSize: 8,
-                        fontWeight: FontWeight.bold,
-                        color: isHighlighted ? Colors.white : AppColors.textSecondary,
-                        height: 1.0,
+                  Flexible(
+                    flex: 1,
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          '${element.atomicNumber}',
+                          style: TextStyle(
+                            fontSize: 8,
+                            fontWeight: FontWeight.bold,
+                            color: isHighlighted ? Colors.white : AppColors.textSecondary,
+                            height: 1.0,
+                          ),
+                        ),
                       ),
                     ),
                   ),
 
                   // Center: Symbol (Prominent)
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      element.symbol,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w900,
-                        color: isHighlighted ? Colors.white : AppColors.textPrimary,
-                        letterSpacing: -0.5,
-                        height: 1.0,
+                  Flexible(
+                    flex: 3,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        element.symbol,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w900,
+                          color: isHighlighted ? Colors.white : AppColors.textPrimary,
+                          letterSpacing: -0.5,
+                          height: 1.0,
+                        ),
                       ),
                     ),
                   ),
 
                   // Bottom: Name (Compact)
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      element.name,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 7.5,
-                        fontWeight: FontWeight.w600,
-                        color: isHighlighted ? Colors.white : AppColors.textPrimary,
-                        height: 1.0,
+                  Flexible(
+                    flex: 2,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        element.name,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 7.5,
+                          fontWeight: FontWeight.w600,
+                          color: isHighlighted ? Colors.white : AppColors.textPrimary,
+                          height: 1.0,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],

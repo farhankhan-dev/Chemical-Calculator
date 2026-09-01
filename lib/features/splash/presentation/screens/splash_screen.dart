@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
+import '../../../../core/services/preferences_service.dart';
 
 /// Animated splash screen — 1.4 seconds.
 ///
@@ -19,7 +20,12 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _controller;
   late Animation<double> _logoScale;
   late Animation<double> _textFade;
-  late Animation<double> _poweredFade;
+
+  // Typing animation
+  static const String _devText = 'Developed by Codevelop Solutions';
+  String _typedText = '';
+  int _charIndex = 0;
+  bool _typingStarted = false;
 
   @override
   void initState() {
@@ -46,21 +52,38 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    // Powered text fades in
-    _poweredFade = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.45, 0.75, curve: Curves.easeIn),
-      ),
-    );
+    _controller.addListener(() {
+      // Start typing after 40% of the main animation
+      if (_controller.value >= 0.4 && !_typingStarted) {
+        _typingStarted = true;
+        _startTyping();
+      }
+    });
 
     _controller.forward();
 
     // Navigate to home after 2.5 seconds
-    Future.delayed(const Duration(milliseconds: 2500), () {
+    Future.delayed(const Duration(milliseconds: 2500), () async {
+      final hasSeenOnboarding = await PreferencesService.hasSeenOnboarding();
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/home');
+        if (hasSeenOnboarding) {
+          Navigator.of(context).pushReplacementNamed('/home');
+        } else {
+          Navigator.of(context).pushReplacementNamed('/onboarding');
+        }
       }
+    });
+  }
+
+  void _startTyping() {
+    Future.doWhile(() async {
+      await Future.delayed(const Duration(milliseconds: 45));
+      if (!mounted || _charIndex >= _devText.length) return false;
+      setState(() {
+        _charIndex++;
+        _typedText = _devText.substring(0, _charIndex);
+      });
+      return _charIndex < _devText.length;
     });
   }
 
@@ -129,7 +152,7 @@ class _SplashScreenState extends State<SplashScreen>
                 Opacity(
                   opacity: _textFade.value,
                   child: Text(
-                    'Chemical Formulas in One Place',
+                    'Chemical Calculators in One Place',
                     style: AppTextStyles.splashSubtitle.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -138,19 +161,16 @@ class _SplashScreenState extends State<SplashScreen>
 
                 const Spacer(flex: 3),
 
-                // "Powered by Devriz" at bottom
-                Opacity(
-                  opacity: _poweredFade.value,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 48),
-                    child: Text(
-                      'Powered by Devriz',
-                      style: AppTextStyles.splashSubtitle.copyWith(
-                        color: AppColors.textTertiary,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.5,
-                      ),
+                // Typing animation text
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 48),
+                  child: Text(
+                    _typedText,
+                    style: AppTextStyles.splashSubtitle.copyWith(
+                      color: AppColors.textTertiary,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.5,
                     ),
                   ),
                 ),

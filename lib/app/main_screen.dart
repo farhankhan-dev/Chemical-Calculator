@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/calculators/presentation/screens/calculators_screen.dart';
 import '../features/library/presentation/screens/library_screen.dart';
+import '../features/my_chemicals/presentation/screens/my_chemicals_screen.dart';
 import '../features/periodic_table/presentation/screens/periodic_table_screen.dart';
+import '../core/widgets/banner_ad_widget.dart';
 import 'theme/app_colors.dart';
 
 class MainScreen extends StatefulWidget {
@@ -19,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
     CalculatorsScreen(),
     PeriodicTableScreen(),
     LibraryScreen(),
+    MyChemicalsScreen(),
   ];
 
   void _onTabSelected(int index) {
@@ -29,15 +33,60 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onTabSelected,
-        type: BottomNavigationBarType.fixed,
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+
+        if (_currentIndex != 0) {
+          setState(() {
+            _currentIndex = 0;
+          });
+        } else {
+          final shouldExit = await showDialog<bool>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: const Text('Exit App'),
+              content: const Text('Are you sure you want to exit?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(ctx).pop(false),
+                  child: Text('No', style: TextStyle(color: AppColors.textSecondary)),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(ctx).pop(true),
+                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
+                  child: const Text('Yes', style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
+          );
+
+          if (shouldExit == true) {
+            SystemNavigator.pop();
+          }
+        }
+      },
+      child: Scaffold(
+        body: Column(
+          children: [
+            Expanded(
+              child: IndexedStack(
+                index: _currentIndex,
+                children: _screens,
+              ),
+            ),
+            const BannerAdWidget(),
+          ],
+        ),
+      bottomNavigationBar: isLandscape 
+          ? null 
+          : BottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: _onTabSelected,
+              type: BottomNavigationBarType.fixed,
         backgroundColor: AppColors.surface,
         selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.textSecondary,
@@ -62,9 +111,14 @@ class _MainScreenState extends State<MainScreen> {
             activeIcon: Icon(Icons.menu_book),
             label: 'Library',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.science_outlined),
+            activeIcon: Icon(Icons.science),
+            label: 'My Chemicals',
+          ),
         ],
       ),
+    ),
     );
   }
 }
-

@@ -15,6 +15,8 @@ class ChemicalSearchBar extends StatelessWidget {
   final ValueChanged<ChemicalModel> onSelected;
   final VoidCallback? onClear;
   final String hintText;
+  final bool showSearchIcon;
+  final bool hasSelection;
 
   const ChemicalSearchBar({
     super.key,
@@ -24,6 +26,8 @@ class ChemicalSearchBar extends StatelessWidget {
     required this.onSelected,
     this.onClear,
     this.hintText = 'Type chemical name...',
+    this.showSearchIcon = true,
+    this.hasSelection = false,
   });
 
   @override
@@ -33,7 +37,7 @@ class ChemicalSearchBar extends StatelessWidget {
       children: [
         // Label
         Text(
-          ' Enter Chemical Formula to get results',
+          ' Enter Chemical Formula To Get Details',
           style: AppTextStyles.label.copyWith(
             fontWeight: FontWeight.w600,
           ),
@@ -45,14 +49,17 @@ class ChemicalSearchBar extends StatelessWidget {
         TextField(
           controller: controller,
           onChanged: onChanged,
+          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
           style: AppTextStyles.bodyLarge,
           decoration: InputDecoration(
             hintText: hintText,
-            prefixIcon: const Icon(
-              Icons.search_rounded,
-              color: AppColors.textTertiary,
-              size: 22,
-            ),
+            prefixIcon: showSearchIcon
+                ? const Icon(
+                    Icons.search_rounded,
+                    color: AppColors.textTertiary,
+                    size: 22,
+                  )
+                : null,
             suffixIcon: controller.text.isNotEmpty
                 ? IconButton(
                     onPressed: onClear,
@@ -70,6 +77,15 @@ class ChemicalSearchBar extends StatelessWidget {
         if (suggestions.isNotEmpty) ...[
           const SizedBox(height: 4),
           _buildSuggestionsList(),
+        ] else if (controller.text.trim().isNotEmpty && !hasSelection) ...[
+          const SizedBox(height: 4),
+          Padding(
+            padding: const EdgeInsets.only(left: 4, top: 4),
+            child: Text(
+              'Chemical not found',
+              style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
+            ),
+          ),
         ],
       ],
     );

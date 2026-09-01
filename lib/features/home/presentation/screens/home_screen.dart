@@ -62,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ChemicalSearchBar(
                 controller: _textController,
                 suggestions: _controller.suggestions,
+                hasSelection: _controller.selectedChemical != null,
                 onChanged: (query) {
                   _controller.onQueryChanged(query);
                 },
@@ -83,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ChemicalInfoCard(
                   chemical: _controller.selectedChemical!,
                 ),
-              ] else if (_controller.recentSearches.isNotEmpty) ...[
+              ] else if (_controller.recentSearches.isNotEmpty || _controller.canUndoClear) ...[
                 const SizedBox(height: AppSpacing.lg),
                 _buildRecentSearches(),
               ],
@@ -146,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                ' Chemical Formulas\n in One Place',
+                ' Chemical Calculators\n In One Place',
                 style: AppTextStyles.bodyMedium.copyWith(
                   fontSize: 14,
                   height: 1.4,
@@ -204,14 +205,18 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             InkWell(
               onTap: () async {
-                await _controller.clearRecentSearches();
+                if (_controller.canUndoClear) {
+                  await _controller.undoClearRecentSearches();
+                } else {
+                  await _controller.clearRecentSearches();
+                }
                 setState(() {});
               },
               borderRadius: BorderRadius.circular(8),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 child: Text(
-                  'Clear',
+                  _controller.canUndoClear ? 'Undo' : 'Clear All',
                   style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.textTertiary,
                     fontWeight: FontWeight.w500,

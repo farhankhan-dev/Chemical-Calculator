@@ -15,7 +15,11 @@ dependencies:
   flutter_svg: ^2.0.17
   google_fonts: ^6.2.1
   shared_preferences: ^2.5.5
+  file_picker: ^8.0.0
   image: 4.8.0
+  path_provider: 2.1.5
+  google_mobile_ads: ^7.0.0
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
@@ -31,7 +35,7 @@ flutter_launcher_icons:
   image_path_ios: "assets/icons/logo 2.png"
   min_sdk_android: 21
   adaptive_icon_background: "#0A6CF0"
-  adaptive_icon_foreground: "assets/icons/logo 2.png"
+  adaptive_icon_foreground: "assets/icons/logo 2  .png"
   remove_alpha_ios: true
 
 
@@ -50,6 +54,10 @@ flutter:
     - assets/data/
     - assets/icons/
     - assets/images/
+    - assets/docs/about_us.txt
+    - assets/docs/privacy_policy.txt
+    - assets/docs/terms_and_conditions.txt
+    - assets/docs/terms_of_use.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

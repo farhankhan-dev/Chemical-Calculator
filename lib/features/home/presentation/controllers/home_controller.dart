@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+
+import 'package:flutter/foundation.dart';
 import '../../../../data/datasources/chemical_local_datasource.dart';
 import '../../../../data/models/chemical_model.dart';
 import '../../../../core/services/preferences_service.dart';
@@ -11,6 +12,7 @@ class HomeController extends ChangeNotifier {
 
   List<ChemicalModel> _suggestions = [];
   List<ChemicalModel> _recentSearches = [];
+  List<ChemicalModel> _clearedRecentSearches = [];
   ChemicalModel? _selectedChemical;
   bool _isLoading = false;
   String _query = '';
@@ -20,6 +22,8 @@ class HomeController extends ChangeNotifier {
   ChemicalModel? get selectedChemical => _selectedChemical;
   bool get isLoading => _isLoading;
   String get query => _query;
+  
+  bool get canUndoClear => _clearedRecentSearches.isNotEmpty && _recentSearches.isEmpty;
 
   /// Initialize — preload the chemical database and load recent searches.
   Future<void> init() async {
@@ -38,7 +42,7 @@ class HomeController extends ChangeNotifier {
         _loadRecentSearches(),
       ]).timeout(const Duration(milliseconds: 1500));
     } catch (e) {
-      debugPrint('Error initializing HomeController: $e');
+      if (kDebugMode) debugPrint('Error initializing HomeController: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -54,7 +58,7 @@ class HomeController extends ChangeNotifier {
           .whereType<ChemicalModel>()
           .toList();
     } catch (e) {
-      debugPrint('Error loading recent searches: $e');
+      if (kDebugMode) debugPrint('Error loading recent searches: $e');
       _recentSearches = [];
     }
     notifyListeners();
@@ -63,6 +67,10 @@ class HomeController extends ChangeNotifier {
   /// Called when user types in the search field.
   Future<void> onQueryChanged(String query) async {
     _query = query;
+
+    if (_selectedChemical != null && query != _selectedChemical!.name) {
+      _selectedChemical = null;
+    }
 
     if (query.trim().isEmpty) {
       _suggestions = [];
@@ -80,6 +88,7 @@ class HomeController extends ChangeNotifier {
     _selectedChemical = chemical;
     _suggestions = [];
     _query = chemical.name;
+    _clearedRecentSearches = []; // Clear undo state when adding new
     notifyListeners();
     
     // Save to recent searches
@@ -97,8 +106,29 @@ class HomeController extends ChangeNotifier {
 
   /// Clear all recent searches.
   Future<void> clearRecentSearches() async {
+    _clearedRecentSearches = List.from(_recentSearches);
     await PreferencesService.clearRecentSearches();
     _recentSearches = [];
+    notifyListeners();
+  }
+
+  /// Undo clear all recent searches.
+  Future<void> undoClearRecentSearches() async {
+    if (_clearedRecentSearches.isEmpty) return;
+    
+    _recentSearches = List.from(_clearedRecentSearches);
+    _clearedRecentSearches = [];
+    
+    // Restore to preferences
+    // Because saveRecentSearch appends to the top, we should restore them in reverse
+    // but preferences service might not have a set list method.
+    // Let's assume we can just re-add them or if PreferencesService doesn't have a batch set,
+    // we can save them one by one in reverse order to keep the same order.
+    await PreferencesService.clearRecentSearches();
+    for (var chemical in _recentSearches.reversed) {
+      await PreferencesService.saveRecentSearch(chemical.name);
+    }
+    
     notifyListeners();
   }
 }

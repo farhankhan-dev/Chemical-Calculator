@@ -10,6 +10,7 @@ import '../../../equivalent_weight_calculator/presentation/screens/equivalent_we
 import '../../../molar_mass_calculator/presentation/screens/molar_mass_calculator_screen.dart';
 import '../../../molality_calculator/presentation/screens/molality_calculator_screen.dart';
 import '../../../molecular_weight_calculator/presentation/screens/molecular_weight_calculator_screen.dart';
+import 'legal_document_screen.dart';
 
 class CalculatorsScreen extends StatelessWidget {
   const CalculatorsScreen({super.key});
@@ -51,7 +52,11 @@ class CalculatorsScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-
+                  IconButton(
+                    icon: const Icon(Icons.info_outline, color: AppColors.primary),
+                    tooltip: 'About & Legal',
+                    onPressed: () => _showLegalMenu(context),
+                  ),
                 ],
               ),
               const SizedBox(height: AppSpacing.lg),
@@ -215,6 +220,75 @@ class CalculatorsScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showLegalMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 8),
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppColors.border,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 12),
+              ListTile(
+                leading: const Icon(Icons.info_outline, color: AppColors.primary),
+                title: const Text('About Us'),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const LegalDocumentScreen(
+                    title: 'About Us',
+                    assetPath: 'assets/docs/about_us.txt',
+                  )));
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.privacy_tip_outlined, color: AppColors.primary),
+                title: const Text('Privacy Policy'),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const LegalDocumentScreen(
+                    title: 'Privacy Policy',
+                    assetPath: 'assets/docs/privacy_policy.txt',
+                  )));
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.description_outlined, color: AppColors.primary),
+                title: const Text('Terms and Conditions'),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const LegalDocumentScreen(
+                    title: 'Terms and Conditions',
+                    assetPath: 'assets/docs/terms_and_conditions.txt',
+                  )));
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.gavel_outlined, color: AppColors.primary),
+                title: const Text('Terms of Use'),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const LegalDocumentScreen(
+                    title: 'Terms of Use',
+                    assetPath: 'assets/docs/terms_of_use.txt',
+                  )));
+                },
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -31,4 +31,62 @@ class PreferencesService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_recentSearchesKey);
   }
+
+  static const String _customFieldsKey = 'custom_fields';
+
+  /// Adds a custom field name to the global list of known custom fields
+  static Future<void> saveCustomField(String fieldName) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> fields = prefs.getStringList(_customFieldsKey) ?? [];
+    if (!fields.contains(fieldName)) {
+      fields.add(fieldName);
+      await prefs.setStringList(_customFieldsKey, fields);
+    }
+  }
+
+  /// Gets the list of known custom fields
+  static Future<List<String>> getCustomFields() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(_customFieldsKey) ?? [];
+  }
+
+  /// Removes a custom field from global preferences
+  static Future<void> deleteCustomField(String fieldName) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> fields = prefs.getStringList(_customFieldsKey) ?? [];
+    if (fields.contains(fieldName)) {
+      fields.remove(fieldName);
+      await prefs.setStringList(_customFieldsKey, fields);
+    }
+  }
+
+  /// Adds multiple custom field names to the global list
+  static Future<void> saveCustomFields(List<String> fieldNames) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> fields = prefs.getStringList(_customFieldsKey) ?? [];
+    bool updated = false;
+    for (final name in fieldNames) {
+      if (!fields.contains(name)) {
+        fields.add(name);
+        updated = true;
+      }
+    }
+    if (updated) {
+      await prefs.setStringList(_customFieldsKey, fields);
+    }
+  }
+
+  static const String _onboardingKey = 'has_seen_onboarding';
+
+  /// Check if the user has completed onboarding
+  static Future<bool> hasSeenOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_onboardingKey) ?? false;
+  }
+
+  /// Set the onboarding as completed
+  static Future<void> setSeenOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_onboardingKey, true);
+  }
 }

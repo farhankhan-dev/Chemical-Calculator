@@ -27,28 +27,25 @@ class PeriodicTableGrid extends StatefulWidget {
   State<PeriodicTableGrid> createState() => _PeriodicTableGridState();
 }
 
-class _PeriodicTableGridState extends State<PeriodicTableGrid>
-    with SingleTickerProviderStateMixin {
-  late final TransformationController _transformController;
-  late final AnimationController _animController;
-  Animation<Matrix4>? _animation;
-
+class _PeriodicTableGridState extends State<PeriodicTableGrid> with SingleTickerProviderStateMixin {
   // Cached layout values, set during build
   double _tileWidth = 44.0;
   double _tileHeight = 52.0;
-  double _viewportWidth = 0;
-  double _viewportHeight = 0;
+
+  late TransformationController _transformationController;
+  late AnimationController _animationController;
+  Animation<Matrix4>? _animation;
 
   @override
   void initState() {
     super.initState();
-    _transformController = TransformationController();
-    _animController = AnimationController(
+    _transformationController = TransformationController();
+    _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 550),
+      duration: const Duration(milliseconds: 400),
     )..addListener(() {
         if (_animation != null) {
-          _transformController.value = _animation!.value;
+          _transformationController.value = _animation!.value;
         }
       });
   }
@@ -56,130 +53,74 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
   @override
   void didUpdateWidget(PeriodicTableGrid oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final newCat = widget.selectedCategory;
-    final oldCat = oldWidget.selectedCategory;
-    if (newCat != oldCat) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (newCat != null) {
-          _scrollToCategory(newCat);
-        } else {
-          _animateTo(Matrix4.identity());
-        }
-      });
+    if (widget.selectedCategory != oldWidget.selectedCategory &&
+        widget.selectedCategory != null) {
+      _panToCategory(widget.selectedCategory!);
     }
+  }
+
+  void _panToCategory(ElementCategory category) {
+    double minCol = 18;
+    double maxCol = 1;
+    double minRow = 10;
+    double maxRow = 1;
+
+    for (final element in widget.elementsMap.values) {
+      if (element.category == category) {
+        double c = element.group.toDouble();
+        double r = element.period.toDouble();
+
+        if (element.atomicNumber >= 57 && element.atomicNumber <= 71) {
+          r = 9;
+          c = 3.0 + (element.atomicNumber - 56);
+        } else if (element.atomicNumber >= 89 && element.atomicNumber <= 103) {
+          r = 10;
+          c = 3.0 + (element.atomicNumber - 88);
+        }
+
+        if (c < minCol) minCol = c;
+        if (c > maxCol) maxCol = c;
+        if (r < minRow) minRow = r;
+        if (r > maxRow) maxRow = r;
+      }
+    }
+
+    if (minCol > maxCol || minRow > maxRow) return;
+
+    final centerX = ((minCol + maxCol) / 2) * (_tileWidth + 3);
+    final centerY = ((minRow + maxRow) / 2) * (_tileHeight + 3);
+
+    final size = MediaQuery.of(context).size;
+    final viewWidth = size.width;
+    final viewHeight = size.height;
+
+    final currentMatrix = _transformationController.value;
+    final scale = currentMatrix.getMaxScaleOnAxis();
+
+    // Center horizontally, and place slightly above vertical center
+    final dx = (viewWidth / 2) - (centerX * scale);
+    final dy = (viewHeight / 3) - (centerY * scale);
+
+    final targetMatrix = Matrix4.identity()
+      ..translate(dx, dy)
+      ..scale(scale);
+
+    _animation = Matrix4Tween(
+      begin: currentMatrix,
+      end: targetMatrix,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _animationController.forward(from: 0.0);
   }
 
   @override
   void dispose() {
-    _transformController.dispose();
-    _animController.dispose();
+    _transformationController.dispose();
+    _animationController.dispose();
     super.dispose();
-  }
-
-  // ---------------------------------------------------------------------------
-  // Region mapping: each category maps to a rectangle in the grid
-  // col/row are 0-indexed; isFBlock = true for lanthanide / actinide rows
-  // ---------------------------------------------------------------------------
-  _GridRegion _regionForCategory(ElementCategory cat) {
-    switch (cat) {
-      case ElementCategory.alkaliMetal:
-        // Group 1 (col 0), periods 2-7 (rows 1-6)
-        return const _GridRegion(col: 0, endCol: 0, row: 1, endRow: 6);
-      case ElementCategory.alkalineEarthMetal:
-        // Group 2 (col 1), periods 2-7
-        return const _GridRegion(col: 1, endCol: 1, row: 1, endRow: 6);
-      case ElementCategory.transitionMetal:
-        // Groups 3-12 (cols 2-11), periods 4-7
-        return const _GridRegion(col: 2, endCol: 11, row: 3, endRow: 6);
-      case ElementCategory.postTransitionMetal:
-        // Groups 13-16 (cols 12-15), periods 4-6
-        return const _GridRegion(col: 12, endCol: 15, row: 3, endRow: 5);
-      case ElementCategory.metalloid:
-        // Groups 13-17 (cols 12-16), periods 2-5
-        return const _GridRegion(col: 12, endCol: 16, row: 1, endRow: 5);
-      case ElementCategory.reactiveNonmetal:
-        // Groups 14-17 (cols 13-16), periods 2-4
-        return const _GridRegion(col: 13, endCol: 16, row: 1, endRow: 3);
-      case ElementCategory.halogen:
-        // Group 17 (col 16), periods 2-6
-        return const _GridRegion(col: 16, endCol: 16, row: 1, endRow: 5);
-      case ElementCategory.nobleGas:
-        // Group 18 (col 17), periods 1-6
-        return const _GridRegion(col: 17, endCol: 17, row: 0, endRow: 5);
-      case ElementCategory.lanthanide:
-        // f-block first row (lanthanides)
-        return const _GridRegion(col: 2, endCol: 16, row: 0, endRow: 0, isFBlock: true);
-      case ElementCategory.actinide:
-        // f-block second row (actinides)
-        return const _GridRegion(col: 2, endCol: 16, row: 1, endRow: 1, isFBlock: true);
-      case ElementCategory.unknown:
-        // Period 7, groups 4-18
-        return const _GridRegion(col: 3, endCol: 17, row: 6, endRow: 6);
-    }
-  }
-
-  void _scrollToCategory(ElementCategory cat) {
-    if (_viewportWidth == 0 || _viewportHeight == 0) return;
-
-    final region = _regionForCategory(cat);
-    final colStep = _tileWidth + 3.0;  // tile width + gap
-    final rowStep = _tileHeight + 3.0; // tile height + gap
-    const headerH = 16.0;             // group number row height estimate
-    const padding = 4.0;
-
-    // Compute the Y offset where the f-block starts
-    final mainGridH = 7 * rowStep;
-
-    double targetX;
-    double targetY;
-    double regionW;
-    double regionH;
-
-    if (region.isFBlock) {
-      // f-block rows sit below the main grid
-      // fBlockStartY = padding + headerH + 3 (gap) + mainGridH + 10 (gap)
-      final fBlockY = padding + headerH + 3 + mainGridH + 10;
-      final fRow = region.row; // 0 = lanthanides, 1 = actinides
-      final leftOffset = _tileWidth * 2 + 6; // label column
-
-      targetX = leftOffset + region.col * colStep;
-      targetY = fBlockY + fRow * (rowStep + 3);
-      regionW = (region.endCol - region.col + 1) * colStep;
-      regionH = rowStep;
-    } else {
-      targetX = padding + region.col * colStep;
-      targetY = padding + headerH + 3 + region.row * rowStep;
-      regionW = (region.endCol - region.col + 1) * colStep;
-      regionH = (region.endRow - region.row + 1) * rowStep;
-    }
-
-    // Choose a scale that fits the region with some margin
-    final scaleX = (_viewportWidth * 0.80) / regionW.clamp(colStep, double.infinity);
-    final scaleY = (_viewportHeight * 0.70) / regionH.clamp(rowStep, double.infinity);
-    final scale = (scaleX < scaleY ? scaleX : scaleY).clamp(0.4, 3.5);
-
-    // Center the region in the viewport
-    final regionCenterX = targetX + regionW / 2;
-    final regionCenterY = targetY + regionH / 2;
-    final tx = _viewportWidth / 2 - regionCenterX * scale;
-    final ty = _viewportHeight / 2 - regionCenterY * scale;
-
-    final target = Matrix4.diagonal3Values(scale, scale, 1.0)
-      ..setTranslationRaw(tx, ty, 0);
-
-    _animateTo(target);
-  }
-
-  void _animateTo(Matrix4 target) {
-    _animController.reset();
-    _animation = Matrix4Tween(
-      begin: _transformController.value,
-      end: target,
-    ).animate(CurvedAnimation(
-      parent: _animController,
-      curve: Curves.easeInOutCubic,
-    ));
-    _animController.forward();
   }
 
   // ---------------------------------------------------------------------------
@@ -189,13 +130,10 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Compute tile dimensions from available width
-        final availableWidth = constraints.maxWidth;
-        final computedTileWidth = (availableWidth - (17 * 3.0)) / 18;
-        _tileWidth = computedTileWidth.clamp(36.0, 56.0);
-        _tileHeight = _tileWidth * 1.18;
-        _viewportWidth = constraints.maxWidth;
-        _viewportHeight = constraints.maxHeight;
+        // Set optimal readable tile dimensions for standard portrait/landscape screens
+        // 18 columns * 44px + gaps = ~843px width
+        _tileWidth = 44.0;
+        _tileHeight = 52.0;
 
         final Widget gridContent = Padding(
           padding: const EdgeInsets.all(4.0),
@@ -218,11 +156,11 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
         );
 
         return InteractiveViewer(
-          transformationController: _transformController,
-          minScale: 0.05,
-          maxScale: 6.0,
+          transformationController: _transformationController,
+          minScale: 0.01,
+          maxScale: 4.0,
           constrained: false,
-          boundaryMargin: const EdgeInsets.all(100),
+          boundaryMargin: const EdgeInsets.all(32.0),
           child: RepaintBoundary(child: gridContent),
         );
       },
@@ -502,22 +440,4 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid>
     }
     return null;
   }
-}
-
-/// Describes a rectangular region in the periodic table grid (0-indexed cols/rows).
-class _GridRegion {
-  final int col;
-  final int endCol;
-  final int row;
-  final int endRow;
-  /// True for lanthanide / actinide f-block rows (below the main 7-period grid).
-  final bool isFBlock;
-
-  const _GridRegion({
-    required this.col,
-    required this.endCol,
-    required this.row,
-    required this.endRow,
-    this.isFBlock = false,
-  });
 }

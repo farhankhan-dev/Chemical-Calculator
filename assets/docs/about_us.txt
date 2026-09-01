@@ -1,0 +1,22 @@
+ABOUT CHEMI CALC
+
+Welcome to Chemi Calc, your ultimate personal laboratory assistant!
+
+OUR MISSION
+Chemi Calc is proudly crafted by Codevelop Solutions. We built Chemi Calc to bridge the gap between heavy, complex chemistry desktop software and the need for quick, accessible, and mathematically sound calculations on the go. Whether you are a high school student balancing your first equations, a university researcher diluting complex molar solutions, or an enthusiast exploring the periodic table, Chemi Calc is designed to make your workflow seamless and fast.
+
+For any app-related issues or inquiries, please contact us at codevelop.in@gmail.com.
+
+FEATURES
+- Comprehensive Periodic Table: A full, dynamic periodic table with detailed properties for all 118 elements.
+- Library of Chemicals: Browse a vast, pre-built library of common chemical compounds.
+- My Chemicals Notebook: Add, edit, delete, and structure your own custom compounds with personalized data fields. Keep your notebook safe by exporting it to your device.
+- Suite of Calculators:
+  - Molar Mass: Automatically parse and calculate molecular weights from formulas (including complex hydrates).
+  - Dilution: Instantly solve N1V1 = N2V2.
+  - Mass / Molarity / Molality / Equivalent Weight: Core stoichiometric conversions at your fingertips.
+
+PRIVACY FIRST
+We believe your data is yours. Chemi Calc is a 100% offline application. It requires absolutely no internet connection to perform its calculations. We collect no analytics, require no accounts, and transmit zero data. Everything you do stays on your device.
+
+Thank you for choosing Chemi Calc!
