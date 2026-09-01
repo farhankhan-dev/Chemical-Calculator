@@ -870,6 +870,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
             const SizedBox(height: 4),
             TextField(
               controller: _formulaController,
+              textInputAction: TextInputAction.next,
               decoration: InputDecoration(
                 hintText: 'Enter chemical formula (e.g. H2O, NaCl)...',
                 hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
@@ -916,6 +917,7 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                       const SizedBox(height: 4),
                       TextField(
                         controller: _massController,
+                        textInputAction: TextInputAction.next,
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                           filled: true,
@@ -939,6 +941,8 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                       const SizedBox(height: 4),
                       TextField(
                         controller: _volController,
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (_) => _calculate(),
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                           filled: true,

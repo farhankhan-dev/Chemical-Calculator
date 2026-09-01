@@ -1,4 +1,4 @@
-package com.example.chemi_calc
+package com.codevelopsolutions.chemi_calc
 
 import io.flutter.embedding.android.FlutterActivity
 

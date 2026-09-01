@@ -341,6 +341,7 @@ class _MolalityCalculatorScreenState extends State<MolalityCalculatorScreen> {
             const SizedBox(height: 8),
             TextField(
               controller: _molesController,
+              textInputAction: TextInputAction.next,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                 hintText: 'Enter moles (mol)',
@@ -359,6 +360,8 @@ class _MolalityCalculatorScreenState extends State<MolalityCalculatorScreen> {
             const SizedBox(height: 8),
             TextField(
               controller: _massSolventController,
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => _calculate(),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                 hintText: 'Enter mass (kg)',

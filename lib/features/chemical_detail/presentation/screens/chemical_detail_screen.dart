@@ -43,45 +43,6 @@ class _ChemicalDetailScreenState extends State<ChemicalDetailScreen> {
         backgroundColor: AppColors.surface,
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete_outline, color: Colors.red),
-            onPressed: () async {
-              if (widget.chemical.id <= 273) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Built-in library chemicals cannot be deleted.')),
-                );
-                return;
-              }
-              
-              final confirm = await showDialog<bool>(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Delete Chemical'),
-                  content: const Text('Are you sure you want to delete this chemical?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, false),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, true),
-                      child: const Text('Delete', style: TextStyle(color: Colors.red)),
-                    ),
-                  ],
-                ),
-              );
-
-              if (confirm == true && context.mounted) {
-                final datasource = ChemicalLocalDatasource();
-                await datasource.deleteChemical(widget.chemical.id);
-                if (context.mounted) {
-                  Navigator.pop(context, true); 
-                }
-              }
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: AppSpacing.screenPadding,

@@ -127,6 +127,8 @@ class _DilutionCalculatorScreenState extends State<DilutionCalculatorScreen> {
         const SizedBox(height: 4),
         TextField(
           controller: controller,
+          textInputAction: TextInputAction.done,
+          onSubmitted: (_) => _calculate(),
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           decoration: InputDecoration(
             hintText: hint,

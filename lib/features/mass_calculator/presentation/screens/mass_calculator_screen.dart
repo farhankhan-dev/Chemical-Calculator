@@ -769,6 +769,7 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
             const SizedBox(height: 4),
             TextField(
               controller: _formulaController,
+              textInputAction: TextInputAction.next,
               decoration: InputDecoration(
                 hintText: 'Enter chemical formula (e.g. H2O, NaCl)...',
                 hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
@@ -837,6 +838,7 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
                       const SizedBox(height: 4),
                       TextField(
                         controller: _targetController,
+                        textInputAction: TextInputAction.next,
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                           filled: true,
@@ -860,6 +862,8 @@ class _MassCalculatorScreenState extends State<MassCalculatorScreen> {
                       const SizedBox(height: 4),
                       TextField(
                         controller: _volMassController,
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (_) => _calculate(),
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                           filled: true,
