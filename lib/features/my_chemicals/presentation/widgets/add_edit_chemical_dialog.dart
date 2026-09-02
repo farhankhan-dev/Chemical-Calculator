@@ -271,15 +271,28 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
       final localSource = ChemicalLocalDatasource();
       final all = await localSource.getAllChemicals();
       final nLower = name.toLowerCase();
-      final fLower = formula.toLowerCase();
+
+      String normalizeFormula(String f) {
+        return f.toLowerCase()
+            .replaceAll('₀', '0')
+            .replaceAll('₁', '1')
+            .replaceAll('₂', '2')
+            .replaceAll('₃', '3')
+            .replaceAll('₄', '4')
+            .replaceAll('₅', '5')
+            .replaceAll('₆', '6')
+            .replaceAll('₇', '7')
+            .replaceAll('₈', '8')
+            .replaceAll('₉', '9');
+      }
+
+      final fLowerNorm = normalizeFormula(formula);
 
       ChemicalModel? dup;
       for (final c in all) {
-        if (c.id <= 273) {
-          if (c.name.toLowerCase() == nLower || c.formula.toLowerCase() == fLower) {
-            dup = c;
-            break;
-          }
+        if (c.name.toLowerCase() == nLower || normalizeFormula(c.formula) == fLowerNorm) {
+          dup = c;
+          break;
         }
       }
 

@@ -27,7 +27,7 @@ class AtomicUtils {
         .replaceAll('₇', '7')
         .replaceAll('₈', '8')
         .replaceAll('₉', '9')
-        .replaceAll(RegExp(r'[⁺⁻\+\-\(\)\·\.\,\s]'), '');
+        .replaceAll(RegExp(r'[⁺⁻+\-()·.,\s]'), '');
 
     // Match Element symbols and counts
     final regExp = RegExp(r'([A-Z][a-z]?)(\d*)');

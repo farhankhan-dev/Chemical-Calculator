@@ -379,7 +379,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Browse all chemicals alphabetically',
+                          'Browse all chemicals and formulas alphabetically',
                           style: AppTextStyles.bodyMedium.copyWith(
                             color: AppColors.textSecondary,
                             fontSize: 12,
