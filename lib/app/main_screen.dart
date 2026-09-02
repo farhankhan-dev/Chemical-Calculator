@@ -17,12 +17,14 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    CalculatorsScreen(),
-    PeriodicTableScreen(),
-    LibraryScreen(),
-    MyChemicalsScreen(),
+  final GlobalKey<HomeScreenState> _homeKey = GlobalKey<HomeScreenState>();
+
+  late final List<Widget> _screens = [
+    HomeScreen(key: _homeKey),
+    const CalculatorsScreen(),
+    const PeriodicTableScreen(),
+    const LibraryScreen(),
+    const MyChemicalsScreen(),
   ];
 
   void _onTabSelected(int index) {
@@ -45,6 +47,11 @@ class _MainScreenState extends State<MainScreen> {
             _currentIndex = 0;
           });
         } else {
+          final homeState = _homeKey.currentState;
+          if (homeState != null && homeState.handleBackPress()) {
+            return;
+          }
+
           final shouldExit = await showDialog<bool>(
             context: context,
             builder: (ctx) => AlertDialog(
