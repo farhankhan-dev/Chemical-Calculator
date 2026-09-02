@@ -60,10 +60,9 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid> with SingleTicker
   }
 
   void _panToCategory(ElementCategory category) {
-    double minCol = 18;
-    double maxCol = 1;
-    double minRow = 10;
-    double maxRow = 1;
+    double sumCol = 0;
+    double sumRow = 0;
+    int count = 0;
 
     for (final element in widget.elementsMap.values) {
       if (element.category == category) {
@@ -78,17 +77,19 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid> with SingleTicker
           c = 3.0 + (element.atomicNumber - 88);
         }
 
-        if (c < minCol) minCol = c;
-        if (c > maxCol) maxCol = c;
-        if (r < minRow) minRow = r;
-        if (r > maxRow) maxRow = r;
+        sumCol += c;
+        sumRow += r;
+        count++;
       }
     }
 
-    if (minCol > maxCol || minRow > maxRow) return;
+    if (count == 0) return;
 
-    final centerX = ((minCol + maxCol) / 2) * (_tileWidth + 3);
-    final centerY = ((minRow + maxRow) / 2) * (_tileHeight + 3);
+    final avgCol = sumCol / count;
+    final avgRow = sumRow / count;
+
+    final centerX = avgCol * (_tileWidth + 3) - (_tileWidth / 2);
+    final centerY = avgRow * (_tileHeight + 3) - (_tileHeight / 2);
 
     final size = MediaQuery.of(context).size;
     final viewWidth = size.width;
