@@ -728,8 +728,13 @@ class _MolarMassCalculatorScreenState extends State<MolarMassCalculatorScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Total Molar Mass',
-                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primaryDark),
+                      _selectedChemical != null
+                          ? 'Molar Mass of ${_selectedChemical!.name} (${_selectedChemical!.formula})'
+                          : _formulaController.text.trim().isNotEmpty
+                              ? 'Molar Mass of ${_formulaController.text.trim()}'
+                              : 'Total Molar Mass',
+                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primaryDark, fontWeight: FontWeight.w600),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
                     Text(
