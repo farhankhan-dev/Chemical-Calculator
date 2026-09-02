@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../features/splash/presentation/screens/splash_screen.dart';
+import '../features/splash/presentation/screens/security_screen.dart';
 import '../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../app/main_screen.dart';
 
@@ -10,6 +11,7 @@ class AppRoutes {
   static const String splash = '/';
   static const String onboarding = '/onboarding';
   static const String home = '/home';
+  static const String security = '/security';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -24,6 +26,10 @@ class AppRoutes {
       case home:
         return MaterialPageRoute(
           builder: (_) => const MainScreen(),
+        );
+      case security:
+        return MaterialPageRoute(
+          builder: (_) => const SecurityScreen(),
         );
       default:
         return MaterialPageRoute(
