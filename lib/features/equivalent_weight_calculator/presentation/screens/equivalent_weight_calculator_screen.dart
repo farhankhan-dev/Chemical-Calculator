@@ -74,7 +74,15 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
     setState(() {
       _selectedChemical = null; // Clear chemical if manually calculating
       _result = molarMass / nFactor;
-      _calculationString = 'Eq. Weight = Molar Mass / n-factor\n'
+      
+      String header = '';
+      if (_formulaController.text.trim().isNotEmpty) {
+        header = 'Equivalent weight of ${_formulaController.text.trim()}:\n';
+      } else {
+        header = 'Manual equivalent weight calculation:\n';
+      }
+      
+      _calculationString = '${header}Eq. Weight = Molar Mass / n-factor\n'
           '= ${FormatUtils.format(molarMass)} / ${FormatUtils.format(nFactor)} = ${FormatUtils.format(_result!)} g/eq';
     });
     
@@ -100,7 +108,8 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
       if (chem.equivalentWeight != null) {
         _result = chem.equivalentWeight;
         final nFactor = chem.molecularWeight / chem.equivalentWeight!;
-        _calculationString = 'Eq. Weight = Molar Mass / n-factor\n'
+        _calculationString = 'Equivalent weight of ${chem.name} (${chem.formula}):\n'
+            'Eq. Weight = Molar Mass / n-factor\n'
             '= ${FormatUtils.format(chem.molecularWeight)} / ${FormatUtils.format(nFactor)} = ${FormatUtils.format(_result!)} g/eq';
       } else {
         _result = null;
