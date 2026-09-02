@@ -77,7 +77,12 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
       
       String header = '';
       if (_formulaController.text.trim().isNotEmpty) {
-        header = 'Equivalent weight of ${_formulaController.text.trim()}:\n';
+        final parseResult = _formulaParser.parse(_formulaController.text.trim());
+        if (parseResult.isValid) {
+          header = 'Equivalent weight of ${_formulaController.text.trim()}:\n';
+        } else {
+          header = 'Manual equivalent weight calculation:\n';
+        }
       } else {
         header = 'Manual equivalent weight calculation:\n';
       }
@@ -780,12 +785,16 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                   final parseResult = _formulaParser.parse(val);
                   if (parseResult.isValid) {
                     _molarMassController.text = parseResult.molarMass.toStringAsFixed(4);
+                  } else {
+                    _molarMassController.clear();
                   }
                   if (_selectedChemical != null) {
                     _selectedChemical = null;
                     _result = null;
                     _calculationString = null;
                   }
+                } else {
+                  _molarMassController.clear();
                 }
                 setState(() {});
               },
