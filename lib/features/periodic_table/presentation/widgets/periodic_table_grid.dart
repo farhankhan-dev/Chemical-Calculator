@@ -102,8 +102,11 @@ class _PeriodicTableGridState extends State<PeriodicTableGrid> with SingleTicker
     final dy = (viewHeight / 3) - (centerY * scale);
 
     final targetMatrix = Matrix4.identity()
-      ..translate(dx, dy)
-      ..scale(scale);
+      ..setEntry(0, 0, scale)
+      ..setEntry(1, 1, scale)
+      ..setEntry(2, 2, scale)
+      ..setEntry(0, 3, dx)
+      ..setEntry(1, 3, dy);
 
     _animation = Matrix4Tween(
       begin: currentMatrix,

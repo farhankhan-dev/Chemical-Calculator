@@ -271,7 +271,6 @@ class _AddEditChemicalDialogState extends State<AddEditChemicalDialog> {
       final localSource = ChemicalLocalDatasource();
       final all = await localSource.getAllChemicals();
       final nLower = name.toLowerCase();
-      final fLower = formula.toLowerCase();
 
       String normalizeFormula(String f) {
         return f.toLowerCase()
