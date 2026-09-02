@@ -44,6 +44,17 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
       _validationError = null;
     });
 
+    final formulaText = _formulaController.text.trim();
+    if (formulaText.isNotEmpty) {
+      final parseResult = _formulaParser.parse(formulaText);
+      if (!parseResult.isValid) {
+        setState(() {
+          _validationError = parseResult.error ?? 'Please enter a valid chemical formula.';
+        });
+        return;
+      }
+    }
+
     final molarMassText = _molarMassController.text.trim();
     final nFactorText = _nFactorController.text.trim();
 
