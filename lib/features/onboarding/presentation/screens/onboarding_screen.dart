@@ -292,7 +292,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           ),
           const SizedBox(height: 32),
           _featureRow(
-            '🧮',
+            '🧠',
             'Smart Formula Parser',
             'Handles hydrates, brackets, and complex formulas like CuSO₄·5H₂O',
           ),
