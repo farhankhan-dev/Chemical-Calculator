@@ -58,26 +58,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoaded && _bannerAd != null) {
-      return Container(
-        alignment: Alignment.center,
-        width: _bannerAd!.size.width.toDouble(),
-        height: _bannerAd!.size.height.toDouble(),
-        child: AdWidget(ad: _bannerAd!),
-      );
-    }
-    
-    // Placeholder while loading or if it fails (only in debug mode)
-    if (kDebugMode) {
-      return Container(
-        alignment: Alignment.center,
-        width: 320,
-        height: 50,
-        color: Colors.grey[300],
-        child: const Text('Banner Ad Space', style: TextStyle(color: Colors.black54)),
-      );
-    }
-
+    // Temporarily hidden for screenshots
     return const SizedBox.shrink();
   }
 }
