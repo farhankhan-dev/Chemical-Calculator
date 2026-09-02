@@ -770,6 +770,11 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                   borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
                 ),
               ),
+              onSubmitted: (_) {
+                if (_molarMassController.text.isNotEmpty && _nFactorController.text.isNotEmpty) {
+                  _calculateManual();
+                }
+              },
               onChanged: (val) {
                 if (val.isNotEmpty) {
                   final parseResult = _formulaParser.parse(val);
@@ -863,7 +868,7 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: Text('Calculate Manually', style: AppTextStyles.h3.copyWith(color: Colors.white)),
+                child: Text('Calculate', style: AppTextStyles.h3.copyWith(color: Colors.white)),
               ),
             ),
 
