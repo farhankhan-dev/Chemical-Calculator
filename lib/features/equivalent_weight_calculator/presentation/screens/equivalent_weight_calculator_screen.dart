@@ -44,6 +44,17 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
       _validationError = null;
     });
 
+    final formulaText = _formulaController.text.trim();
+    if (formulaText.isNotEmpty) {
+      final parseResult = _formulaParser.parse(formulaText);
+      if (!parseResult.isValid) {
+        setState(() {
+          _validationError = parseResult.error ?? 'Please enter a valid chemical formula.';
+        });
+        return;
+      }
+    }
+
     final molarMassText = _molarMassController.text.trim();
     final nFactorText = _nFactorController.text.trim();
 
@@ -74,7 +85,20 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
     setState(() {
       _selectedChemical = null; // Clear chemical if manually calculating
       _result = molarMass / nFactor;
-      _calculationString = 'Eq. Weight = Molar Mass / n-factor\n'
+      
+      String header = '';
+      if (_formulaController.text.trim().isNotEmpty) {
+        final parseResult = _formulaParser.parse(_formulaController.text.trim());
+        if (parseResult.isValid) {
+          header = 'Equivalent weight of ${_formulaController.text.trim()}:\n';
+        } else {
+          header = 'Manual equivalent weight calculation:\n';
+        }
+      } else {
+        header = 'Manual equivalent weight calculation:\n';
+      }
+      
+      _calculationString = '${header}Eq. Weight = Molar Mass / n-factor\n'
           '= ${FormatUtils.format(molarMass)} / ${FormatUtils.format(nFactor)} = ${FormatUtils.format(_result!)} g/eq';
     });
     
@@ -100,7 +124,8 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
       if (chem.equivalentWeight != null) {
         _result = chem.equivalentWeight;
         final nFactor = chem.molecularWeight / chem.equivalentWeight!;
-        _calculationString = 'Eq. Weight = Molar Mass / n-factor\n'
+        _calculationString = 'Equivalent weight of ${chem.name} (${chem.formula}):\n'
+            'Eq. Weight = Molar Mass / n-factor\n'
             '= ${FormatUtils.format(chem.molecularWeight)} / ${FormatUtils.format(nFactor)} = ${FormatUtils.format(_result!)} g/eq';
       } else {
         _result = null;
@@ -761,17 +786,26 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                   borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
                 ),
               ),
+              onSubmitted: (_) {
+                if (_molarMassController.text.isNotEmpty && _nFactorController.text.isNotEmpty) {
+                  _calculateManual();
+                }
+              },
               onChanged: (val) {
                 if (val.isNotEmpty) {
                   final parseResult = _formulaParser.parse(val);
                   if (parseResult.isValid) {
                     _molarMassController.text = parseResult.molarMass.toStringAsFixed(4);
+                  } else {
+                    _molarMassController.clear();
                   }
                   if (_selectedChemical != null) {
                     _selectedChemical = null;
                     _result = null;
                     _calculationString = null;
                   }
+                } else {
+                  _molarMassController.clear();
                 }
                 setState(() {});
               },
@@ -854,7 +888,7 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: Text('Calculate Manually', style: AppTextStyles.h3.copyWith(color: Colors.white)),
+                child: Text('Calculate', style: AppTextStyles.h3.copyWith(color: Colors.white)),
               ),
             ),
 

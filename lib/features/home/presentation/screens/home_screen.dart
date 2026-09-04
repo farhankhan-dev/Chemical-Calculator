@@ -15,10 +15,10 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   final HomeController _controller = HomeController();
   final TextEditingController _textController = TextEditingController();
 
@@ -39,6 +39,17 @@ class _HomeScreenState extends State<HomeScreen> {
     _controller.dispose();
     _textController.dispose();
     super.dispose();
+  }
+
+  bool handleBackPress() {
+    if (_textController.text.isNotEmpty || FocusScope.of(context).hasFocus) {
+      _textController.clear();
+      _controller.clearSelection();
+      FocusScope.of(context).unfocus();
+      if (mounted) setState(() {});
+      return true;
+    }
+    return false;
   }
 
   @override

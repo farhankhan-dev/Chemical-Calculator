@@ -19,25 +19,18 @@ class FormulaFormatter {
   static String format(String input) {
     if (input.isEmpty) return input;
     
-    StringBuffer result = StringBuffer();
-    int i = 0;
-    while (i < input.length) {
-      String c = input[i];
-      if (RegExp(r'[a-zA-Z]').hasMatch(c)) {
-        String? tokenized = _tokenize(input.substring(i));
-        if (tokenized != null) {
-          result.write(tokenized);
-          break; 
-        } else {
-          result.write(c.toUpperCase());
-          i++;
-        }
-      } else {
-        result.write(c);
-        i++;
-      }
+    // Attempt to tokenize the entire string as a chemical formula.
+    String? tokenized = _tokenize(input);
+    
+    // If it successfully tokenizes the whole string, return the formatted version.
+    // If it fails (meaning there are letters that don't match elements), 
+    // we return the original input, which will naturally fail parsing later.
+    if (tokenized != null && tokenized.length == input.length) {
+       return tokenized;
     }
-    return result.toString();
+    
+    // If we can't fully tokenize it, return the original input so it fails validation.
+    return input;
   }
 
   static String? _tokenize(String s) {

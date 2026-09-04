@@ -1,6 +1,7 @@
 import '../../features/periodic_table/data/element_repository.dart';
 import '../../features/periodic_table/models/element_model.dart';
 import 'formula_formatter.dart';
+import 'profanity_filter.dart';
 
 /// Result container for chemical formula parsing.
 class FormulaParseResult {
@@ -37,6 +38,9 @@ class FormulaParser {
 
   /// Parses a chemical formula string and returns a [FormulaParseResult].
   FormulaParseResult parse(String rawFormula) {
+    if (ProfanityFilter.containsBannedWord(rawFormula)) {
+      return const FormulaParseResult.failure('Please enter a valid chemical formula.');
+    }
 
     // Normalize Unicode subscript digits (₀₁₂₃₄₅₆₇₈₉) to regular digits
     final normalized = rawFormula.trim()

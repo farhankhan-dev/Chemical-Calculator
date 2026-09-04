@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/services/preferences_service.dart';
+import 'package:safe_device/safe_device.dart';
+import 'package:flutter/foundation.dart';
 
 /// Animated splash screen — 1.4 seconds.
 ///
@@ -21,11 +23,7 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _logoScale;
   late Animation<double> _textFade;
 
-  // Typing animation
   static const String _devText = 'Developed by Codevelop Solutions';
-  String _typedText = '';
-  int _charIndex = 0;
-  bool _typingStarted = false;
 
   @override
   void initState() {
@@ -52,21 +50,27 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    _controller.addListener(() {
-      // Start typing after 40% of the main animation
-      if (_controller.value >= 0.4 && !_typingStarted) {
-        _typingStarted = true;
-        _startTyping();
-      }
-    });
+    // No addListener needed for typing animation anymore
 
     _controller.forward();
 
     // Navigate to home after 2.5 seconds
     Future.delayed(const Duration(milliseconds: 2500), () async {
+      bool isDevMode = false;
+      try {
+        if (!kIsWeb) {
+          isDevMode = await SafeDevice.isDevelopmentModeEnable;
+        }
+      } catch (e) {
+        debugPrint('SafeDevice check failed: $e');
+      }
+
       final hasSeenOnboarding = await PreferencesService.hasSeenOnboarding();
       if (mounted) {
-        if (hasSeenOnboarding) {
+        if (isDevMode && !kDebugMode) {
+          // Block if dev mode is enabled, EXCEPT if we are actually debugging the app.
+          Navigator.of(context).pushReplacementNamed('/security');
+        } else if (hasSeenOnboarding) {
           Navigator.of(context).pushReplacementNamed('/home');
         } else {
           Navigator.of(context).pushReplacementNamed('/onboarding');
@@ -75,17 +79,7 @@ class _SplashScreenState extends State<SplashScreen>
     });
   }
 
-  void _startTyping() {
-    Future.doWhile(() async {
-      await Future.delayed(const Duration(milliseconds: 45));
-      if (!mounted || _charIndex >= _devText.length) return false;
-      setState(() {
-        _charIndex++;
-        _typedText = _devText.substring(0, _charIndex);
-      });
-      return _charIndex < _devText.length;
-    });
-  }
+
 
   @override
   void dispose() {
@@ -161,16 +155,19 @@ class _SplashScreenState extends State<SplashScreen>
 
                 const Spacer(flex: 3),
 
-                // Typing animation text
+                // Static bottom text
                 Padding(
                   padding: const EdgeInsets.only(bottom: 48),
-                  child: Text(
-                    _typedText,
-                    style: AppTextStyles.splashSubtitle.copyWith(
-                      color: AppColors.textTertiary,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0.5,
+                  child: Opacity(
+                    opacity: _textFade.value,
+                    child: Text(
+                      _devText,
+                      style: AppTextStyles.splashSubtitle.copyWith(
+                        color: AppColors.textTertiary,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                   ),
                 ),
