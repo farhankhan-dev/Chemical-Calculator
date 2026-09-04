@@ -68,7 +68,7 @@ class ChemicalInfoCard extends StatelessWidget {
               if (chemical.meltingPoint != null) ...[
                 const Divider(height: 1),
                 _buildPropertyRow(
-                  icon: Icons.ac_unit_outlined,
+                  icon: Icons.thermostat_outlined,
                   label: 'Melting Point',
                   value: '${chemical.meltingPoint} °C',
                 ),
