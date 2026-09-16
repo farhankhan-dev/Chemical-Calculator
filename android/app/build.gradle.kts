@@ -14,6 +14,12 @@ if (localPropertiesFile.exists()) {
 }
 val admobAppId = localProperties.getProperty("admob_app_id") ?: "ca-app-pub-3940256099942544~3347511713"
 
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.inputStream().use { keystoreProperties.load(it) }
+}
+
 android {
     namespace = "com.codevelopsolutions.chemi_calc"
     compileSdk = flutter.compileSdkVersion
@@ -40,11 +46,20 @@ android {
         manifestPlaceholders["admobAppId"] = admobAppId
     }
 
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties.getProperty("keyAlias") as String?
+            keyPassword = keystoreProperties.getProperty("keyPassword") as String?
+            storeFile = keystoreProperties.getProperty("storeFile")?.let { file(it) }
+            storePassword = keystoreProperties.getProperty("storePassword") as String?
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
 
             // Security: Enable code shrinking and obfuscation
             isMinifyEnabled = true
