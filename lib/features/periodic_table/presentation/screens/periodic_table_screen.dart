@@ -141,6 +141,10 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
                   hasActiveFilter: hasActiveFilter,
                   selectedCategory: _controller.selectedCategory,
                   onElementSelected: (element) {
+                    // Clear all active filters so the table returns to default
+                    if (hasActiveFilter) {
+                      _controller.clearFilters();
+                    }
                     ElementDetailScreen.show(context, element);
                   },
                   onCategorySelected: _controller.toggleCategory,
