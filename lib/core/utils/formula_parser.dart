@@ -54,6 +54,17 @@ class FormulaParser {
         .replaceAll('₇', '7')
         .replaceAll('₈', '8')
         .replaceAll('₉', '9');
+    // Reject input that is purely lowercase letters — it's clearly not
+    // a chemical formula and should not be silently auto-corrected.
+    // A valid formula attempt must have at least one uppercase letter, digit,
+    // or bracket (e.g. "H2O", "nacl" is borderline but "hhhh" is not).
+    final stripped = normalized.replaceAll(RegExp(r'[\s\(\)\[\]\{\}·\.\d]'), '');
+    if (stripped.isNotEmpty && stripped == stripped.toLowerCase()) {
+      return const FormulaParseResult.failure(
+        'Invalid formula. Chemical formulas must use proper element symbols (e.g. H₂O, NaCl, CuSO₄).',
+      );
+    }
+
     final formula = FormulaFormatter.format(normalized);
     if (formula.isEmpty) {
       return const FormulaParseResult.failure('Please enter a chemical formula.');
