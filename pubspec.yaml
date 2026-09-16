@@ -2,7 +2,7 @@ name: chemi_calc
 description: "ChemiCalc — Chemical Calculator"
 publish_to: 'none'
 
-version: 1.2.0+3
+version: 1.2.1+4
 
 environment:
   sdk: ^3.9.2
