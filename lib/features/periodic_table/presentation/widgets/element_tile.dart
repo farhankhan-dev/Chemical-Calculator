@@ -21,100 +21,104 @@ class ElementTile extends StatelessWidget {
     final categoryColor = element.category.color;
     final isDimmed = hasActiveFilter && !isHighlighted;
 
-    return Semantics(
-      label: element.semanticLabel,
-      button: true,
-      enabled: true,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(6),
-          child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 150),
-            opacity: isDimmed ? 0.3 : 1.0,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 150),
-              decoration: BoxDecoration(
-                color: isHighlighted ? categoryColor : element.category.bgTint,
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(
-                  color: isHighlighted ? AppColors.primary : element.category.borderColor,
-                  width: isHighlighted ? 2.0 : 1.0,
+    return RepaintBoundary(
+      child: Semantics(
+        label: element.semanticLabel,
+        button: true,
+        enabled: true,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(6),
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOutCubic,
+              opacity: isDimmed ? 0.25 : 1.0,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeOutCubic,
+                decoration: BoxDecoration(
+                  color: isHighlighted ? categoryColor : element.category.bgTint,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                    color: isHighlighted ? AppColors.primary : element.category.borderColor,
+                    width: isHighlighted ? 2.0 : 1.0,
+                  ),
+                  boxShadow: isHighlighted
+                      ? [
+                          BoxShadow(
+                            color: categoryColor.withValues(alpha: 0.5),
+                            blurRadius: 6,
+                            spreadRadius: 1,
+                          ),
+                        ]
+                      : null,
                 ),
-                boxShadow: isHighlighted
-                    ? [
-                        BoxShadow(
-                          color: categoryColor.withValues(alpha: 0.5),
-                          blurRadius: 6,
-                          spreadRadius: 1,
+                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Top Row: Atomic Number
+                    Flexible(
+                      flex: 1,
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            '${element.atomicNumber}',
+                            style: TextStyle(
+                              fontSize: 8,
+                              fontWeight: FontWeight.bold,
+                              color: isHighlighted ? Colors.white : AppColors.textSecondary,
+                              height: 1.0,
+                            ),
+                          ),
                         ),
-                      ]
-                    : null,
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Top Row: Atomic Number
-                  Flexible(
-                    flex: 1,
-                    child: Align(
-                      alignment: Alignment.topLeft,
+                      ),
+                    ),
+
+                    // Center: Symbol (Prominent)
+                    Flexible(
+                      flex: 3,
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          '${element.atomicNumber}',
+                          element.symbol,
                           style: TextStyle(
-                            fontSize: 8,
-                            fontWeight: FontWeight.bold,
-                            color: isHighlighted ? Colors.white : AppColors.textSecondary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w900,
+                            color: isHighlighted ? Colors.white : AppColors.textPrimary,
+                            letterSpacing: -0.5,
                             height: 1.0,
                           ),
                         ),
                       ),
                     ),
-                  ),
 
-                  // Center: Symbol (Prominent)
-                  Flexible(
-                    flex: 3,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        element.symbol,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
-                          color: isHighlighted ? Colors.white : AppColors.textPrimary,
-                          letterSpacing: -0.5,
-                          height: 1.0,
+                    // Bottom: Name (Compact)
+                    Flexible(
+                      flex: 2,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          element.name,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 7.5,
+                            fontWeight: FontWeight.w600,
+                            color: isHighlighted ? Colors.white : AppColors.textPrimary,
+                            height: 1.0,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
-                  ),
-
-                  // Bottom: Name (Compact)
-                  Flexible(
-                    flex: 2,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        element.name,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 7.5,
-                          fontWeight: FontWeight.w600,
-                          color: isHighlighted ? Colors.white : AppColors.textPrimary,
-                          height: 1.0,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

@@ -141,8 +141,8 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
                   hasActiveFilter: hasActiveFilter,
                   selectedCategory: _controller.selectedCategory,
                   onElementSelected: (element) {
-                    // Clear all active filters so the table returns to default
-                    if (hasActiveFilter) {
+                    // Only clear filters if tapping an element NOT in the highlighted set
+                    if (hasActiveFilter && !matchingNums.contains(element.atomicNumber)) {
                       _controller.clearFilters();
                     }
                     ElementDetailScreen.show(context, element);
