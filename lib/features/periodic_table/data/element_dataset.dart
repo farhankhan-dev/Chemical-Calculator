@@ -943,7 +943,7 @@ class ElementDataset {
       keyFacts: ['Named after Alfred Nobel', 'Produced by bombarding californium with carbon ions', 'Synthetic transuranic actinide'],
     ),
     ElementModel(
-      atomicNumber: 103, symbol: 'Lr', name: 'Lawrencium', atomicMass: 266.0,
+      atomicNumber: 103, symbol: 'Lr', name: 'Lawrencium', atomicMass: 262.0,
       category: ElementCategory.actinide, group: 3, period: 7, block: 'd',
       stateAtRoomTemp: 'Solid', electronConfiguration: '[Rn] 5f¹⁴ 7s² 7p¹', electronegativity: 1.3,
       oxidationStates: '+3', meltingPoint: 1627.0, boilingPoint: null, density: null,
@@ -1028,7 +1028,7 @@ class ElementDataset {
     ElementModel(
       atomicNumber: 112, symbol: 'Cn', name: 'Copernicium', atomicMass: 285.0,
       category: ElementCategory.transitionMetal, group: 12, period: 7, block: 'd',
-      stateAtRoomTemp: 'Gas', electronConfiguration: '[Rn] 5f¹⁴ 6d¹⁰ 7s²', electronegativity: null,
+      stateAtRoomTemp: 'Unknown', electronConfiguration: '[Rn] 5f¹⁴ 6d¹⁰ 7s²', electronegativity: null,
       oxidationStates: '+2', meltingPoint: null, boilingPoint: 67.0, density: 14.0,
       discoveryYear: '1996', discoverer: 'GSI Helmholtz Centre for Heavy Ion Research',
       description: 'Copernicium is a synthetic chemical element named after astronomer Nicolaus Copernicus.',
@@ -1082,7 +1082,7 @@ class ElementDataset {
     ElementModel(
       atomicNumber: 118, symbol: 'Og', name: 'Oganesson', atomicMass: 294.0,
       category: ElementCategory.nobleGas, group: 18, period: 7, block: 'p',
-      stateAtRoomTemp: 'Gas', electronConfiguration: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶', electronegativity: null,
+      stateAtRoomTemp: 'Unknown', electronConfiguration: '[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶', electronegativity: null,
       oxidationStates: '0', meltingPoint: 52.0, boilingPoint: 177.0, density: 5.0,
       discoveryYear: '2002', discoverer: 'JINR / Lawrence Livermore National Laboratory',
       description: 'Oganesson is a synthetic chemical element. It has the highest atomic number and highest atomic mass of all known elements.',

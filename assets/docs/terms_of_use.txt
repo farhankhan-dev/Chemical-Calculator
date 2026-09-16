@@ -1,11 +1,11 @@
-TERMS OF USE FOR CHEMI CALC
+TERMS OF USE FOR CHEMICALC
 
 Effective Date: 2026-08-20
 
-Welcome to Chemi Calc! By downloading or using the app, these terms will automatically apply to you – you should make sure therefore that you read them carefully before using the app.
+Welcome to ChemiCalc! By downloading or using the app, these terms will automatically apply to you – you should make sure therefore that you read them carefully before using the app.
 
 1. APP USAGE
-Chemi Calc is provided as an educational and utility tool for students, teachers, and professionals. The app is completely offline and processes all chemical calculations directly on your device CPU. 
+ChemiCalc is provided as an educational and utility tool for students, teachers, and professionals. The app is completely offline and processes all chemical calculations directly on your device CPU. 
 
 2. ACCURACY OF CALCULATIONS
 While we have meticulously programmed the underlying algorithms (including Molar Mass, Molarity, Molality, Equivalent Weight, and Dilution calculators) using standard scientific formulas and atomic weight data, we do not guarantee absolute 100% accuracy. 
@@ -22,4 +22,4 @@ The app is currently available on Android. The requirements for the system (and 
 5. CHANGES TO TERMS
 We may update our Terms of Use from time to time. Thus, you are advised to review this page periodically for any changes. 
 
-By using Chemi Calc, you signify your acceptance of these Terms of Use.
+By using ChemiCalc, you signify your acceptance of these Terms of Use.

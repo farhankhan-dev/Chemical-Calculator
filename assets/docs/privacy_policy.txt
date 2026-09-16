@@ -1,11 +1,11 @@
-PRIVACY POLICY FOR CHEMI CALC
+PRIVACY POLICY FOR CHEMICALC
 
 Effective Date: 2026-08-31
 
-This Privacy Policy describes how Chemi Calc, developed by Codevelop Solutions ("we", "our", or "the App"), handles your information. 
+This Privacy Policy describes how ChemiCalc, developed by Codevelop Solutions ("we", "our", or "the App"), handles your information. 
 
 1. DATA COLLECTION
-Chemi Calc is designed with privacy as its core principle. We do not directly collect, transmit, or store any personal data or usage analytics. The app operates primarily offline and does not require an internet connection for its core calculations.
+ChemiCalc is designed with privacy as its core principle. We do not directly collect, transmit, or store any personal data or usage analytics. The app operates primarily offline and does not require an internet connection for its core calculations.
 
 2. LOCAL STORAGE ONLY
 All data you generate or enter within the App (such as custom chemicals, formulas, and notes in the "My Chemicals" notebook) is stored entirely locally on your device using local storage mechanisms. 
