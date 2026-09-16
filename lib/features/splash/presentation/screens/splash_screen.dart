@@ -1,5 +1,6 @@
 // cspell:ignore Chemicalc Devriz
 import 'package:flutter/material.dart';
+import 'package:in_app_update/in_app_update.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/services/preferences_service.dart';
@@ -28,6 +29,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
+    _checkForUpdate(); // Play Store par naya update check karega
 
     _controller = AnimationController(
       duration: const Duration(milliseconds: 2500),
@@ -80,6 +82,22 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
 
+
+  /// Silently checks Play Store for a new app version.
+  /// Uses Flexible Update — user can continue using the app while update downloads.
+  /// If internet is off or any error occurs, the app continues normally.
+  Future<void> _checkForUpdate() async {
+    try {
+      final updateInfo = await InAppUpdate.checkForUpdate();
+      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        await InAppUpdate.startFlexibleUpdate();
+        await InAppUpdate.completeFlexibleUpdate();
+      }
+    } catch (e) {
+      // Offline ya koi error — silently ignore karo, app normal chalti rahegi
+      debugPrint('In-App Update check skipped: $e');
+    }
+  }
 
   @override
   void dispose() {
