@@ -18,16 +18,22 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   final GlobalKey<HomeScreenState> _homeKey = GlobalKey<HomeScreenState>();
+  final GlobalKey<PeriodicTableScreenState> _periodicTableKey = GlobalKey<PeriodicTableScreenState>();
 
   late final List<Widget> _screens = [
     HomeScreen(key: _homeKey),
     const CalculatorsScreen(),
-    const PeriodicTableScreen(),
+    PeriodicTableScreen(key: _periodicTableKey),
     const LibraryScreen(),
     const MyChemicalsScreen(),
   ];
 
   void _onTabSelected(int index) {
+    if (_currentIndex == 2 && index != 2) {
+      // Navigating away from Periodic Table, reset it
+      _periodicTableKey.currentState?.resetFilters();
+    }
+    
     setState(() {
       _currentIndex = index;
     });

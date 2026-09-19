@@ -13,11 +13,17 @@ class PeriodicTableScreen extends StatefulWidget {
   const PeriodicTableScreen({super.key});
 
   @override
-  State<PeriodicTableScreen> createState() => _PeriodicTableScreenState();
+  State<PeriodicTableScreen> createState() => PeriodicTableScreenState();
 }
 
-class _PeriodicTableScreenState extends State<PeriodicTableScreen> {
+class PeriodicTableScreenState extends State<PeriodicTableScreen> {
   final PeriodicTableController _controller = PeriodicTableController();
+
+  void resetFilters() {
+    if (_controller.selectedCategory != null || _controller.searchQuery.isNotEmpty) {
+      _controller.clearFilters();
+    }
+  }
   late final Map<int, ElementModel> _elementsMap;
 
   @override

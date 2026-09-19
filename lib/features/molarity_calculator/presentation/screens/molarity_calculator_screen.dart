@@ -820,6 +820,33 @@ class _MolarityCalculatorScreenState extends State<MolarityCalculatorScreen> {
                 ),
               ),
             ),
+            if (_selectedChemical != null) ...[
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.info_outline, color: AppColors.primary, size: 18),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Chemical selected. Please fill the mass added and volume, and select the desired concentration unit to get the output.',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.primaryDark,
+                          fontWeight: FontWeight.w600,
+                          height: 1.3,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             const SizedBox(height: 12),
 
             Row(
