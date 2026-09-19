@@ -94,6 +94,10 @@ class _LandscapePeriodicTableScreenState extends State<LandscapePeriodicTableScr
                   hasActiveFilter: _controller.selectedCategory != null,
                   selectedCategory: _controller.selectedCategory,
                   onElementSelected: (element) {
+                    final hasActiveFilter = _controller.selectedCategory != null;
+                    if (hasActiveFilter && !_controller.matchingAtomicNumbers.contains(element.atomicNumber)) {
+                      _controller.clearFilters();
+                    }
                     ElementDetailScreen.show(context, element);
                   },
                   onCategorySelected: _controller.toggleCategory,

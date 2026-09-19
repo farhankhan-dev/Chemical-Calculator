@@ -115,11 +115,13 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
   }
 
   void _selectChemical(ChemicalModel chem) {
+    FocusManager.instance.primaryFocus?.unfocus();
     setState(() {
       _selectedChemical = chem;
       _formulaController.clear();
       _molarMassController.clear();
       _nFactorController.clear();
+      _validationError = null;
       
       if (chem.equivalentWeight != null) {
         _result = chem.equivalentWeight;
@@ -133,7 +135,6 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
       }
     });
 
-    FocusScope.of(context).unfocus();
     Future.delayed(const Duration(milliseconds: 300), () {
       if (mounted && _scrollController.hasClients) {
         _scrollController.animateTo(
@@ -810,6 +811,7 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
                 setState(() {});
               },
             ),
+            // (Helper message moved down to manual calculation section)
             const SizedBox(height: AppSpacing.lg),
 
             Row(
@@ -827,6 +829,33 @@ class _EquivalentWeightCalculatorScreenState extends State<EquivalentWeightCalcu
             // Manual Entry
             Text('Manual Calculation', style: AppTextStyles.label),
             const SizedBox(height: 8),
+            if (_formulaController.text.isNotEmpty) ...[
+              Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.info_outline, color: AppColors.primary, size: 20),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Molar mass is calculated automatically. Please enter the n-factor to get the Equivalent Weight.',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.primaryDark,
+                          fontWeight: FontWeight.w600,
+                          height: 1.3,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             Row(
               children: [
                 Expanded(
